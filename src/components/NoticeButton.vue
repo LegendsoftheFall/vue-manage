@@ -1,0 +1,28 @@
+<template>
+    <div class="pr-1">
+        <button class="relative z-10 block bg-transparent p-2 rounded-full focus:outline-none
+        hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-500">
+            <!-- bell -->
+            <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 " fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            <!-- redpoint -->
+            <div v-if="isNotice" class="absolute w-5 h-5 bg-red-600 rounded-full top-1 right-1 border
+             border-white dark:border-black">
+            </div>
+        </button>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+
+export default defineComponent({
+  name: 'NoticeButton',
+  setup () {
+    const isNotice = ref(true)
+
+    return { isNotice }
+  }
+})
+</script>
