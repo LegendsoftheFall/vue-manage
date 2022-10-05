@@ -9,6 +9,7 @@
       </div>
       <!-- Content -->
       <div class="col-span-10 bg-green-200"></div>
+      <div class="h-20 w-full"></div>
     </div>
 </template>
 

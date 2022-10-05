@@ -1,4 +1,4 @@
-# blog-demo
+# manage
 
 ## Project setup
 ```

@@ -8,7 +8,7 @@
         </svg>
       </div>
       <!-- Tags -->
-      <div v-for="tags in testTrendData" :key="tags.id" class=" w-full h-max px-4">
+      <div v-for="tags in trendData" :key="tags.id" class=" w-full h-max px-4">
         <!-- Tag -->
         <a href="#" class="flex rounded-lg justify-between items-center hover:bg-gray-300 dark:hover:bg-gray-700 py-2">
           <span class="text-xs ml-1 font-mono text-gray-600 dark:text-gray-200">{{tags.name}}</span>
@@ -32,13 +32,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { testTrendData } from '@/model/TestTrendData'
+import { defineComponent, computed } from 'vue'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '@/store'
 
 export default defineComponent({
   name: 'TrendingTags',
   setup () {
-    return { testTrendData }
+    const store = useStore<GlobalDataProps>()
+    const trendData = computed(() => store.state.trend)
+    return { trendData }
   }
 })
 </script>

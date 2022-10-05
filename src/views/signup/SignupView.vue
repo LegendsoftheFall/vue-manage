@@ -41,7 +41,7 @@
                 <div class="pt-4">
                     <div class="font-light text-center text-gray-500">
                         已注册
-                        <a href="#" class="font-normal text-teal-500 hover:text-teal-600">去登录</a>
+                        <router-link :to="{ name: 'Login'}" class="font-normal text-teal-500 hover:text-teal-600">去登录</router-link>
                     </div>
                 </div>
                 <div class="flex justify-between items-center pt-14 text-gray-500">
@@ -63,6 +63,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ValidateInput from '@/components/ValidateInput.vue'
 import { RulesProp } from '@/model/model'
 import ValidateForm from '@/components/ValidateForm.vue'
@@ -71,6 +72,7 @@ export default defineComponent({
   name: 'SignupView',
   components: { ValidateInput, ValidateForm },
   setup () {
+    const router = useRouter()
     const label = '注册'
     const emailRules: RulesProp = [
       { type: 'required', message: '邮箱地址不能为空' },
@@ -83,8 +85,11 @@ export default defineComponent({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const inputRef = ref<any>()
     // 监听提交事件
-    const onFormSubmit = () => {
+    const onFormSubmit = (result: boolean) => {
       // 通过验证
+      if (result) {
+        router.push({ name: 'Login' })
+      }
     }
     return { label, emailRules, passwordRules, inputRef, onFormSubmit }
   }

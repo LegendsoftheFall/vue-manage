@@ -1,24 +1,27 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'VisitorHome',
-    component: () => import(/* webpackChunkName: "VisitorHome" */ '../views/home/VisitorHomeView.vue')
+    name: 'Index',
+    component: () => import(/* webpackChunkName: "Index" */ '../views/index/IndexView.vue')
   },
   {
-    path: '/home',
-    name: 'UserHome',
-    component: () => import(/* webpackChunkName: "UserHome" */ '../views/home/UserHomeView.vue')
+    path: '/recommend',
+    name: 'Recommend',
+    component: () => import(/* webpackChunkName: "Recommend" */ '../views/recommend/RecommendView.vue')
   },
   {
     path: '/login',
     name: 'Login',
+    meta: { redirectIsLogin: true },
     component: () => import(/* webpackChunkName: "Login" */ '../views/login/LoginView.vue')
   },
   {
     path: '/signup',
     name: 'Signup',
+    meta: { redirectIsLogin: true },
     component: () => import(/* webpackChunkName: "Signup" */ '../views/signup/SignupView.vue')
   }
   // {
@@ -34,6 +37,14 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.redirectIsLogin && store.state.user.isLogin) {
+    next('/home')
+  } else {
+    next()
+  }
 })
 
 export default router

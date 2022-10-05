@@ -68,14 +68,14 @@
             </a>
             <hr class="w-5/6 ml-4 border-gray-100 dark:border-gray-700">
             <!-- 登出 -->
-            <a href="#" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+            <router-link :to="{ name: 'Index' }" @click="useLogOut" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex">
                     <svg class="text-red-500 w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                     </svg>
                     <span class="ml-2 text-red-500">登出</span>
                 </div>
-            </a>
+            </router-link>
         </div>
         <!-- 未登录下拉菜单 -->
         <div v-if="isOpen && !isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
@@ -106,13 +106,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, computed } from 'vue'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '@/store'
 import useClickOutSide from '../hooks/useClickOutSide'
+
+// const useIsLogin = () => {
+//   const store = useStore<GlobalDataProps>()
+//   const isLogin = computed(() => store.state.user.isLogin)
+//   return isLogin
+// }
 
 export default defineComponent({
   name: 'UserAvator',
   setup () {
-    const isLogin = ref(false)
+    const store = useStore<GlobalDataProps>()
+    const isLogin = computed(() => store.state.user.isLogin)
     const isOpen = ref(false)
     const dropdownRef = ref<null | HTMLElement>(null)
     const isClickOutSide = useClickOutSide(dropdownRef)
@@ -122,7 +131,11 @@ export default defineComponent({
         isOpen.value = false
       }
     })
-    return { isOpen, dropdownRef, isLogin }
+
+    const useLogOut = () => {
+      store.commit('logout')
+    }
+    return { isOpen, dropdownRef, isLogin, useLogOut }
   }
 })
 </script>

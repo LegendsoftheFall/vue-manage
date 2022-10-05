@@ -48,7 +48,7 @@
                 <div class="pt-4">
                     <div class="font-light text-center text-gray-500">
                         还未注册？
-                        <a href="#" class="font-normal text-teal-500 hover:text-teal-600">创建账户</a>
+                        <router-link :to="{ name: 'Signup'}" class="font-normal text-teal-500 hover:text-teal-600">创建账户</router-link>
                     </div>
                 </div>
                 <!-- 分割线 -->
@@ -85,6 +85,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import ValidateInput from '@/components/ValidateInput.vue'
 import ValidateForm from '@/components/ValidateForm.vue'
 import { RulesProp } from '@/model/model'
@@ -93,8 +94,10 @@ export default defineComponent({
   name: 'LoginView',
   components: { ValidateInput, ValidateForm },
   setup () {
-    const label = '登录'
     const router = useRouter()
+    const store = useStore()
+
+    const label = '登录'
     const emailRules: RulesProp = [
       { type: 'required', message: '邮箱地址不能为空' },
       { type: 'email', message: '请输入正确的邮箱地址格式' }
@@ -108,7 +111,9 @@ export default defineComponent({
     const onFormSubmit = (result: boolean) => {
       // 通过验证,下一步动作
       if (result) {
-        router.push({ name: 'UserHome' })
+        router.push({ name: 'Recommend' }) // 跳转页面
+        store.commit('login') // 改变用户状态
+        // localStorage.setItem('isLogin', store.state.user.isLogin)
       }
     }
     return { label, emailRules, passwordRules, inputRef, onFormSubmit }
