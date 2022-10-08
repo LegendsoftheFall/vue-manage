@@ -86,8 +86,8 @@
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import ValidateInput from '@/components/ValidateInput.vue'
-import ValidateForm from '@/components/ValidateForm.vue'
+import ValidateInput from '@/components/form/ValidateInput.vue'
+import ValidateForm from '@/components/form/ValidateForm.vue'
 import { RulesProp } from '@/model/model'
 
 export default defineComponent({

@@ -39,6 +39,7 @@ const router = createRouter({
   routes
 })
 
+// 路由守卫
 router.beforeEach((to, from, next) => {
   if (to.meta.redirectIsLogin && store.state.user.isLogin) {
     next('/home')

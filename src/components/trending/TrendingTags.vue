@@ -10,14 +10,15 @@
       <!-- Tags -->
       <div v-for="tags in trendData" :key="tags.id" class=" w-full h-max px-4">
         <!-- Tag -->
-        <a href="#" class="flex rounded-lg justify-between items-center hover:bg-gray-300 dark:hover:bg-gray-700 py-2">
-          <span class="text-xs ml-1 font-mono text-gray-600 dark:text-gray-200">{{tags.name}}</span>
-          <span class="flex px-1 mr-1 rounded-full bg-gray-200 dark:bg-gray-600 text-xs font-mono">
+        <a v-if="!isLoading" href="#" class="flex rounded-lg justify-between items-center hover:bg-gray-300 dark:hover:bg-gray-700 py-2">
+          <span class="text-sm tracking-wide ml-1 text-gray-600 dark:text-gray-200">{{tags.name}}</span>
+          <span class="flex px-1 mr-1 tracking-tight rounded-full bg-slate-200 dark:bg-gray-600 text-xs text-gray-600 dark:text-white font-semibold">
             <p>+</p>
             {{tags.num}}
           </span>
         </a>
       </div>
+      <TagsLoader v-if="isLoading"/>
       <div class="w-full h-max px-4">
         <!-- See More -->
         <a href="#" class="flex rounded-lg items-center hover:bg-gray-300 dark:hover:bg-gray-700 py-2">
@@ -32,16 +33,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/store'
+import TagsLoader from '@/components/loading/TagsLoader.vue'
 
 export default defineComponent({
   name: 'TrendingTags',
+  components: { TagsLoader },
   setup () {
     const store = useStore<GlobalDataProps>()
-    const trendData = computed(() => store.state.trend)
-    return { trendData }
+    // 挂载时发起请求
+    onMounted(() => {
+      store.dispatch('fetchTrendingTag') // 获取数据
+    })
+
+    const trendData = computed(() => store.state.trend) // 渲染页面
+
+    const isLoading = computed(() => store.state.loading)
+    return { trendData, isLoading }
   }
 })
 </script>

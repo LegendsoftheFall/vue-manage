@@ -64,9 +64,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import ValidateInput from '@/components/ValidateInput.vue'
+import ValidateInput from '@/components/form/ValidateInput.vue'
 import { RulesProp } from '@/model/model'
-import ValidateForm from '@/components/ValidateForm.vue'
+import ValidateForm from '@/components/form/ValidateForm.vue'
 
 export default defineComponent({
   name: 'SignupView',

@@ -4,3 +4,17 @@ interface RuleProp {
     message: string
 }
 export type RulesProp = RuleProp[]
+
+// 图片的类型
+interface ImageProps {
+  id?: string
+  url?: string
+  createAt?: string
+}
+
+// 标签排行的类型
+export interface TrendingProps{
+    id: string
+    num: string
+    name: string
+}

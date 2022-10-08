@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import GlobalHeader from '@/components/GlobalHeader.vue'
+import GlobalHeader from '@/components/header/GlobalHeader.vue'
 import FormalContent from '@/components/FormalContent.vue'
 
 export default defineComponent({

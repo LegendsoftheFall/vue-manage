@@ -2,8 +2,8 @@
     <div class="pr-1 relative">
         <!-- 头像 -->
         <button @click="isOpen = !isOpen" ref="dropdownRef" class="block w-10 h-10 rounded-full overflow-hidden">
-            <img v-if="isLogin" class="w-full h-full" src="../assets/image/KKK.jpg" alt="Your avator">
-            <img v-if="!isLogin" class="w-full h-full" src="../assets/image/avator.svg" alt="Your avator">
+            <img v-if="isLogin" class="w-full h-full" src="@/assets/image/KKK.jpg" alt="Your avator">
+            <img v-if="!isLogin" class="w-full h-full" src="@/assets/image/avator.svg" alt="Your avator">
         </button>
         <!-- 登录下拉菜单 -->
         <div v-if="isOpen && isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
@@ -13,7 +13,7 @@
             <a href="#" class="block px-4 py-4 text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex items-center">
                     <!-- Avator -->
-                    <img class="w-12 h-12 rounded-full" src="../assets/image/KKK.jpg" alt="your avator">
+                    <img class="w-12 h-12 rounded-full" src="@/assets/image/KKK.jpg" alt="your avator">
                     <div class="pl-2">
                         <span class="text-sm font-semibold dark:text-white">发腮的汤姆猫</span>
                     </div>
@@ -82,7 +82,7 @@
         dark:bg-gray-800 dark:border-t-gray-700 dark:border-b-gray-700 border-t border-b rounded-lg shadow-xl overflow-hidden">
             <!-- 头像 -->
             <div class="flex justify-center items-center">
-                <img class="w-19 h-19" src="../assets/image/avator.svg" alt="avator">
+                <img class="w-19 h-19" src="@/assets/image/avator.svg" alt="avator">
             </div>
             <!-- 标语 -->
             <div class="flex mx-5 mt-4">
@@ -109,7 +109,7 @@
 import { defineComponent, ref, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/store'
-import useClickOutSide from '../hooks/useClickOutSide'
+import useClickOutSide from '../../hooks/useClickOutSide'
 
 // const useIsLogin = () => {
 //   const store = useStore<GlobalDataProps>()

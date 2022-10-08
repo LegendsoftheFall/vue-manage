@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SideBar from './SideBar.vue'
-import TrendingTags from './TrendingTags.vue'
+import TrendingTags from '@/components/trending/TrendingTags.vue'
 
 export default defineComponent({
   name: 'IndexContent',

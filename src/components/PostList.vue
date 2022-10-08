@@ -217,9 +217,14 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import { testPostData } from '@/model/TestPostData'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '@/store'
+// import { testPostData } from '@/model/TestPostData'
 
-const usePostList = () => {
+const useDataList = () => {
+  const store = useStore<GlobalDataProps>()
+  const testPostData = store.state.posts
+  const tagList = computed(() => store.state.tags)
   const postList = computed(() => {
     return testPostData.map(post => {
       // 没有头像
@@ -230,7 +235,7 @@ const usePostList = () => {
     })
   })
 
-  return { postList }
+  return { postList, tagList }
 }
 
 // const usePost = (id: number) => {
@@ -260,7 +265,7 @@ const useClickLikeEffect = () => {
 export default defineComponent({
   name: 'PostList',
   setup () {
-    const { postList } = usePostList()
+    const { postList } = useDataList()
     const { isClickMark, useClickMark } = useClickMarkEffect()
     const { isClickLike, useClickLike } = useClickLikeEffect()
     return { isClickMark, isClickLike, useClickMark, useClickLike, postList }

@@ -3,14 +3,14 @@
         <!-- 写文章 -->
         <a href="#" class="relative flex items-center justify-center bg-blue-450 hover:bg-blue-500 focus:outline-none
         text-white rounded-l">
-            <img class="pl-2" src="../assets/icons/edit.svg" alt="edit">
+            <img class="pl-2" src="@/assets/icons/edit.svg" alt="edit">
             <p class="pr-4 pl-1 py-2">写文章</p>
         </a>
         <div class="border border-blue-400"></div>
         <button @click="isOpen = !isOpen" class="relative flex items-center justify-center bg-blue-450
          hover:bg-blue-500 focus:outline-none text-white rounded-r" ref="dropdownRef">
             <span class="p-2">
-                <img src="../assets/icons/icons8-walter-white.svg" alt="white"/>
+                <img src="@/assets/icons/icons8-walter-white.svg" alt="white"/>
             </span>
             <!-- 下拉菜单 -->
             <div v-if="isOpen" class="absolute z-10 right-0 top-full min-h-full w-max shadow-md rounded-lg overflow-hidden mt-2 ">
@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import useClickOutSide from '../hooks/useClickOutSide'
+import useClickOutSide from '@/hooks/useClickOutSide'
 
 export default defineComponent({
   name: 'WriteButton',
