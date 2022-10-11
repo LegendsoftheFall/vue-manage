@@ -8,29 +8,39 @@
                     <img src="@/assets/icons/logo.svg" alt="logo">
                     <span class="font-black text-2xl tracking-tight font-mono">manage</span>
                 </div>
-                <div class="pt-20 pb-6">
+                <div class=" pb-6">
                     <h1 class="text-3xl font-bold tracking-wide leading-loose">加入我们！</h1>
                     <span class="font-light text-gray-500">为开发者与技术人员打造的博客社区</span>
                 </div>
-                <!-- 登录表单 -->
+                <!-- 注册表单 -->
                 <ValidateForm @form-submit="onFormSubmit" :label="label">
-                    <!-- 邮箱地址 -->
+                    <!-- 昵称 -->
                     <div class="pt-6 pb-3">
+                        <label for="name" class="font-light">昵称</label>
+                        <ValidateInput type="text" :rules="nameRules" placeholder="请输入昵称"
+                        :icons="require('@/assets/icons/user.svg')"
+                        v-model="formData.name"/>
+                    </div>
+                    <!-- 邮箱地址 -->
+                    <div class="pb-3">
                         <label for="email" class="font-light">邮箱地址</label>
                         <ValidateInput type="text" :rules="emailRules" placeholder="请输入邮箱"
-                        :icons="require('@/assets/icons/email.svg')"/>
+                        :icons="require('@/assets/icons/email.svg')"
+                        v-model="formData.email"/>
                     </div>
                     <!-- 密码 -->
                     <div class="pb-3">
                         <label for="password" class="font-light">密码</label>
                         <ValidateInput type="password" :rules="passwordRules" placeholder="请输入密码"
-                        :icons="require('@/assets/icons/lock.svg')"/>
+                        :icons="require('@/assets/icons/lock.svg')"
+                        v-model="formData.password"/>
                     </div>
                     <!-- 确认密码 -->
                     <div class="pb-3">
                         <label for="password" class="font-light">确认密码</label>
-                        <ValidateInput type="password" :rules="passwordRules" placeholder="请再次输入密码"
-                        :icons="require('@/assets/icons/lock.svg')"/>
+                        <ValidateInput type="password" :rules="rePasswordRules" placeholder="请再次输入密码"
+                        :icons="require('@/assets/icons/lock.svg')"
+                        v-model="formData.rePassword"/>
                     </div>
                     <!-- 注册按钮
                     <div class="pt-8">
@@ -62,36 +72,70 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import ValidateInput from '@/components/form/ValidateInput.vue'
 import { RulesProp } from '@/model/model'
 import ValidateForm from '@/components/form/ValidateForm.vue'
+import axios from 'axios'
+import { GlobalDataProps } from '@/store'
+import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({
   name: 'SignupView',
   components: { ValidateInput, ValidateForm },
   setup () {
     const router = useRouter()
+    const store = useStore<GlobalDataProps>()
     const label = '注册'
+    const formData = reactive({
+      email: '',
+      name: '',
+      password: '',
+      rePassword: ''
+    })
+    const nameRules: RulesProp = [
+      { type: 'required', message: '昵称不能为空' }
+    ]
     const emailRules: RulesProp = [
       { type: 'required', message: '邮箱地址不能为空' },
       { type: 'email', message: '请输入正确的邮箱地址格式' }
     ]
     const passwordRules: RulesProp = [
-      { type: 'required', message: '密码不能为空' },
-      { type: 'password', message: '密码必须是由4-20位字母+数字组合' }
+      { type: 'required', message: '密码不能为空' }
+    //   { type: 'password', message: '密码必须是由4-20位字母+数字组合' }
     ]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const inputRef = ref<any>()
+    const rePasswordRules: RulesProp = [
+      { type: 'required', message: '密码不能为空' },
+      {
+        type: 'custom',
+        validator: () => {
+          return formData.password === formData.rePassword
+        },
+        message: '两次密码不相同'
+      }
+    ]
     // 监听提交事件
     const onFormSubmit = (result: boolean) => {
       // 通过验证
       if (result) {
-        router.push({ name: 'Login' })
+        const payload = {
+          username: formData.name,
+          email: formData.email,
+          password: formData.password
+        }
+        axios.post('/signup', payload).then(() => {
+          if (!(store.state.error.code === 1002)) {
+            createToast('success', '注册成功')
+            setTimeout(() => {
+              router.push({ name: 'Login' })
+            }, 2000)
+          }
+        })
       }
     }
-    return { label, emailRules, passwordRules, inputRef, onFormSubmit }
+    return { label, nameRules, emailRules, passwordRules, rePasswordRules, formData, onFormSubmit }
   }
 })
 </script>

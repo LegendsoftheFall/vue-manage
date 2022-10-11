@@ -23,13 +23,13 @@
                     <div class="pt-6 pb-3">
                         <label for="email" class="font-light">邮箱地址</label>
                         <ValidateInput type="text" :rules="emailRules" placeholder="请输入邮箱"
-                         :icons="require('@/assets/icons/email.svg')" ref="inputRef"/>
+                         :icons="require('@/assets/icons/email.svg')" v-model="emailVal"/>
                     </div>
                     <!-- 密码 -->
                     <div class="pb-3">
                         <label for="password" class="font-light">密码</label>
                         <ValidateInput type="password" :rules="passwordRules" placeholder="请输入密码"
-                        :icons="require('@/assets/icons/lock.svg')"/>
+                        :icons="require('@/assets/icons/lock.svg')" v-model="passwordVal"/>
                     </div>
                     <div class="flex justify-between items-center pt-4">
                         <div class="flex items-center">
@@ -88,35 +88,48 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import ValidateInput from '@/components/form/ValidateInput.vue'
 import ValidateForm from '@/components/form/ValidateForm.vue'
+import createToast from '@/hooks/useCreateToast'
 import { RulesProp } from '@/model/model'
+import { GlobalDataProps } from '@/store'
 
 export default defineComponent({
   name: 'LoginView',
   components: { ValidateInput, ValidateForm },
   setup () {
     const router = useRouter()
-    const store = useStore()
+    const store = useStore<GlobalDataProps>()
 
     const label = '登录'
+    const emailVal = ref('')
     const emailRules: RulesProp = [
       { type: 'required', message: '邮箱地址不能为空' },
       { type: 'email', message: '请输入正确的邮箱地址格式' }
     ]
+    const passwordVal = ref('')
     const passwordRules: RulesProp = [
       { type: 'required', message: '密码不能为空' }
     ]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const inputRef = ref<any>()
     // 监听提交事件
     const onFormSubmit = (result: boolean) => {
       // 通过验证,下一步动作
       if (result) {
-        router.push({ name: 'Recommend' }) // 跳转页面
-        store.commit('login') // 改变用户状态
-        // localStorage.setItem('isLogin', store.state.user.isLogin)
+        // 取数据
+        const payload = {
+          email: emailVal.value,
+          password: passwordVal.value
+        }
+        // 触发POST请求
+        store.dispatch('loginAndFetch', payload).then(() => {
+          if (!(store.state.error.code === 1003 || store.state.error.code === 1004)) {
+            createToast('success', '登录成功')
+            setTimeout(() => {
+              router.push({ name: 'Recommend' }) // 若登录请求没有错误则1s后跳转页面
+            }, 1000)
+          }
+        })
       }
     }
-    return { label, emailRules, passwordRules, inputRef, onFormSubmit }
+    return { label, emailVal, passwordVal, emailRules, passwordRules, onFormSubmit }
   }
 })
 </script>

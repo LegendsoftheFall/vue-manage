@@ -54,6 +54,9 @@ export default defineComponent({
             case 'password':
               passed = passwordReg.test(inputRef.val)
               break
+            case 'custom':
+              passed = rule.validator ? rule.validator() : true
+              break
             default:
               break
           }

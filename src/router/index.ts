@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import store from '@/store'
+// import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -41,8 +41,10 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.meta.redirectIsLogin && store.state.user.isLogin) {
-    next('/home')
+  // console.log(store.state.aToken)
+  // console.log(localStorage.getItem('aToken'))
+  if (to.meta.redirectIsLogin && localStorage.getItem('aToken')) {
+    next('/recommend')
   } else {
     next()
   }

@@ -4,7 +4,7 @@
         <slot name="default"></slot>
         <slot name="sumbit">
             <!-- 登录按钮 -->
-            <div class="pt-8" @click.prevent="submitForm">
+            <div class="pt-8" @click.prevent="limitSubmit">
                 <button type="submit"
                 class="py-4 px-8 w-full text-white bg-orange-500 hover:bg-orange-600
                  focus:ring-red-100 focus:outline-none rounded-lg shadow-lg">{{label}}</button>
@@ -16,6 +16,8 @@
 <script lang="ts">
 import { defineComponent, onUnmounted } from 'vue'
 import mitt from 'mitt'
+import throttle from '@/hooks/useThrottle'
+
 // 创建监听器
 type ValidateFunc = () => boolean
 type Events = {
@@ -31,6 +33,7 @@ export default defineComponent({
   emits: ['form-submit'],
   setup (props, context) {
     let funcArr: ValidateFunc[] = []
+
     const submitForm = () => {
       // 循环执行数组 得到最后的验证结果
       const result = funcArr.map(func => func()).every(result => result)
@@ -47,7 +50,9 @@ export default defineComponent({
       emitter.off('form-item-created', callback)
       funcArr = []
     })
-    return { submitForm }
+
+    const limitSubmit = throttle(submitForm)
+    return { submitForm, limitSubmit }
   }
 })
 </script>

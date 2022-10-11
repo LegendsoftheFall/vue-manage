@@ -2,20 +2,21 @@
     <div class="pr-1 relative">
         <!-- 头像 -->
         <button @click="isOpen = !isOpen" ref="dropdownRef" class="block w-10 h-10 rounded-full overflow-hidden">
-            <img v-if="isLogin" class="w-full h-full" src="@/assets/image/KKK.jpg" alt="Your avator">
-            <img v-if="!isLogin" class="w-full h-full" src="@/assets/image/avator.svg" alt="Your avator">
+            <img v-if="UserInfo.isLogin" class="w-full h-full" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+            <img v-if="!UserInfo.isLogin" class="w-full h-full" src="@/assets/image/avator.svg" alt="Vistor avator">
         </button>
         <!-- 登录下拉菜单 -->
-        <div v-if="isOpen && isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
+        <div v-if="isOpen && UserInfo.isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
         dark:bg-gray-800 dark:border-t-gray-700 dark:border-b-gray-700
         border-t border-b rounded-lg shadow-xl overflow-hidden">
             <!-- 关于我 -->
             <a href="#" class="block px-4 py-4 text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex items-center">
                     <!-- Avator -->
-                    <img class="w-12 h-12 rounded-full" src="@/assets/image/KKK.jpg" alt="your avator">
-                    <div class="pl-2">
-                        <span class="text-sm font-semibold dark:text-white">发腮的汤姆猫</span>
+                    <img class="w-12 h-12 rounded-full" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+                    <div class="pl-2 flex flex-col">
+                        <span class="text-sm font-semibold dark:text-white">{{UserInfo.name}}</span>
+                        <span class="text-xs text-gray-500">{{UserInfo.email}}</span>
                     </div>
                 </div>
             </a>
@@ -78,7 +79,7 @@
             </router-link>
         </div>
         <!-- 未登录下拉菜单 -->
-        <div v-if="isOpen && !isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
+        <div v-if="isOpen && !UserInfo.isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
         dark:bg-gray-800 dark:border-t-gray-700 dark:border-b-gray-700 border-t border-b rounded-lg shadow-xl overflow-hidden">
             <!-- 头像 -->
             <div class="flex justify-center items-center">
@@ -121,7 +122,9 @@ export default defineComponent({
   name: 'UserAvator',
   setup () {
     const store = useStore<GlobalDataProps>()
-    const isLogin = computed(() => store.state.user.isLogin)
+    const UserInfo = computed(() => store.state.user)
+
+    // 处理点击事件
     const isOpen = ref(false)
     const dropdownRef = ref<null | HTMLElement>(null)
     const isClickOutSide = useClickOutSide(dropdownRef)
@@ -133,9 +136,9 @@ export default defineComponent({
     })
 
     const useLogOut = () => {
-      store.commit('logout')
+      store.commit('logout') // 登出功能
     }
-    return { isOpen, dropdownRef, isLogin, useLogOut }
+    return { isOpen, dropdownRef, UserInfo, useLogOut }
   }
 })
 </script>
