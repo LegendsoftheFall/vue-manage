@@ -4,6 +4,18 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx,vue}'],
   darkMode: 'class',
   theme: {
+    fontWeight: {
+      hairline: 100,
+      thin: 200,
+      light: 300,
+      normal: 400,
+      medium: 500,
+      big: 550,
+      semibold: 600,
+      bold: 700,
+      extrabold: 800,
+      black: 900
+    },
     screens: {
       sm: '480px',
       md: '768px',
@@ -34,7 +46,7 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif']
+        sans: ['Roboto']
         // sans: ['"PT Sans"', 'sans-serif']
         // sans: [
         //   '"Inter"',
@@ -86,12 +98,25 @@ module.exports = {
         18: '72px',
         19: '80px',
         '1/10': '10%',
-        '1/8': '12.5%'
+        '1/8': '12.5%',
+        70: '270px',
+        90: '360px',
+        94: '368px',
+        100: '400px'
       },
       height: {
+        15: '62px',
         18: '72px',
         19: '80px',
-        38: '152px'
+        38: '152px',
+        60: '240px',
+        70: '270px',
+        90: '360px',
+        100: '400px',
+        110: '440px'
+      },
+      inset: {
+        72: '278px'
       }
     }
   },
