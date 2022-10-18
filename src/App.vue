@@ -6,7 +6,7 @@
 import { defineComponent, onMounted, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
-import { GlobalDataProps } from '@/store'
+import { GlobalDataProps } from '@/model/model'
 import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({
@@ -20,7 +20,7 @@ export default defineComponent({
     onMounted(() => {
       if (!currentUser.value.isLogin && aToken.value) {
         axios.defaults.headers.common.Authorization = `Bearer ${aToken.value}`
-        store.dispatch('fetchUserID')
+        store.dispatch('fetchUserInfo')
       }
     })
 

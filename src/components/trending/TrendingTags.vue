@@ -10,7 +10,7 @@
       <!-- Tags -->
       <div v-for="tags in trendData" :key="tags.id" class=" w-full h-max px-4">
         <!-- Tag -->
-        <a v-if="!isLoading" href="#" class="flex rounded-lg justify-between items-center hover:bg-gray-300 dark:hover:bg-gray-700 py-2">
+        <a :href="`/n/${tags.id}`" v-if="!isLoading" class="flex rounded-lg justify-between items-center hover:bg-gray-300 dark:hover:bg-gray-700 py-2">
           <span class="text-sm tracking-wide ml-1 text-gray-600 dark:text-gray-200">{{tags.name}}</span>
           <span class="flex px-1 mr-1 tracking-tight rounded-full bg-slate-200 dark:bg-gray-600 text-xs text-gray-600 dark:text-white font-semibold">
             <p>+</p>
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '@/store'
+import { GlobalDataProps } from '@/model/model'
 import TagsLoader from '@/components/loading/TagsLoader.vue'
 
 export default defineComponent({

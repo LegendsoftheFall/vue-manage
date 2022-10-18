@@ -89,8 +89,7 @@ import { useStore } from 'vuex'
 import ValidateInput from '@/components/form/ValidateInput.vue'
 import ValidateForm from '@/components/form/ValidateForm.vue'
 import createToast from '@/hooks/useCreateToast'
-import { RulesProp } from '@/model/model'
-import { GlobalDataProps } from '@/store'
+import { RulesProp, GlobalDataProps } from '@/model/model'
 
 export default defineComponent({
   name: 'LoginView',

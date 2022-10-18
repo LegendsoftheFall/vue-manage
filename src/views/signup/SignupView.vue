@@ -76,10 +76,9 @@ import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import ValidateInput from '@/components/form/ValidateInput.vue'
-import { RulesProp } from '@/model/model'
+import { RulesProp, GlobalDataProps } from '@/model/model'
 import ValidateForm from '@/components/form/ValidateForm.vue'
 import axios from 'axios'
-import { GlobalDataProps } from '@/store'
 import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({

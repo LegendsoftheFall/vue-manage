@@ -1,7 +1,7 @@
 <template>
     <div class="flex">
         <!-- 写文章 -->
-        <a href="#" class="relative flex items-center justify-center bg-blue-450 hover:bg-blue-500 focus:outline-none
+        <a href="/create/draft" class="relative flex items-center justify-center bg-blue-450 hover:bg-blue-500 focus:outline-none
         text-white rounded-l">
             <img class="pl-2" src="@/assets/icons/edit.svg" alt="edit">
             <p class="pr-4 pl-1 py-2">写文章</p>

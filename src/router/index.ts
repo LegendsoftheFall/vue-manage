@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+
 // import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -23,6 +24,17 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Signup',
     meta: { redirectIsLogin: true },
     component: () => import(/* webpackChunkName: "Signup" */ '../views/signup/SignupView.vue')
+  },
+  {
+    path: '/n/:id',
+    name: 'n',
+    component: () => import(/* webpackChunkName: "n" */ '../views/tag/TagView.vue')
+  },
+  {
+    path: '/create/draft',
+    name: 'Draft',
+    meta: { requireLogin: true },
+    component: () => import(/* webpackChunkName: "Draft" */ '../views/editor/DraftView.vue')
   }
   // {
   //   path: '/about',
@@ -45,6 +57,8 @@ router.beforeEach((to, from, next) => {
   // console.log(localStorage.getItem('aToken'))
   if (to.meta.redirectIsLogin && localStorage.getItem('aToken')) {
     next('/recommend')
+  } else if (to.meta.requireLogin && !localStorage.getItem('aToken')) {
+    next('/login')
   } else {
     next()
   }

@@ -4,7 +4,6 @@
       <!-- SideBar -->
       <div class="col-span-2">
         <SideBar/>
-        <div class="h-6 w-full"></div>
         <TrendingTags/>
       </div>
       <!-- Content -->
@@ -15,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SideBar from './SideBar.vue'
+import SideBar from '../sidebar/SideBar.vue'
 import TrendingTags from '@/components/trending/TrendingTags.vue'
 
 export default defineComponent({

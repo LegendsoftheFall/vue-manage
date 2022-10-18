@@ -2,8 +2,8 @@
     <div class="pr-1 relative">
         <!-- 头像 -->
         <button @click="isOpen = !isOpen" ref="dropdownRef" class="block w-10 h-10 rounded-full overflow-hidden">
-            <img v-if="UserInfo.isLogin" class="w-full h-full" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
-            <img v-if="!UserInfo.isLogin" class="w-full h-full" src="@/assets/image/avator.svg" alt="Vistor avator">
+            <img v-if="UserInfo.isLogin" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+            <img v-if="!UserInfo.isLogin" src="@/assets/image/avator.svg" alt="Vistor avator">
         </button>
         <!-- 登录下拉菜单 -->
         <div v-if="isOpen && UserInfo.isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
@@ -13,7 +13,9 @@
             <a href="#" class="block px-4 py-4 text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex items-center">
                     <!-- Avator -->
-                    <img class="w-12 h-12 rounded-full" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img class="" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+                    </div>
                     <div class="pl-2 flex flex-col">
                         <span class="text-sm font-semibold dark:text-white">{{UserInfo.name}}</span>
                         <span class="text-xs text-gray-500">{{UserInfo.email}}</span>
@@ -109,14 +111,8 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from 'vue'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '@/store'
-import useClickOutSide from '../../hooks/useClickOutSide'
-
-// const useIsLogin = () => {
-//   const store = useStore<GlobalDataProps>()
-//   const isLogin = computed(() => store.state.user.isLogin)
-//   return isLogin
-// }
+import { GlobalDataProps } from '@/model/model'
+import useClickOutSide from '@/hooks/useClickOutSide'
 
 export default defineComponent({
   name: 'UserAvator',

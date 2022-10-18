@@ -1,8 +1,8 @@
 <template>
   <teleport to='#message'>
-    <div ref="toastRef" class="absolute flex flex-col items-center justify-center top-0 left-0 right-0 max-h-screen bg-transparent my-3">
+    <div ref="toastRef" class="absolute flex flex-col z-50 items-center justify-center top-0 left-0 right-0 max-h-screen bg-transparent my-3">
       <div
-      class="flex items-center my-1 rounded-lg overflow-hidden w-1/5"
+      class="flex items-center my-1 rounded-lg overflow-hidden w-1/4"
       :class="wrapperClass.get(type!)">
         <!-- wrapper -->
         <div class="relative flex items-center w-full">
@@ -35,7 +35,7 @@
             </button>
             <!-- progressBar -->
             <div class="absolute bottom-0 right-0 left-0 h-1 bg-neutral-200">
-              <span class="absolute bg-neutral-300 left-0 top-0 bottom-0 h-full" :style="{ 'width': `${progress}%`}"></span>
+              <span :class="progressClass.get(type!)" class="absolute left-0 top-0 bottom-0 h-full" :style="{ 'width': `${progress}%`}"></span>
             </div>
         </div>
       </div>
@@ -61,6 +61,7 @@ export default defineComponent({
   setup () {
     const progress = ref(0)
     onMounted(() => {
+      // 进度条
       const interval = setInterval(() => {
         if (progress.value < 100) {
           progress.value += 1
@@ -92,7 +93,14 @@ export default defineComponent({
       ['error', 'bg-red-100']
     ])
 
-    return { wrapperClass, iconClass, toastRef, progress, removeToast }
+    const progressClass = new Map([
+      ['info', 'bg-blue-300'],
+      ['success', 'bg-green-300'],
+      ['warning', 'bg-orange-300'],
+      ['error', 'bg-red-300']
+    ])
+
+    return { wrapperClass, iconClass, progressClass, toastRef, progress, removeToast }
   }
 })
 </script>
