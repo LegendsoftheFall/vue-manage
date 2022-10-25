@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex flex-col h-max border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-800">
+    <div class="w-full sticky top-5 flex flex-col h-max border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-800">
         <a href="/recommend" class="flex items-center mt-3 p-2 hover:bg-gray-300 dark:hover:bg-gray-700">
             <img class="w-6 h-6" src="@/assets/icons/news.svg" alt="">
             <span :class="{ 'text-blue-450': isRecommend() }" class="ml-2 font-semibold">推荐</span>

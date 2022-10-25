@@ -7,8 +7,8 @@
         </button>
         <!-- 登录下拉菜单 -->
         <div v-if="isOpen && UserInfo.isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
-        dark:bg-gray-800 dark:border-t-gray-700 dark:border-b-gray-700
-        border-t border-b rounded-lg shadow-xl overflow-hidden">
+        dark:bg-black border dark:border-gray-700
+         rounded-lg shadow-xl overflow-hidden">
             <!-- 关于我 -->
             <a href="#" class="block px-4 py-4 text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex items-center">
@@ -24,7 +24,7 @@
             </a>
             <hr class="w-5/6 ml-4 border-gray-100 dark:border-gray-700">
             <!-- 我的博客 -->
-            <a href="#" class="block px-4 py-4 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+            <a :href="`/user/${UserInfo.id}`" class="block px-4 py-4 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex justify-between items-center">
                     <span>我的博客</span>
                     <svg class="w-6 h-6 -rotate-90 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -81,30 +81,7 @@
             </router-link>
         </div>
         <!-- 未登录下拉菜单 -->
-        <div v-if="isOpen && !UserInfo.isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
-        dark:bg-gray-800 dark:border-t-gray-700 dark:border-b-gray-700 border-t border-b rounded-lg shadow-xl overflow-hidden">
-            <!-- 头像 -->
-            <div class="flex justify-center items-center">
-                <img class="w-19 h-19" src="@/assets/image/avator.svg" alt="avator">
-            </div>
-            <!-- 标语 -->
-            <div class="flex mx-5 mt-4">
-                <h1 class="text-gray-900 font-semibold dark:text-teal-500">注册或登录你的manage账户</h1>
-            </div>
-            <hr class="w-5/6 ml-4 mt-2 border-gray-100 dark:border-gray-700">
-            <!-- 登录或注册 -->
-            <div class="flex justify-between items-center mt-4">
-                <!-- 注册 -->
-                <router-link :to="{ name: 'Login'}" class=" bg-blue-450 hover:bg-blue-500 ml-4 focus:outline-none
-                text-white rounded-full">
-                    <p class="pr-7 pl-7 py-2 font-semibold tracking-wider">登录</p>
-                </router-link>
-                <!-- 登录 -->
-                <router-link :to="{ name: 'Signup'}" class="border bg-white border-blue-450 hover:bg-gray-100 mr-4 rounded-full">
-                    <p class="pr-7 pl-7 py-2 text-blue-450 font-semibold tracking-wider">注册</p>
-                </router-link>
-            </div>
-        </div>
+        <LogoutMenu v-if="isOpen && !UserInfo.isLogin"/>
     </div>
 </template>
 
@@ -113,9 +90,11 @@ import { defineComponent, ref, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import useClickOutSide from '@/hooks/useClickOutSide'
+import LogoutMenu from '@/components/header/LogoutMenu.vue'
 
 export default defineComponent({
-  name: 'UserAvator',
+  name: 'UserAvatar',
+  components: { LogoutMenu },
   setup () {
     const store = useStore<GlobalDataProps>()
     const UserInfo = computed(() => store.state.user)

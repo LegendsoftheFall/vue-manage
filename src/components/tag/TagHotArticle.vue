@@ -26,9 +26,9 @@
         <!-- Article -->
         <div class="flex w-full h-38 mt-2">
         <div :class="{'w-7/12': article.image}" class="mt-1 mr-3 text-gray-900">
-            <h1 class="font-semibold mb-1">
+            <p class="font-semibold mb-1">
             <a href="#">{{article.title}}</a>
-            </h1>
+            </p>
             <p class="line-clamp-5 mt-2 text-sm text-gray-600">
             <a href="#">{{article.content}}</a>
             </p>

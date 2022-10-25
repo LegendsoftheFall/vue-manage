@@ -3,38 +3,49 @@
     class="w-full flex flex-col p-4 items-center h-64 border border-t-0 bg-white">
         <!-- Author -->
         <div class="flex w-full h-10">
-        <!-- Avatar -->
-        <div class="w-11">
-            <div class="h-10 w-10 rounded-full overflow-hidden">
-            <a href="#">
-                <img :src="article.avatar" alt="avator">
-            </a>
-            </div>
-        </div>
-        <!-- detail -->
-        <div class="w-7/12">
-            <div class="font-semibold">{{article.authorName}}</div>
-            <div class="text-gray-500 text-sm">{{article.articleInfo.format}}</div>
-        </div>
-        <!-- Other -->
-        <div class="w-4/12"></div>
+          <!-- Avatar -->
+          <div class="w-11">
+              <div class="h-10 w-10 rounded-full overflow-hidden">
+              <a :href="`/user/${article.articleInfo.authorID}`" target="_blank">
+                  <img :src="article.avatar" alt="avator">
+              </a>
+              </div>
+          </div>
+          <!-- detail -->
+          <div class="w-7/12">
+              <div class="font-semibold">
+                <a :href="`/user/${article.articleInfo.authorID}`" target="_blank">
+                {{article.authorName}}
+                </a>
+              </div>
+              <div class="text-gray-500 text-sm">
+                <a :href="`/user/${article.articleInfo.authorID}`" target="_blank">
+                {{article.articleInfo.format}}
+                </a>
+              </div>
+          </div>
+          <!-- Other -->
+          <div class="w-4/12"></div>
         </div>
         <!-- Article -->
-        <div class="flex w-full h-38 mt-2">
-        <div :class="{'w-7/12': article.articleInfo.image}" class="mt-1 mr-3 text-gray-900">
-            <h1 class="font-semibold mb-1">
-            <a href="#">{{article.articleInfo.title}}</a>
-            </h1>
-            <p class="line-clamp-4 mt-2 text-sm text-gray-600">
-            <a href="#">{{article.articleInfo.content.substring(0,270)}}</a>
-            </p>
-        </div>
-        <!-- Picture -->
-        <a v-if="article.articleInfo.image" href="#" class="w-5/12">
-            <div class="h-4/5">
-            <img class="w-full h-full rounded-lg border object-cover" :src="article.articleInfo.image" alt="image">
-            </div>
-        </a>
+        <div class="flex justify-between w-full h-38 mt-2">
+          <div :class="{'w-7/12': article.articleInfo.image, 'w-full': !article.articleInfo.image}" class="mt-1 mr-3 text-gray-900">
+              <p class="font-bold text-xl mb-1 break-words h-max line-clamp-2">
+              <a :href="`/article/${article.articleInfo.id}`" target="_blank">{{article.articleInfo.title}}</a>
+              </p>
+              <p class="line-clamp-4 break-words mt-2 text-sm text-gray-600">
+              <a :href="`/article/${article.articleInfo.id}`" target="_blank">
+                <span v-if="article.articleInfo.subtitle" target="_blank">{{article.articleInfo.subtitle}} &#183; </span>
+                {{article.articleInfo.content}}
+              </a>
+              </p>
+          </div>
+          <!-- Picture -->
+          <a v-if="article.articleInfo.image" :href="`/article/${article.articleInfo.id}`" target="_blank" class="w-4/12">
+              <div class="h-4/5">
+              <img class="w-full h-full rounded-lg border object-cover" :src="article.articleInfo.image" alt="image">
+              </div>
+          </a>
         </div>
         <!-- Icons -->
         <div class="w-full flex justify-between items-center">
@@ -56,16 +67,16 @@
             <!-- tags -->
             <div v-if="article.articleInfo.tags.length>0" class="ml-2 flex items-center">
             <template v-for="tags in article.articleInfo.tags.slice(0,2)" :key="tags">
-                <a href="#" class="ml-1">
+                <a :href="`/n/${tags.id}`" target="_blank" class="ml-1">
                 <div class="p-1 border rounded-md hover:bg-gray-300">
-                    <p class="text-xs text-gray-600">{{tags}}</p>
+                    <p class="text-xs text-gray-600">{{tags.name}}</p>
                 </div>
                 </a>
             </template>
             </div>
             <!-- more -->
-            <div v-if="article.articleInfo.tags.length>2"  class="ml-2 flex items-center">
-            <a href="#" class="ml-1">
+            <div v-if="article.articleInfo.tags.length>2"  class="flex items-center">
+            <a :href="`/article/${article.articleInfo.id}`" target="_blank" class="ml-1">
                 <div class="p-1 border rounded-md hover:bg-gray-300">
                 <p class="text-xs text-gray-600">+{{article.articleInfo.tags.length - 2}}</p>
                 </div>
@@ -83,16 +94,18 @@
               <p class="text-xs text-gray-800 ml-1">{{article.articleInfo.viewCount}}</p>
             </div>
             <!-- like -->
-            <button @click.prevent="" :class="{'text-blue-400': false}" class="flex items-center mr-2 p-1 hover:bg-gray-300 rounded-md">
+            <a :class="{'text-blue-400': false}" :href="`/article/${article.articleInfo.id}`" target="_blank"
+            class="flex items-center mr-2 p-1 hover:bg-gray-300 rounded-md">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
             </svg>
             <p :class="{'text-blue-400': false, 'text-gray-800': !false}"
             v-if="article.articleInfo.likes > 0"
             class="text-xs ml-1">{{article.articleInfo.likes}}</p>
-            </button>
+            </a>
             <!-- comment -->
-            <a v-if="article.articleInfo.comments > 0" href="#" class="flex items-center p-1 hover:bg-gray-300 rounded-md">
+            <a v-if="article.articleInfo.comments > 0" :href="`/article/${article.articleInfo.id}`" target="_blank"
+            class="flex items-center p-1 hover:bg-gray-300 rounded-md">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
             </svg>

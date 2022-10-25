@@ -20,7 +20,7 @@
                     <div v-for="tag in TagList" :key="tag.id" @click="getCurrentID(tag.id),addTagToList(tag.id)">
                         <div :class="{ 'bg-gray-200': tagNumList.includes(tag.id)}" class="w-full h-15 hover:bg-gray-200 flex justify-between items-center cursor-pointer">
                             <div class="flex flex-col pl-3">
-                                <h1>{{tag.name}}</h1>
+                                <p>{{tag.name}}</p>
                                 <span class="text-sm text-gray-500">{{tag.num}} 文章</span>
                             </div>
                             <div class="pr-4 rounded-sm overflow-hidden">
@@ -140,6 +140,17 @@ export default defineComponent({
     watch(() => articleTags.value, () => {
       store.commit('setArticleTags', articleTags.value)
     })
+
+    // 编辑模式
+    const isEditMode = computed(() => store.state.editMode)
+    const tags = computed(() => store.state.articleDetail.tags)
+    if (isEditMode.value) {
+      // 遍历数组并依次添加到标签数组
+      tags.value && tags.value.forEach(tag => {
+        store.commit('addTagNumberToList', tag.id)
+        store.commit('addTagNameToList', tag.name)
+      })
+    }
     return { isClick, TagList, tagNumList, tagNameList, getCurrentID, addTagToList, removeTag }
   }
 })

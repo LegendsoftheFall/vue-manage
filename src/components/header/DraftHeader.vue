@@ -11,7 +11,8 @@
                 </a>
                 <!-- 发布按钮 -->
                 <button @click="isClick = !isClick" class="px-5 py-1 bg-blue-600 hover:bg-blue-500 hover:shadow-md rounded-md">
-                    <p class="text-white text-lg font-semibold tracking-widest">发布</p>
+                    <p v-if="!isEditMode" class="text-white text-lg font-semibold tracking-widest">发布</p>
+                    <p v-if="isEditMode" class="text-white text-lg font-semibold tracking-widest">更新</p>
                 </button>
             </div>
         </nav>
@@ -33,21 +34,26 @@
             <button :disabled="status === 'uploading' || status === 'success'" @click="publishValidation"
             class="px-9 py-2 bg-blue-600 hover:bg-blue-500 hover:shadow-md rounded-md">
                 <!-- 准备状态 -->
-                <p v-if="status === 'ready'" class="text-white text-lg font-semibold tracking-widest">发布</p>
+                <div v-if="status === 'ready'" class="text-white text-lg font-semibold tracking-widest">
+                  <p v-if="!isEditMode">发布</p>
+                  <p v-if="isEditMode">更新</p>
+                </div>
                 <!-- 上传状态 -->
                 <div v-if="status === 'uploading'" class="flex justify-center items-center text-white font-semibold tracking-widest">
                   <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                     <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                   </svg>
-                  <p class="tracking-wider pl-1">正在发布...</p>
+                  <p v-if="!isEditMode" class="tracking-wider pl-1">正在发布...</p>
+                  <p v-if="isEditMode" class="tracking-wider pl-1">正在更新...</p>
                 </div>
                 <!-- 上传成功 -->
                 <div v-if="status === 'success'" class="flex justify-center items-center text-white font-semibold tracking-widest">
                   <svg class="w-5 h-5 animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
-                  <p class="tracking-wider pl-1">发布成功</p>
+                  <p v-if="!isEditMode" class="tracking-wider pl-1">发布成功</p>
+                  <p v-if="isEditMode" class="tracking-wider pl-1">更新成功</p>
                 </div>
             </button>
         </div>
@@ -65,23 +71,43 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+// import MarkdownIt from 'markdown-it'
+import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps, UploadStatus } from '@/model/model'
-import SelectButton from '@/components/header/SelectButton.vue'
+import SelectButton from '@/components/button/SelectButton.vue'
 import { computed } from '@vue/reactivity'
 import createToast from '@/hooks/useCreateToast'
+import VueMarkdownEditor, { xss } from '@kangc/v-md-editor'
 
 export default defineComponent({
   name: 'GlobalHeader',
   components: { SelectButton },
   setup () {
+    // const md = new MarkdownIt()
     const store = useStore<GlobalDataProps>()
+    const route = useRoute()
+    const router = useRouter()
     const status = ref<UploadStatus>('ready')
     const isClick = ref(false)
     const title = computed(() => store.state.article.title)
+    const subtitle = computed(() => store.state.article.subtitle)
     const content = computed(() => store.state.article.content)
+    // const html = computed(() => {
+    //   if (content.value) {
+    //     return md.render(content.value)
+    //   }
+    // })
+    const html = computed(() => {
+      if (content.value) {
+        return xss.process(VueMarkdownEditor.vMdParser.themeConfig.markdownParser.render(content.value))
+      }
+    })
     const tags = computed(() => store.state.article.tags)
     const imageUrl = computed(() => store.state.imgUrl)
+
+    // 编辑模式
+    const isEditMode = computed(() => store.state.editMode)
 
     const publishValidation = () => {
       if (title.value === '' || title.value.length < 5) {
@@ -99,17 +125,33 @@ export default defineComponent({
 
       status.value = 'uploading'
 
-      const newArticle = {
-        title: title.value,
-        content: content.value,
-        html: content.value,
-        markdown: content.value,
-        tags: tags.value,
-        image: imageUrl.value.url
-      }
-      store.dispatch('createArticle', newArticle).then(resp => {
+      const actionName = isEditMode.value ? 'editArticle' : 'createArticle'
+      const sendData = isEditMode.value
+        ? {
+            id: route.params.id,
+            authorID: store.state.articleDetail.article?.authorID,
+            title: title.value,
+            subtitle: subtitle.value,
+            html: html.value,
+            markdown: content.value,
+            tags: tags.value,
+            image: imageUrl.value.url
+          }
+        : {
+            title: title.value,
+            subtitle: subtitle.value,
+            html: html.value,
+            markdown: content.value,
+            tags: tags.value,
+            image: imageUrl.value.url
+          }
+
+      store.dispatch(actionName, sendData).then(resp => {
         status.value = 'success'
-        console.log(resp.data)
+        const id = resp.data.id
+        setTimeout(() => {
+          router.push({ name: 'Article', params: { id: id } })
+        }, 2000)
         // 取得resp的postID,跳转到对应文章页面
       }).catch(error => {
         status.value = 'uploading'
@@ -121,7 +163,7 @@ export default defineComponent({
       })
     }
 
-    return { isClick, status, publishValidation }
+    return { isClick, isEditMode, status, publishValidation }
   }
 })
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex flex-col h-max border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-800">
+    <div class="w-full sticky top-66 flex flex-col h-max border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-800">
       <!-- Title -->
       <div class="flex items-center p-2 my-3">
         <span class="font-semibold text-gray-800 dark:text-white">标签排行</span>

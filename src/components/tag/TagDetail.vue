@@ -20,21 +20,9 @@
       <div class="h-1/4 justify-center items-center">
         <div class="flex justify-center items-center">
           <!-- follow -->
-          <button @click="changeFollow"
-          :class="{'bg-blue-450 hover:bg-blue-400 border px-4 py-1 ':!isFollow, 'bg-gray-100 hover:bg-gray-200 py-1 px-5':isFollow }"
-          class="rounded-md flex justify-center items-center mr-3">
-            <div v-if="!isFollow" class="flex justify-center items-center">
-              <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-              </svg>
-              <p class="pl-1 text-white">关注</p>
-            </div>
-            <div v-if="isFollow" class="flex justify-center items-center">
-              <p class="pl-1 text-gray-500">已关注</p>
-            </div>
-          </button>
+          <FollowButton/>
           <!-- write -->
-          <a href="#" class="px-4 py-1 border border-blue-300 bg-blue-50 rounded-md flex
+          <a href="#" class="px-4 py-2 border border-blue-300 bg-blue-50 rounded-md flex
           justify-center items-center hover:bg-blue-100 ml-3">
             <svg class="w-4 h-4 text-blue-450" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
               <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
@@ -72,13 +60,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue'
+import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { GlobalDataProps } from '@/model/model'
+import FollowButton from '@/components/button/FollowButton.vue'
 
 export default defineComponent({
   name: 'TagDetail',
+  components: { FollowButton },
   setup () {
     const route = useRoute()
     const store = useStore<GlobalDataProps>()
@@ -89,15 +79,10 @@ export default defineComponent({
       store.dispatch('fetchTagDetailByID', currentID)
     })
 
-    const isFollow = ref(true)
-    const changeFollow = () => {
-      isFollow.value = !isFollow.value
-    }
-
     const tagDetail = computed(() => store.state.tags)
     const isLoading = computed(() => store.state.loading)
 
-    return { isFollow, tagDetail, changeFollow, isLoading }
+    return { tagDetail, isLoading }
   }
 })
 

@@ -20,21 +20,21 @@
         <div class="w-4/12"></div>
         </div>
         <!-- Article -->
-        <div class="flex w-full h-38 mt-2">
-        <div :class="{'w-7/12': article.image}" class="mt-1 mr-3 text-gray-900">
-            <h1 class="font-semibold mb-1">
-            <a href="#">{{article.title}}</a>
-            </h1>
-            <p class="line-clamp-5 mt-2 text-sm text-gray-600">
-            <a href="#">{{article.content}}</a>
-            </p>
-        </div>
-        <!-- Picture -->
-        <a v-if="article.image" href="#" class="w-5/12">
-            <div class="h-4/5">
-            <img class="w-full h-full rounded-lg border object-cover" :src="article.image" alt="image">
-            </div>
-        </a>
+        <div class="flex justify-between w-full h-38 mt-2">
+          <div :class="{'w-7/12': article.image}" class="mt-1 mr-3 text-gray-900">
+              <p class="font-semibold mb-1">
+              <a href="#">{{article.title}}</a>
+              </p>
+              <p class="line-clamp-5 mt-2 text-sm text-gray-600">
+              <a href="#">{{article.content}}</a>
+              </p>
+          </div>
+          <!-- Picture -->
+          <a v-if="article.image" href="#" class="w-4/12">
+              <div class="h-4/5">
+              <img class="w-full h-full rounded-lg border object-cover" :src="article.image" alt="image">
+              </div>
+          </a>
         </div>
         <!-- Icons -->
         <div class="w-full flex justify-between items-center">

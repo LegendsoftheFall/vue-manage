@@ -5,34 +5,31 @@
       class="flex items-center my-1 rounded-lg overflow-hidden w-1/4"
       :class="wrapperClass.get(type!)">
         <!-- wrapper -->
-        <div class="relative flex items-center w-full">
+        <div class="relative flex items-center w-full h-20">
             <!-- icon -->
-            <div :class="iconClass.get(type!)" class="h-12 w-12 items-center justify-center">
-                <svg v-if="type === 'info'" class="absolute w-8 h-8 top-2 left-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
-                    <path fill="#2196f3" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/><path fill="#fff" d="M22 22h4v11h-4V22zM26.5 16.5c0 1.379-1.121 2.5-2.5 2.5s-2.5-1.121-2.5-2.5S22.621 14 24 14 26.5 15.121 26.5 16.5z"/>
+            <div :class="iconClass.get(type!)" class="h-20 w-20 items-center justify-center">
+                <svg v-if="type === 'info'" class="absolute w-10 h-10 top-5 left-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0Z"/>
                 </svg>
-                <svg v-if="type === 'success'" class="absolute w-8 h-8 top-2 left-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
-                    <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/><path fill="#ccff90" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"/>
+                <svg v-if="type === 'success'" class="absolute w-10 h-10 top-5 left-5" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
                 </svg>
-                <svg v-if="type === 'warning'" class="absolute w-8 h-8 top-2 left-2 text-orange-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                <svg v-if="type === 'warning'" class="absolute w-10 h-10 top-5 left-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M7.005 3.1a1 1 0 1 1 1.99 0l-.388 6.35a.61.61 0 0 1-1.214 0L7.005 3.1ZM7 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/>
                 </svg>
-                <svg v-if="type === 'error'" class="absolute w-8 h-8 top-2 left-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
-                    <path fill="#f44336" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/><path fill="#fff" d="M29.656,15.516l2.828,2.828l-14.14,14.14l-2.828-2.828L29.656,15.516z"/><path fill="#fff" d="M32.484,29.656l-2.828,2.828l-14.14-14.14l2.828-2.828L32.484,29.656z"/>
+                <svg v-if="type === 'error'" class="absolute w-10 h-10 top-5 left-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg>
-                <!-- <svg  v-if="toast.type === 'warning'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
-                    <path fill="#ffa500" d="M5.7 22H42.5V26H5.7z" transform="rotate(-45.001 24.036 24.037)"/><path fill="#ffa500" d="M24,4C13,4,4,13,4,24s9,20,20,20s20-9,20-20S35,4,24,4z M24,40c-8.8,0-16-7.2-16-16S15.2,8,24,8 s16,7.2,16,16S32.8,40,24,40z"/>
-                </svg> -->
             </div>
             <!-- message -->
-            <span class="text-sm ml-3 tracking-widest">{{message}}</span>
+            <span class="text-base ml-3 font-semibold tracking-widest">{{message}}</span>
             <!-- closeBtn -->
-            <button @click.prevent="removeToast" class="absolute right-4 transform hover:scale-125 rounded-md inline-flex"
+            <!-- <button @click.prevent="removeToast" class="absolute right-4 transform hover:scale-125 rounded-md inline-flex"
             >
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-            </button>
+            </button> -->
             <!-- progressBar -->
             <div class="absolute bottom-0 right-0 left-0 h-1 bg-neutral-200">
               <span :class="progressClass.get(type!)" class="absolute left-0 top-0 bottom-0 h-full" :style="{ 'width': `${progress}%`}"></span>
@@ -53,10 +50,6 @@ export default defineComponent({
   props: {
     message: String,
     type: String as PropType<MessageType>
-    // progress: {
-    //   type: Number,
-    //   default: 15
-    // }
   },
   setup () {
     const progress = ref(0)
@@ -80,17 +73,17 @@ export default defineComponent({
     }
 
     const wrapperClass = new Map([
-      ['info', 'bg-blue-500 text-blue-100'],
-      ['success', 'bg-green-500 text-green-100'],
-      ['warning', 'bg-orange-500 text-orange-100'],
-      ['error', 'bg-red-500 text-red-100']
+      ['info', 'bg-blue-500 text-white'],
+      ['success', 'bg-green-500 text-white'],
+      ['warning', 'bg-orange-500 text-white'],
+      ['error', 'bg-red-500 text-white']
     ])
 
     const iconClass = new Map([
-      ['info', 'bg-blue-100'],
-      ['success', 'bg-green-100'],
-      ['warning', 'bg-orange-100'],
-      ['error', 'bg-red-100']
+      ['info', 'bg-blue-500'],
+      ['success', 'bg-green-500'],
+      ['warning', 'bg-orange-500'],
+      ['error', 'bg-red-500']
     ])
 
     const progressClass = new Map([
