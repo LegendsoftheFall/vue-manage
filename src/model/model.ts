@@ -72,28 +72,74 @@ export interface TagProps{
   introduction?: string
 }
 
+export interface TagSimpleProps{
+  id?: string
+  name?:string
+}
+
 // 文章信息的类型
+export interface articleInfoProps{
+  likes: number
+  comments: number
+  viewCount: number
+  id: string
+  authorID: string
+  title: string
+  subtitle: string
+  content: string
+  image?: string
+  tags: TagSimpleProps[]
+  createTime: string
+  format: string
+}
+
 export interface ArticleInfoProps{
-  authorName: string
+  authorName?: string
   avatar?: string
-  articleInfo: {
-    likes: number
-    comments: number
-    viewCount: number
+  articleInfo: articleInfoProps
+}
+
+// 文章内容的类型
+export interface ArticleDetailProps{
+  userInfo?: {
+    userID: string
+    username: string
+    avatar?: string
+    email: string
+    introduction: string
+    follower: number
+  }
+  article?: {
+    likes?: number
+    comments?: number
+    viewCount?: number
     id: string
     authorID: string
     title: string
+    subtitle?: string
     content: string
+    markdown: string
     image?: string
-    tags: string[]
+    source?: string
     createTime: string
     format: string
   }
+  tags?: TagSimpleProps[]
+}
+
+export interface UserInfoProps{
+  userID?: string
+  username?: string
+  avatar?: string
+  email?: string
+  introduction?: string
+  follower?: number
 }
 
 // 创建文章类型
 export interface ArticleProps{
   title: string
+  subtitle?: string
   content: string
   markdown?: string
   html?: string
@@ -101,16 +147,39 @@ export interface ArticleProps{
   tags: number[]
 }
 
+// 文章分页类型
+export interface homePageProps{
+  total: number
+  page: number
+  size: number
+}
+
+// 滚动分页类型
+export interface scrollPageProps{
+  isReadyLoad: boolean
+  isRequest: boolean
+  total: number
+  page: number
+  size: number
+}
+
 export interface GlobalDataProps{
   error: GlobalErrorProps
   aToken: string
   rToken: string
   loading: boolean
+  editMode: boolean
+  total: number
   posts: PostProps[]
   tags: TagProps
   trend: TrendingProps[]
   user: UserProps
+  userInfo: UserInfoProps
   articleInfo: ArticleInfoProps[]
+  homeArticleInfo: articleInfoProps[]
+  homePage: homePageProps
+  scrollPage: scrollPageProps
+  articleDetail: ArticleDetailProps
   imgUrl: ImageProps
   article: ArticleProps
   tagNumberList: string[]

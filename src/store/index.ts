@@ -1,16 +1,23 @@
 import { Commit, createStore } from 'vuex'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { testPostData } from '@/model/TestPostData'
-import { GlobalErrorProps, GlobalDataProps, ImageProps, ArticleProps } from '@/model/model'
+import { GlobalErrorProps, GlobalDataProps, ImageProps } from '@/model/model'
 
-const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
-  const { data } = await axios.get(url)
-  commit(mutationName, data)
-}
+// const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
+//   const { data } = await axios.get(url)
+//   commit(mutationName, data)
+// }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
-  const { data } = await axios.post(url, payload)
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
+//   const { data } = await axios.post(url, payload)
+//   commit(mutationName, data)
+//   return data
+// }
+
+const asyncAndCommit = async (url: string, mutationName: string, commit: Commit,
+  config: AxiosRequestConfig = { method: 'get' }) => {
+  const { data } = await axios(url, config)
   commit(mutationName, data)
   return data
 }
@@ -21,11 +28,18 @@ export default createStore<GlobalDataProps>({
     aToken: localStorage.getItem('aToken') || '',
     rToken: localStorage.getItem('rToken') || '',
     loading: false,
+    editMode: false,
+    total: 0,
     posts: testPostData,
     tags: {},
     trend: [],
     user: { isLogin: false },
+    userInfo: {},
     articleInfo: [],
+    homeArticleInfo: [],
+    homePage: { total: 0, page: 1, size: 10 },
+    scrollPage: { isReadyLoad: true, isRequest: true, total: 0, page: 1, size: 10 },
+    articleDetail: {},
     imgUrl: {},
     article: { title: '', content: '', tags: [] },
     tagNumberList: [],
@@ -44,6 +58,24 @@ export default createStore<GlobalDataProps>({
     setLoading (state, status) {
       state.loading = status
     },
+    setEditMode (state, status: boolean) {
+      state.editMode = status
+      console.log(state.editMode)
+    },
+    addHomePage (state) {
+      state.homePage.page++
+      console.log('下一页', state.homePage.page)
+    },
+    addScrollPage (state) {
+      state.scrollPage.page++
+      console.log('下一页', state.scrollPage.page)
+    },
+    setLoadMode (state, status: boolean) {
+      state.scrollPage.isReadyLoad = status
+    },
+    setRequestMode (state, status: boolean) {
+      state.scrollPage.isRequest = status
+    },
     setAToken (state, newAToken: string) {
       state.aToken = newAToken
     },
@@ -55,7 +87,7 @@ export default createStore<GlobalDataProps>({
     },
     setImgUrl (state, img: ImageProps) {
       state.imgUrl = img
-      // console.log(state.imgUrl)
+      console.log('监听到img变化', state.imgUrl)
     },
     addTagNumberToList (state, id: string) {
       const index = state.tagNumberList.findIndex(item => item === id)
@@ -85,12 +117,13 @@ export default createStore<GlobalDataProps>({
         state.tagNameList.splice(index, 1)
       }
     },
-    setArticle (state, article: ArticleProps) {
-      state.article = article
-    },
     setTitle (state, title: string) {
       state.article.title = title
       console.log('监听到title变化', state.article.title)
+    },
+    setSubTitle (state, subtitle: string) {
+      state.article.subtitle = subtitle
+      console.log('监听到subtitle变化', state.article.subtitle)
     },
     setContent (state, content: string) {
       state.article.content = content
@@ -130,21 +163,48 @@ export default createStore<GlobalDataProps>({
       state.tags = rawData.data.tag
     },
     fetchTagArticleByID (state, rawData) {
-      state.articleInfo = rawData.data.list
+      state.articleInfo = state.articleInfo.concat(rawData.data.list)
+      state.scrollPage.total = rawData.data.total
+      console.log('当前页:', state.scrollPage.page,
+        '总页数:', Math.ceil(state.scrollPage.total / state.scrollPage.size),
+        '加载状态', state.scrollPage.isReadyLoad,
+        '发送状态', state.scrollPage.isRequest)
+      state.scrollPage.page++
     },
     createArticle (state, rawData) {
       console.log(rawData)
+    },
+    fetchArticleDetailByID (state, rawData) {
+      state.articleDetail = rawData.data
+      state.userInfo = rawData.data.userInfo
+      console.log(state.articleDetail.tags)
+    },
+    fetchUserHomeByID (state, rawData) {
+      // state.homeArticleInfo = { ...state.homeArticleInfo, ...rawData.data.articleInfo }
+      state.homeArticleInfo = state.homeArticleInfo.concat(rawData.data.articleInfo)
+      state.userInfo = rawData.data.userInfo
+      state.total = rawData.data.total
+      console.log('article', state.homeArticleInfo, 'user', state.userInfo, 'total', state.total)
+    },
+    editArticle (state, rawData) {
+      console.log(rawData.data)
+    },
+    deleteArticle (state, rawData) {
+      console.log(rawData.data)
     }
   },
   actions: {
     // 异步操作
     // 发送请求 获取数据
     login (context, payload) {
-      return postAndCommit('/login', 'login', context.commit, payload)
+      return asyncAndCommit('/login', 'login', context.commit, {
+        method: 'post',
+        data: payload
+      })
     },
     // 获取用户信息
     async fetchUserInfo (context) {
-      return getAndCommit('/api/userInfo', 'fetchUserInfo', context.commit).catch(e => {
+      return asyncAndCommit('/api/userInfo', 'fetchUserInfo', context.commit).catch(e => {
         console.log(e)
       })
     },
@@ -156,27 +216,49 @@ export default createStore<GlobalDataProps>({
     },
     // 获取标签排行
     fetchTrendingTag (context) {
-      return getAndCommit('/trendingTags', 'fetchTrendingTag', context.commit)
-      // const resp = await axios.get('/explore/tags')
-      // context.commit('fetchTrendingTag', resp.data)
-      // axios.get('/explore/tags').then(resp => {
-      //   context.commit('fetchTrendingTag', resp.data)
-      // })
+      return asyncAndCommit('/trendingTags', 'fetchTrendingTag', context.commit)
     },
     fetchAllTags (context) {
-      return getAndCommit('/api/getAllTags', 'fetchAllTags', context.commit)
+      return asyncAndCommit('/api/getAllTags', 'fetchAllTags', context.commit)
     },
     // 根据id获取标签详情
     fetchTagDetailByID (context, id) {
-      return getAndCommit(`/tag/${id}`, 'fetchTagDetailByID', context.commit)
+      return asyncAndCommit(`/tag/${id}`, 'fetchTagDetailByID', context.commit)
     },
     // 根据id获取标签文章
     fetchTagArticleByID (context, id) {
-      return getAndCommit(`/n/${id}`, 'fetchTagArticleByID', context.commit)
+      const { page, size } = context.state.scrollPage
+      return asyncAndCommit(`/n/${id}?page=${page}&size=${size}`, 'fetchTagArticleByID', context.commit)
     },
     // 新建文章
     createArticle (context, payload) {
-      return postAndCommit('/api/createArticle', 'createArticle', context.commit, payload)
+      return asyncAndCommit('/api/createArticle', 'createArticle', context.commit, {
+        method: 'post',
+        data: payload
+      })
+    },
+    // 获取文章详情
+    fetchArticleDetailByID (context, id) {
+      return asyncAndCommit(`/article/${id}`, 'fetchArticleDetailByID', context.commit)
+    },
+    // 根据ID获取用户主页
+    fetchUserHomeByID (context, id) {
+      const { page, size } = context.state.homePage
+      console.log(page)
+      return asyncAndCommit(`/user/${id}?page=${page}&size=${size}`, 'fetchUserHomeByID', context.commit)
+    },
+    // 编辑文章
+    editArticle (context, payload) {
+      return asyncAndCommit('/api/editArticle', 'editArticle', context.commit, {
+        method: 'patch',
+        data: payload
+      })
+    },
+    // 删除文章
+    deleteArticle (context, id) {
+      return asyncAndCommit(`/api/deleteArticle/${id}`, 'deleteArticle', context.commit, {
+        method: 'delete'
+      })
     }
   },
   modules: {

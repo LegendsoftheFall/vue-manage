@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @layer base {
+    h1 {
+        @apply text-4xl font-bold block
+    }
+    h2 {
+        @apply text-3xl font-bold block
+    }
+    h3 {
+        @apply text-2xl font-bold block
+    }
+    h4 {
+        @apply text-xl font-bold block
+    }
+    h5 {
+        @apply text-lg font-bold block
+    }
+} */

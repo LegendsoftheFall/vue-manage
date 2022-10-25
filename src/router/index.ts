@@ -35,6 +35,22 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Draft',
     meta: { requireLogin: true },
     component: () => import(/* webpackChunkName: "Draft" */ '../views/editor/DraftView.vue')
+  },
+  {
+    path: '/edit/:id',
+    name: 'Edit',
+    meta: { requireLogin: true },
+    component: () => import(/* webpackChunkName: "Edit" */ '../views/editor/DraftView.vue')
+  },
+  {
+    path: '/user/:id',
+    name: 'Home',
+    component: () => import(/* webpackChunkName: "Home" */ '../views/home/HomeView.vue')
+  },
+  {
+    path: '/article/:id',
+    name: 'Article',
+    component: () => import(/* webpackChunkName: "Article" */ '../views/article/ArticleView.vue')
   }
   // {
   //   path: '/about',
