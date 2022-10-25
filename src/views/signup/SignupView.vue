@@ -9,7 +9,7 @@
                     <span class="font-black text-2xl tracking-tight font-mono">manage</span>
                 </div>
                 <div class=" pb-6">
-                    <h1 class="text-3xl font-bold tracking-wide leading-loose">加入我们！</h1>
+                    <p class="text-3xl font-bold tracking-wide leading-loose">加入我们！</p>
                     <span class="font-light text-gray-500">为开发者与技术人员打造的博客社区</span>
                 </div>
                 <!-- 注册表单 -->

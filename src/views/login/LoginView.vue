@@ -14,7 +14,7 @@
                     <span class="font-black text-2xl tracking-tight font-mono">manage</span>
                 </div>
                 <div class="pt-20 pb-6">
-                    <h1 class="text-3xl font-bold tracking-wide leading-loose">嗨,欢迎回来！</h1>
+                    <p class="text-3xl font-bold tracking-wide leading-loose">嗨,欢迎回来！</p>
                     <span class="font-light text-gray-500">为开发者与技术人员打造的博客社区</span>
                 </div>
                 <!-- 登录表单 -->
