@@ -46,35 +46,23 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Roboto']
-        // sans: ['"PT Sans"', 'sans-serif']
-        // sans: [
-        //   '"Inter"',
-        //   'system-ui',
-        //   '-apple-system',
-        //   'BlinkMacSystemFont',
-        //   '"Segoe UI"',
-        //   'Roboto',
-        //   '"Helvetica Neue"',
-        //   'Arial',
-        //   '"Noto Sans"',
-        //   'sans-serif',
-        //   '"Apple Color Emoji"',
-        //   '"Segoe UI Emoji"',
-        //   '"Segoe UI Symbol"',
-        //   '"Noto Color Emoji"'
-        // ]
+        // sans: ['Roboto'],
+        sans: ['Barlow', 'sans-serif']
       },
       colors: {
         gray: {
           1: 'rgba(248, 251, 255, 0.8)',
           2: 'rgba(214, 216, 217, 0.89)',
+          3: '#edf0f5',
           50: '#F9FAFB',
+          100: '#E0E6E9',
           300: '#F1F1F1',
           400: '#E0E0E0',
-          500: '#AEAEAE',
+          500: '#ABBBC2',
           600: '#7E7E7E',
-          900: '#303030'
+          900: '#1F1D2B',
+          800: '#252836',
+          700: '#393C49'
         },
         green: {
           1: '#04BE02'
@@ -110,6 +98,7 @@ module.exports = {
         19: '80px',
         38: '152px',
         60: '240px',
+        66: '264px',
         70: '270px',
         90: '360px',
         100: '400px',

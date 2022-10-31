@@ -7,6 +7,15 @@ interface RuleProp {
 }
 export type RulesProp = RuleProp[]
 
+// 导航栏类型
+export interface dockerProps{
+  icon?: string
+  isShow?: boolean
+  text: string
+  to: string
+  index: number
+}
+
 // 响应类型
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface ResponseType<P = {}> {
@@ -54,22 +63,24 @@ export interface ImageProps {
   // createAt?: string
 }
 
-// 标签排行的类型
-export interface TrendingProps{
+// 标签信息的类型
+export interface TagInfoProps{
     id: string
     num: string
     name: string
     image: string
+    isFollow: boolean
 }
 
 // 标签的类型
 export interface TagProps{
   id?: string
-  articleNum?: string
-  followerNum?: string
+  articleNum: number
+  followerNum: number
   name?: string
   image?: string
   introduction?: string
+  isFollow: boolean
 }
 
 export interface TagSimpleProps{
@@ -91,6 +102,8 @@ export interface articleInfoProps{
   tags: TagSimpleProps[]
   createTime: string
   format: string
+  isLiked: boolean
+  isCollected: boolean
 }
 
 export interface ArticleInfoProps{
@@ -109,10 +122,10 @@ export interface ArticleDetailProps{
     introduction: string
     follower: number
   }
-  article?: {
-    likes?: number
-    comments?: number
-    viewCount?: number
+  article: {
+    likes: number
+    comments: number
+    viewCount: number
     id: string
     authorID: string
     title: string
@@ -125,15 +138,19 @@ export interface ArticleDetailProps{
     format: string
   }
   tags?: TagSimpleProps[]
+  isLiked: boolean
+  isCollected: boolean
 }
 
+// 用户主页的信息类型
 export interface UserInfoProps{
   userID?: string
   username?: string
   avatar?: string
   email?: string
   introduction?: string
-  follower?: number
+  follower: number
+  isFollow: boolean
 }
 
 // 创建文章类型
@@ -148,19 +165,16 @@ export interface ArticleProps{
 }
 
 // 文章分页类型
-export interface homePageProps{
-  total: number
+export interface LoadParams {
   page: number
   size: number
+  id?:string
 }
 
 // 滚动分页类型
 export interface scrollPageProps{
   isReadyLoad: boolean
   isRequest: boolean
-  total: number
-  page: number
-  size: number
 }
 
 export interface GlobalDataProps{
@@ -172,12 +186,13 @@ export interface GlobalDataProps{
   total: number
   posts: PostProps[]
   tags: TagProps
-  trend: TrendingProps[]
+  tagInfo: TagInfoProps[]
+  trend: TagInfoProps[]
   user: UserProps
   userInfo: UserInfoProps
+  userInfos: UserInfoProps[]
   articleInfo: ArticleInfoProps[]
   homeArticleInfo: articleInfoProps[]
-  homePage: homePageProps
   scrollPage: scrollPageProps
   articleDetail: ArticleDetailProps
   imgUrl: ImageProps

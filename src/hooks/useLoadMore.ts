@@ -1,20 +1,25 @@
-import { computed, ComputedRef } from 'vue'
+import { computed, ComputedRef, ref } from 'vue'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '@/model/model'
+import { GlobalDataProps, LoadParams } from '@/model/model'
 
-const useLoadMore = (actionName: string, total: ComputedRef<number>, id?: string) => {
+const useLoadMore = (actionName: string, total: ComputedRef<number>,
+  param:LoadParams = { page: 2, size: 10 }) => {
   const store = useStore<GlobalDataProps>()
-  const currentPage = computed(() => store.state.homePage.page)
-  const size = computed(() => store.state.homePage.size)
+  const currentPage = ref(param.page)
+  const requestParam = computed(() => ({
+    page: currentPage.value,
+    size: param.size,
+    id: param.id
+  }))
   // 加载更多
   const loadMorePage = () => {
-    store.dispatch(actionName, id).then(() => {
-      store.commit('addHomePage')
+    store.dispatch(actionName, requestParam.value).then(() => {
+      currentPage.value++
     })
   }
   // 判断是否是最后一页
   const isLastPage = computed(() => {
-    return Math.ceil(total.value / size.value) < currentPage.value
+    return Math.ceil(total.value / param.size) < currentPage.value
   })
 
   return { loadMorePage, isLastPage, currentPage }

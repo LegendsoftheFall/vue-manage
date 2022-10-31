@@ -51,6 +51,40 @@ const routes: Array<RouteRecordRaw> = [
     path: '/article/:id',
     name: 'Article',
     component: () => import(/* webpackChunkName: "Article" */ '../views/article/ArticleView.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'DashBoard',
+    meta: { requireLogin: true },
+    component: () => import(/* webpackChunkName: "DashBoard" */ '../views/dashboard/DashBoard.vue')
+  },
+  {
+    path: '/bookmarks',
+    name: 'BookMark',
+    meta: { requireLogin: true },
+    component: () => import(/* webpackChunkName: "DashBoard" */ '../views/bookmark/BookMarkView.vue')
+  },
+  {
+    path: '/explore',
+    name: 'Explore',
+    component: () => import(/* webpackChunkName: "Explore" */ '../views/explore/ExploreView.vue'),
+    children: [
+      {
+        path: 'tags',
+        name: 'Tags',
+        component: () => import(/* webpackChunkName: "Tags" */ '../components/explore/AllTags.vue')
+      },
+      {
+        path: 'tags-following',
+        name: 'FollowingTags',
+        component: () => import(/* webpackChunkName: "FollowingTags" */ '../components/explore/FollowingTags.vue')
+      },
+      {
+        path: 'blogers-following',
+        name: 'FollowingBlogers',
+        component: () => import(/* webpackChunkName: "FollowingBlogers" */ '../components/explore/FollowingBlogers.vue')
+      }
+    ]
   }
   // {
   //   path: '/about',

@@ -1,29 +1,35 @@
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ComputedRef, ref } from 'vue'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '@/model/model'
+import { GlobalDataProps, LoadParams } from '@/model/model'
 
-const useScrollLoad = (actionName: string, id?: string) => {
+const useScrollLoad = (actionName: string, total: ComputedRef<number>,
+  param:LoadParams = { page: 2, size: 10 }) => {
   const store = useStore<GlobalDataProps>()
   const loadMode = computed(() => store.state.scrollPage.isReadyLoad)
   const requestMode = computed(() => store.state.scrollPage.isRequest)
-  const currentPage = computed(() => store.state.scrollPage.page)
-  const total = computed(() => store.state.scrollPage.total)
-  const size = computed(() => store.state.scrollPage.size)
+  const currentPage = ref(param.page)
+  const requestParam = computed(() => ({
+    page: currentPage.value,
+    size: param.size,
+    id: param.id
+  }))
 
   const loadMore = () => {
     // 当允许加载与允许发送同时成立时,发送请求
     if (loadMode.value && requestMode.value) {
       // 限制触发次数 进入时禁止加载
       store.commit('setLoadMode', false)
-      store.dispatch(actionName, id).then(() => {
+      store.dispatch(actionName, requestParam.value).then(() => {
         // 得到响应时允许加载
+        currentPage.value++
+        console.log(currentPage.value)
         store.commit('setLoadMode', true)
       })
     }
   }
   // 判断是否到最后一页，若到最后一页，禁止发送请求
   const isLastPage = () => {
-    if (Math.ceil(total.value / size.value) < currentPage.value) {
+    if (Math.ceil(total.value / param.size) < currentPage.value) {
       store.commit('setRequestMode', false)
       store.commit('setLoadMode', false)
     }

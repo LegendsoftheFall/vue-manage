@@ -5,15 +5,15 @@ import store from '@/store/index'
 axios.defaults.baseURL = 'http://localhost:8081/'
 // 使用拦截器添加loading效果
 axios.interceptors.request.use(config => {
-  store.commit('setLoading', true)
+  // store.commit('setLoading', true)
   store.commit('setErrorStatus', false)
   return config
 })
 
 axios.interceptors.response.use(config => {
-  setTimeout(() => {
-    store.commit('setLoading', false)
-  }, 2000)
+  // setTimeout(() => {
+  //   store.commit('setLoading', false)
+  // }, 2000)
   return config
 })
 
@@ -52,6 +52,9 @@ axios.interceptors.response.use(resp => {
     // 将新的aToken写入请求头获取用户信息
     axios.defaults.headers.common.Authorization = `Bearer ${data.data.newAToken}`
     store.dispatch('fetchUserInfo')
+  }
+  if (err.response.status === 404) {
+    console.log(err)
   }
   return err
 })
