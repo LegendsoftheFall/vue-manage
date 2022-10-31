@@ -28,14 +28,14 @@
         <div class="mt-12 w-full">
             <textarea type="text" v-model="titleVal"
             style="box-shadow:none"
-            class="w-full text-3xl tracking-wider font-bold border-none resize-none outline-none"
+            class="w-full text-3xl tracking-wider font-bold border-none resize-none outline-none placeholder-black"
             placeholder="文章标题..."></textarea>
         </div>
         <!-- 副标题 -->
         <div v-if="isSubTitle" class="w-full relative">
             <textarea type="text" v-model="subtitleVal"
             style="box-shadow:none"
-            class="w-full text-2xl px-7 tracking-wide font-medium border-none resize-none outline-none"
+            class="w-full text-2xl px-7 tracking-wide font-medium border-none resize-none outline-none placeholder-gray-700"
             placeholder="文章副标题..."></textarea>
             <!-- 关闭按钮 -->
             <button @click="removeSubTitle" class="absolute top-1 right-0 px-1 py-1 hover:bg-gray-200 rounded-md">

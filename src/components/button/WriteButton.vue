@@ -6,7 +6,6 @@
             <img class="pl-2" src="@/assets/icons/edit.svg" alt="edit">
             <p class="pr-4 pl-1 py-2">写文章</p>
         </a>
-        <div class="border border-blue-400"></div>
         <button @click="isOpen = !isOpen" class="relative flex items-center justify-center bg-blue-450
          hover:bg-blue-500 focus:outline-none text-white rounded-r" ref="dropdownRef">
             <span class="p-2">
@@ -15,9 +14,9 @@
             <!-- 下拉菜单 -->
             <div v-if="isOpen" class="absolute z-10 right-0 top-full min-h-full w-max shadow-md rounded-lg overflow-hidden mt-2 ">
                 <div class="text-left rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-800">
-                    <div class="px-4 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 border-b dark:border-b-gray-700">
+                    <div class="px-4 py-1 border-b dark:border-b-gray-700">
                         <a href="#">
-                           <div class="flex">
+                           <div class="flex hover:bg-gray-100 dark:hover:bg-gray-700 ">
                             <svg class="w-6 h-6 text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.048 8.287 8.287 0 0 0 9 9.6a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.467 5.99 5.99 0 0 0-1.925 3.546 5.974 5.974 0 0 1-2.133-1A3.75 3.75 0 0 0 12 18z"/>
                             </svg>

@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </a>
-            <hr class="w-5/6 ml-4 border-gray-100 dark:border-gray-700">
+            <hr class="w-5/6 ml-4 border-gray-200 dark:border-gray-700">
             <!-- 我的博客 -->
             <a :href="`/user/${UserInfo.id}`" class="block px-4 py-4 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex justify-between items-center">
@@ -32,7 +32,7 @@
                     </svg>
                 </div>
             </a>
-            <hr class="w-5/6 ml-4 border-gray-100 dark:border-gray-700">
+            <hr class="w-5/6 ml-4 border-gray-200 dark:border-gray-700">
             <!-- 我的草稿 -->
             <a href="#" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex">
@@ -69,7 +69,7 @@
                     <span class="ml-2">管理博客</span>
                 </div>
             </a>
-            <hr class="w-5/6 ml-4 border-gray-100 dark:border-gray-700">
+            <hr class="w-5/6 ml-4 border-gray-200 dark:border-gray-700">
             <!-- 登出 -->
             <router-link :to="{ name: 'Index' }" @click="useLogOut" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex">

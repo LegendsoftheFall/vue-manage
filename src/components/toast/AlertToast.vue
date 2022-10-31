@@ -1,6 +1,6 @@
 <template>
   <teleport to='#message'>
-    <div ref="toastRef" class="absolute flex flex-col z-50 items-center justify-center top-0 left-0 right-0 max-h-screen bg-transparent my-3">
+    <div ref="toastRef" class="fixed flex flex-col z-50 items-center justify-center top-0 left-0 right-0 max-h-screen bg-transparent my-3">
       <div
       class="flex items-center my-1 rounded-lg overflow-hidden w-1/4"
       :class="wrapperClass.get(type!)">

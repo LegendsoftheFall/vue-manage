@@ -1,6 +1,5 @@
 <template>
     <div class="relative h-full flex">
-        <!-- 头像 -->
         <a :href="`/edit/${Article?.id}`" class="pl-2 py-2 cursor-pointer">
             <div class="flex justify-center items-center px-2 py-1 rounded-full text-gray-600 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <svg class="bi bi-pencil"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -47,10 +46,10 @@ export default defineComponent({
     const hideAndDelete = () => {
       isModal.value = false
       store.dispatch('deleteArticle', id).then(resp => {
-        const id = resp.data.id
+        const uid = resp.data.id
         createToast('success', '删除成功')
         setTimeout(() => {
-          router.push({ name: 'Home', params: { id: id } })
+          router.push({ name: 'Home', params: { id: uid } })
         }, 2000)
       })
     }

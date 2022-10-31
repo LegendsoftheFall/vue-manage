@@ -4,7 +4,6 @@
       <!-- SideBar -->
       <div class="col-span-2">
         <SideBar/>
-        <TrendingTags/>
       </div>
       <!-- Content -->
       <div id="scroll" class="col-span-7">
@@ -14,16 +13,16 @@
         <TagHotArticle/>
         <!-- List -->
         <TagArticleList/>
+        <!-- end -->
+        <div class="mt-10 pb-20 justify-center items-center text-center">
+            <span class="text-2xl font-semibold tracking-wide">到底啦！👋</span>
+        </div>
       </div>
       <!-- Detail -->
       <div class="col-span-3">
         <!-- Info -->
         <TagInfo v-if="introduction"/>
       </div>
-    </div>
-    <!-- end -->
-    <div class="container mx-auto pt-10 pb-20 justify-center items-center text-center">
-        <span class="text-2xl font-semibold tracking-wide">到底啦！👋</span>
     </div>
 </template>
 
@@ -33,7 +32,6 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import SideBar from '@/components/sidebar/SideBar.vue'
-import TrendingTags from '@/components/trending/TrendingTags.vue'
 import TagArticleList from '@/components/tag/TagArticleList.vue'
 import TagDetail from '@/components/tag/TagDetail.vue'
 import TagHotArticle from '@/components/tag/TagHotArticle.vue'
@@ -42,14 +40,15 @@ import useScrollLoad from '@/hooks/useScrollLoad'
 
 export default defineComponent({
   name: 'TagContent',
-  components: { SideBar, TrendingTags, TagArticleList, TagDetail, TagHotArticle, TagInfo },
+  components: { SideBar, TagArticleList, TagDetail, TagHotArticle, TagInfo },
   setup () {
     const store = useStore<GlobalDataProps>()
     const route = useRoute()
-    const id = route.params.id
+    const tid = route.params.id
+    const total = computed(() => store.state.total)
     const introduction = computed(() => store.state.tags.introduction)
 
-    useScrollLoad('fetchTagArticleByID', id as string)
+    useScrollLoad('fetchTagArticleByID', total, { page: 2, size: 10, id: tid as string })
 
     return { introduction }
   }

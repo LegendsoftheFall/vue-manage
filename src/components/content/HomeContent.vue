@@ -85,8 +85,7 @@ export default defineComponent({
     const id = route.params.id
 
     onMounted(() => {
-      store.dispatch('fetchUserHomeByID', id)
-      store.commit('addHomePage')
+      store.dispatch('fetchUserHomeByID', { page: 1, size: 10, id: id as string })
     })
 
     const articleList = computed(() => store.state.homeArticleInfo)
@@ -97,7 +96,7 @@ export default defineComponent({
       return store.state.userInfo
     })
 
-    const { loadMorePage, isLastPage } = useLoadMore('fetchUserHomeByID', total, id as string)
+    const { loadMorePage, isLastPage } = useLoadMore('fetchUserHomeByID', total, { page: 2, size: 10, id: id as string })
 
     return { articleList, userInfo, loadMorePage, isLastPage }
   }

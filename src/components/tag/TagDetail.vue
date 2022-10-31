@@ -4,8 +4,9 @@
       <!-- Name -->
       <div class="h-1/2 justify-center items-start">
         <div class="flex justify-center items-center">
+          <!-- 在请求图片路径未赋值前是undefined -->
           <a :href="`/n/${tagDetail.id}`" class="mr-4">
-            <div v-if="!isLoading" class="w-15 h-15 border rounded-md overflow-hidden shadow-lg">
+            <div v-if="!isLoading && tagDetail.image" class="w-15 h-15 border rounded-md overflow-hidden shadow-lg">
               <img class="w-15 h-15 object-cover" :src="`${tagDetail.image}`" alt="">
             </div>
             <div v-if="isLoading" class="animate-pulse p-8 rounded-md border bg-gray-100 shadow-lg"></div>
@@ -20,7 +21,19 @@
       <div class="h-1/4 justify-center items-center">
         <div class="flex justify-center items-center">
           <!-- follow -->
-          <FollowButton/>
+          <button @click="useFollow(tagDetail.id!, tagDetail.isFollow)"
+              :class="{'bg-blue-450 hover:bg-blue-400 px-4 py-2 ':!tagDetail.isFollow, 'bg-gray-100 hover:bg-gray-200 py-2 px-5':tagDetail.isFollow }"
+              class="rounded-md flex justify-center items-center mr-3">
+              <div v-if="!tagDetail.isFollow" class="flex justify-center items-center">
+                  <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                  <p class="pl-1 text-white">关注</p>
+              </div>
+              <div v-if="tagDetail.isFollow" class="flex justify-center items-center">
+                  <p class="pl-1 text-gray-500">已关注</p>
+              </div>
+          </button>
           <!-- write -->
           <a href="#" class="px-4 py-2 border border-blue-300 bg-blue-50 rounded-md flex
           justify-center items-center hover:bg-blue-100 ml-3">
@@ -64,15 +77,15 @@ import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { GlobalDataProps } from '@/model/model'
-import FollowButton from '@/components/button/FollowButton.vue'
+import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({
   name: 'TagDetail',
-  components: { FollowButton },
   setup () {
     const route = useRoute()
     const store = useStore<GlobalDataProps>()
     const currentID = route.params.id
+    const uid = computed(() => store.state.user.id)
 
     onMounted(() => {
       // 获取标签详情
@@ -82,7 +95,24 @@ export default defineComponent({
     const tagDetail = computed(() => store.state.tags)
     const isLoading = computed(() => store.state.loading)
 
-    return { tagDetail, isLoading }
+    const useFollow = (tid: string, isFollow: boolean) => {
+      if (uid.value === '') {
+        createToast('error', '登录后才能关注哦')
+        return
+      }
+      console.log(isFollow)
+      if (isFollow) {
+        store.dispatch('followTagCancel', { uid: uid.value, tid: tid }).then(() => {
+          store.commit('setTagFollowMode')
+        })
+      } else {
+        store.dispatch('followTag', { uid: uid.value, tid: tid }).then(() => {
+          store.commit('setTagFollowMode')
+        })
+      }
+    }
+
+    return { tagDetail, isLoading, useFollow }
   }
 })
 

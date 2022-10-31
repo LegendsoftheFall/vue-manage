@@ -121,7 +121,7 @@ export default defineComponent({
     }
     // 请求标签列表
     onMounted(() => {
-      store.dispatch('fetchAllTags')
+      store.dispatch('fetchSelectTags')
     })
     // 获取标签列表
     const TagList = computed(() => store.state.trend)

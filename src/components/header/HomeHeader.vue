@@ -16,7 +16,19 @@
                         <!-- mode -->
                         <ToggleMode/>
                         <!-- follow -->
-                        <FollowButton/>
+                        <button @click="useFollow(userInfo.userID!, userInfo.isFollow)" v-if="showFollow"
+                            :class="{'bg-blue-450 hover:bg-blue-400 px-4 py-2 ':!userInfo.isFollow, 'bg-gray-100 hover:bg-gray-200 py-2 px-5':userInfo.isFollow }"
+                            class="rounded-md flex justify-center items-center mr-3">
+                            <div v-if="!userInfo.isFollow" class="flex justify-center items-center">
+                                <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                                <p class="pl-1 text-white">关注</p>
+                            </div>
+                            <div v-if="userInfo.isFollow" class="flex justify-center items-center">
+                                <p class="pl-1 text-gray-500">已关注</p>
+                            </div>
+                        </button>
                         <!-- avator -->
                         <HomeAvatar/>
                     </div>
@@ -64,19 +76,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import ToggleMode from '@/components/button/ToggleMode.vue'
 import HomeAvatar from '@/components/header/HomeAvatar.vue'
-import FollowButton from '@/components/button/FollowButton.vue'
 import { computed } from '@vue/reactivity'
+import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({
   name: 'GlobalHeader',
-  components: { ToggleMode, HomeAvatar, FollowButton },
+  components: { ToggleMode, HomeAvatar },
   setup () {
     const store = useStore<GlobalDataProps>()
+    const uid = computed(() => store.state.user.id)
     const userInfo = computed(() => {
       if (store.state.userInfo?.avatar === '') {
         store.state.userInfo.avatar = require('@/assets/image/avator.svg')
@@ -84,7 +97,39 @@ export default defineComponent({
       return store.state.userInfo
     })
 
-    return { userInfo }
+    const isFollow = ref(true)
+    const changeFollow = () => {
+      isFollow.value = !isFollow.value
+    }
+
+    const showFollow = computed(() => {
+      const { isLogin, id } = store.state.user
+      if (isLogin && userInfo.value && userInfo.value.userID) {
+        const authorID = userInfo.value.userID
+        return authorID !== id
+      } else {
+        return true
+      }
+    })
+
+    const useFollow = (fid: string, isFollow: boolean) => {
+      if (uid.value === '') {
+        createToast('error', '登录后才能关注哦')
+        return
+      }
+      console.log(isFollow)
+      if (isFollow) {
+        store.dispatch('followUserCancel', { uid: uid.value, fid: fid }).then(() => {
+          store.commit('setUserFollowMode', fid)
+        })
+      } else {
+        store.dispatch('followUser', { uid: uid.value, fid: fid }).then(() => {
+          store.commit('setUserFollowMode', fid)
+        })
+      }
+    }
+
+    return { userInfo, changeFollow, isFollow, showFollow, useFollow }
   }
 })
 </script>

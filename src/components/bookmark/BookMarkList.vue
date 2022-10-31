@@ -1,6 +1,10 @@
 <template>
-  <div v-for="article in articleList" :key="article.articleInfo.id"
-    class="w-full flex flex-col p-4 items-center h-66 border dark:border-gray-700 border-t-0 bg-white dark:bg-gray-800">
+    <div class="w-full flex flex-col items-center mb-5 h-32 p-6 border dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
+        <div class="text-2xl font-semibold">书签</div>
+        <div class="mt-2 tracking-wide">在manage收藏的所有文章</div>
+    </div>
+    <div v-for="article in articleList" :key="article.articleInfo.id"
+    class="w-full flex flex-col p-4 items-center h-66 border dark:border-gray-700 border-b-0 bg-white dark:bg-gray-800">
         <!-- Author -->
         <div class="flex w-full h-10">
           <!-- Avatar -->
@@ -66,24 +70,6 @@
                 </svg>
             </button>
             </div>
-            <!-- tags -->
-            <div v-if="article.articleInfo.tags.length>0" class="ml-2 flex items-center">
-            <template v-for="tags in article.articleInfo.tags.slice(0,2)" :key="tags">
-                <a :href="`/n/${tags.id}`" target="_blank" class="ml-1">
-                <div class="p-1 border dark:border-gray-700 rounded-md hover:bg-gray-300">
-                    <p class="text-xs text-gray-600">{{tags.name}}</p>
-                </div>
-                </a>
-            </template>
-            </div>
-            <!-- more -->
-            <div v-if="article.articleInfo.tags.length>2"  class="flex items-center">
-            <a :href="`/article/${article.articleInfo.id}`" target="_blank" class="ml-1">
-                <div class="p-1 border dark:border-gray-700 rounded-md hover:bg-gray-300">
-                <p class="text-xs text-gray-600">+{{article.articleInfo.tags.length - 2}}</p>
-                </div>
-            </a>
-            </div>
         </div>
         <!-- Right -->
         <div class="flex items-center">
@@ -115,25 +101,26 @@
         </div>
         </div>
     </div>
+    <!-- end -->
+    <div class="mb-10 px-6 py-12 justify-center border rounded-b-lg dark:border-gray-700 bg-white dark:bg-gray-800 items-center text-center">
+        <span class="text-2xl font-semibold tracking-wide my-4">到底啦！👋</span>
+    </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 
 export default defineComponent({
-  name: 'TagArticle',
+  name: 'BookMarkList',
   setup () {
-    const route = useRoute()
     const store = useStore<GlobalDataProps>()
-    const tagID = route.params.id
     const currentUserID = computed(() => store.state.user.id)
     const uid = currentUserID.value
 
     onMounted(() => {
-      store.dispatch('fetchTagArticleByID', { page: 1, size: 10, id: tagID })
+      store.dispatch('fetchCollectedArticle', { page: 1, size: 10 })
     })
 
     const articleList = computed(() => {
