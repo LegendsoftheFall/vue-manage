@@ -1,3 +1,4 @@
+// 防抖
 function debounce (fn: () => void, time = 300) {
   let timeout: number | null = null
   return function () {

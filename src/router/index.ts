@@ -11,7 +11,24 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/recommend',
     name: 'Recommend',
-    component: () => import(/* webpackChunkName: "Recommend" */ '../views/recommend/RecommendView.vue')
+    component: () => import(/* webpackChunkName: "Recommend" */ '../views/recommend/RecommendView.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Rank',
+        component: () => import(/* webpackChunkName: "Selected" */ '../components/recommend/RankArticle.vue')
+      },
+      {
+        path: 'selected',
+        name: 'Selected',
+        component: () => import(/* webpackChunkName: "Selected" */ '../components/recommend/SelectedArticle.vue')
+      },
+      {
+        path: 'new',
+        name: 'New',
+        component: () => import(/* webpackChunkName: "Selected" */ '../components/recommend/NewArticle.vue')
+      }
+    ]
   },
   {
     path: '/login',
@@ -28,13 +45,37 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/n/:id',
     name: 'n',
-    component: () => import(/* webpackChunkName: "n" */ '../views/tag/TagView.vue')
+    component: () => import(/* webpackChunkName: "n" */ '../views/tag/TagView.vue'),
+    children: [
+      {
+        path: '',
+        name: 'nRank',
+        component: () => import(/* webpackChunkName: "n" */ '../components/tag/TagArticle.vue')
+      },
+      {
+        path: 'recent',
+        name: 'nRecent',
+        component: () => import(/* webpackChunkName: "n" */ '../components/tag/TagRecentArticle.vue')
+      }
+    ]
   },
   {
     path: '/create/draft',
+    name: 'NewDraft',
+    meta: { requireLogin: true },
+    component: () => import(/* webpackChunkName: "NewDraft" */ '../views/editor/NewDraftView.vue')
+  },
+  {
+    path: '/draft/:did',
     name: 'Draft',
     meta: { requireLogin: true },
     component: () => import(/* webpackChunkName: "Draft" */ '../views/editor/DraftView.vue')
+  },
+  {
+    path: '/drafts',
+    name: 'Drafts',
+    meta: { requireLogin: true },
+    component: () => import(/* webpackChunkName: "Draft" */ '../views/draft/DraftsView.vue')
   },
   {
     path: '/edit/:id',

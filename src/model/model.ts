@@ -37,6 +37,8 @@ export interface ToastProps{
 
 // 上传状态类型
 export type UploadStatus = 'ready' | 'uploading' | 'success' | 'error'
+// 保存状态类型
+export type SaveStatus = 'ready' | 'saving' | 'success' | 'error'
 // 检查上传状态函数类型
 export type CheckFunction = (file: File) => boolean
 
@@ -142,6 +144,31 @@ export interface ArticleDetailProps{
   isCollected: boolean
 }
 
+// 草稿内容的类型
+export interface DraftDetailProps{
+  id: string
+  authorID: string
+  title: string
+  subtitle?: string
+  content: string
+  markdown: string
+  image?: string
+  createTime: string
+  format: string
+  tagSimple?: TagSimpleProps[]
+}
+
+// 草稿信息的类型
+export interface DraftInfoProps{
+  id: string
+  authorID: string
+  title: string
+  subtitle?: string
+  content: string
+  format: string
+  image?: string
+}
+
 // 用户主页的信息类型
 export interface UserInfoProps{
   userID?: string
@@ -164,11 +191,18 @@ export interface ArticleProps{
   tags: number[]
 }
 
+export interface ContentProps{
+  title: string
+  subtitle: string
+  content: string
+}
+
 // 文章分页类型
 export interface LoadParams {
   page: number
   size: number
   id?:string
+  order?:string
 }
 
 // 滚动分页类型
@@ -182,7 +216,10 @@ export interface GlobalDataProps{
   aToken: string
   rToken: string
   loading: boolean
+  saving: SaveStatus
   editMode: boolean
+  createDraftMode: boolean
+  saveDraftMode: boolean
   total: number
   posts: PostProps[]
   tags: TagProps
@@ -192,9 +229,11 @@ export interface GlobalDataProps{
   userInfo: UserInfoProps
   userInfos: UserInfoProps[]
   articleInfo: ArticleInfoProps[]
+  draftInfo: DraftInfoProps[]
   homeArticleInfo: articleInfoProps[]
   scrollPage: scrollPageProps
   articleDetail: ArticleDetailProps
+  draftDetail: DraftDetailProps
   imgUrl: ImageProps
   article: ArticleProps
   tagNumberList: string[]

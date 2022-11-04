@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
 import { testPostData } from '@/model/TestPostData'
-import { GlobalErrorProps, GlobalDataProps, ImageProps } from '@/model/model'
+import { GlobalErrorProps, GlobalDataProps, ImageProps, ContentProps, SaveStatus } from '@/model/model'
 import asyncAndCommit from '@/hooks/axios'
 
 export default createStore<GlobalDataProps>({
@@ -10,7 +10,10 @@ export default createStore<GlobalDataProps>({
     aToken: localStorage.getItem('aToken') || '',
     rToken: localStorage.getItem('rToken') || '',
     loading: false,
+    saving: 'ready',
     editMode: false,
+    createDraftMode: false,
+    saveDraftMode: false,
     total: 0,
     posts: testPostData,
     tags: { isFollow: false, articleNum: 0, followerNum: 0 },
@@ -20,9 +23,11 @@ export default createStore<GlobalDataProps>({
     userInfo: { isFollow: false, follower: 0 },
     userInfos: [],
     articleInfo: [],
+    draftInfo: [],
     homeArticleInfo: [],
     scrollPage: { isReadyLoad: true, isRequest: true },
     articleDetail: { article: { likes: 0, comments: 0, viewCount: 0, id: '', authorID: '', title: '', content: '', markdown: '', createTime: '', format: '' }, isLiked: false, isCollected: false },
+    draftDetail: { id: '', authorID: '', title: '', content: '', markdown: '', createTime: '', format: '' },
     imgUrl: {},
     article: { title: '', content: '', tags: [] },
     tagNumberList: [],
@@ -30,10 +35,10 @@ export default createStore<GlobalDataProps>({
   },
   getters: {
     getTagNameByID: (state) => (id: string) => {
-      return state.trend.find(t => t.id === id)?.name
+      return state.tagInfo.find(t => t.id === id)?.name
     },
     getTagIDByName: (state) => (name: string) => {
-      return state.trend.find(t => t.name === name)?.id
+      return state.tagInfo.find(t => t.name === name)?.id
     }
   },
   mutations: {
@@ -43,7 +48,18 @@ export default createStore<GlobalDataProps>({
     },
     setEditMode (state, status: boolean) {
       state.editMode = status
-      console.log(state.editMode)
+      console.log('编辑文章模式', state.editMode)
+    },
+    setCreateMode (state, status: boolean) {
+      state.createDraftMode = status
+      console.log('创建草稿模式', state.createDraftMode)
+    },
+    setSaveMode (state, status: boolean) {
+      state.saveDraftMode = status
+      console.log('保存草稿模式', state.saveDraftMode)
+    },
+    setSaveStatus (state, status: SaveStatus) {
+      state.saving = status
     },
     setLoadMode (state, status: boolean) {
       state.scrollPage.isReadyLoad = status
@@ -145,17 +161,23 @@ export default createStore<GlobalDataProps>({
         state.tagNameList.splice(index, 1)
       }
     },
-    setTitle (state, title: string) {
-      state.article.title = title
-      console.log('监听到title变化', state.article.title)
-    },
+    // setTitle (state, title: string) {
+    //   state.article.title = title
+    //   console.log('监听到title变化', state.article.title)
+    // },
     setSubTitle (state, subtitle: string) {
       state.article.subtitle = subtitle
       console.log('监听到subtitle变化', state.article.subtitle)
     },
-    setContent (state, content: string) {
-      state.article.content = content
-      console.log('监听到content变化', state.article.content)
+    // setContent (state, content: string) {
+    //   state.article.content = content
+    //   console.log('监听到content变化', state.article.content)
+    // },
+    setArticle (state, article: ContentProps) {
+      state.article.title = article.title
+      state.article.subtitle = article.subtitle
+      state.article.content = article.content
+      console.log('监听到article变化', state.article.title, state.article.subtitle, state.article.content)
     },
     setArticleTags (state, tags: number[]) {
       state.article.tags = tags
@@ -200,6 +222,36 @@ export default createStore<GlobalDataProps>({
           '发送状态', state.scrollPage.isRequest)
       }
     },
+    fetchTagArticleByIDOnce (state, rawData) {
+      if (rawData.data) {
+        state.articleInfo = rawData.data.list
+        console.log(state.articleInfo)
+        state.total = rawData.data.total
+        console.log(
+          '加载状态', state.scrollPage.isReadyLoad,
+          '发送状态', state.scrollPage.isRequest)
+      }
+    },
+    fetchArticleList (state, rawData) {
+      if (rawData.data) {
+        state.articleInfo = state.articleInfo.concat(rawData.data.list)
+        console.log(state.articleInfo)
+        state.total = rawData.data.total
+        console.log(
+          '加载状态', state.scrollPage.isReadyLoad,
+          '发送状态', state.scrollPage.isRequest)
+      }
+    },
+    fetchArticleListOnce (state, rawData) {
+      if (rawData.data) {
+        state.articleInfo = rawData.data.list
+        console.log(state.articleInfo)
+        state.total = rawData.data.total
+        console.log(
+          '加载状态', state.scrollPage.isReadyLoad,
+          '发送状态', state.scrollPage.isRequest)
+      }
+    },
     createArticle (state, rawData) {
       console.log(rawData)
     },
@@ -209,8 +261,8 @@ export default createStore<GlobalDataProps>({
       console.log(state.articleDetail.tags, state.articleDetail)
     },
     fetchUserHomeByID (state, rawData) {
-      state.homeArticleInfo = state.homeArticleInfo.concat(rawData.data.articleInfo)
       state.userInfo = rawData.data.userInfo
+      state.homeArticleInfo = state.homeArticleInfo.concat(rawData.data.articleInfo)
       state.total = rawData.data.total
       console.log('article', state.homeArticleInfo, 'user', state.userInfo, 'total', state.total)
     },
@@ -273,6 +325,23 @@ export default createStore<GlobalDataProps>({
     },
     followUserCancel (state, rawData) {
       console.log(rawData.data)
+    },
+    createDraft (state, rawData) {
+      console.log(rawData.data)
+    },
+    fetchDraftDetail (state, rawData) {
+      state.draftDetail = rawData.data.draft
+      console.log(rawData.data)
+    },
+    saveDraft (state, rawData) {
+      console.log(rawData.data)
+    },
+    fetchDraftInfo (state, rawData) {
+      state.draftInfo = rawData.data.list
+      console.log(state.draftInfo)
+    },
+    deleteDraft (state, rawData) {
+      console.log(rawData.data)
     }
   },
   actions: {
@@ -309,12 +378,31 @@ export default createStore<GlobalDataProps>({
       const uid = context.state.user.id
       return asyncAndCommit(`/tag?tid=${id}&uid=${uid}`, 'fetchTagDetailByID', context.commit)
     },
-    // 根据id获取标签文章
+    // 根据id获取标签文章按排名或发布时间
     fetchTagArticleByID (context, param = {}) {
-      const { page = 1, size = 10, id = 0 } = param
+      const { page = 2, size = 10, id = 0, order = 'score' } = param
       const uid = context.state.user.id
       console.log(uid)
-      return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}`, 'fetchTagArticleByID', context.commit)
+      return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchTagArticleByID', context.commit)
+    },
+    fetchTagArticleByIDOnce (context, param = {}) {
+      const { page = 1, size = 10, id = 0, order = 'score' } = param
+      const uid = context.state.user.id
+      console.log(uid)
+      return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchTagArticleByIDOnce', context.commit)
+    },
+    // 获取文章按排名或发布时间
+    fetchArticleList (context, param = {}) {
+      const { page = 2, size = 10, order = 'score' } = param
+      const uid = context.state.user.id
+      console.log(uid)
+      return asyncAndCommit(`/recommend/list?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchArticleList', context.commit)
+    },
+    fetchArticleListOnce (context, param = {}) {
+      const { page = 1, size = 10, order = 'score' } = param
+      const uid = context.state.user.id
+      console.log(uid)
+      return asyncAndCommit(`/recommend/list?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchArticleListOnce', context.commit)
     },
     // 新建文章
     createArticle (context, payload) {
@@ -380,7 +468,7 @@ export default createStore<GlobalDataProps>({
     },
     // 获取已关注标签, 分为第一次获取和滑动分页获取
     fetchFollowTags (context, param = {}) {
-      const { page = 1, size = 10 } = param
+      const { page = 2, size = 10 } = param
       const uid = context.state.user.id
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followTags?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowTags', context.commit)
@@ -405,7 +493,7 @@ export default createStore<GlobalDataProps>({
     },
     // 获取已关注标签, 分为第一次获取和滑动分页获取
     fetchFollowUsers (context, param = {}) {
-      const { page = 1, size = 10 } = param
+      const { page = 2, size = 10 } = param
       const uid = context.state.user.id
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followUsers?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowUsers', context.commit)
@@ -425,6 +513,34 @@ export default createStore<GlobalDataProps>({
     // 取消关注用户
     followUserCancel (context, { uid, fid }) {
       return asyncAndCommit(`/api/user/follow/undo?fid=${fid}&uid=${uid}`, 'followUserCancel', context.commit, {
+        method: 'post'
+      })
+    },
+    // 创建草稿
+    createDraft (context, payload) {
+      return asyncAndCommit('/api/createDraft', 'createDraft', context.commit, {
+        method: 'post',
+        data: payload
+      })
+    },
+    // 获取草稿详情
+    fetchDraftDetail (context, id) {
+      return asyncAndCommit(`/api/draft/${id}`, 'fetchDraftDetail', context.commit)
+    },
+    // 保存草稿
+    saveDraft (context, payload) {
+      return asyncAndCommit('/api/saveDraft', 'saveDraft', context.commit, {
+        method: 'post',
+        data: payload
+      })
+    },
+    // 获取草稿列表
+    fetchDraftInfo (context) {
+      return asyncAndCommit('/api/drafts', 'fetchDraftInfo', context.commit)
+    },
+    // 删除草稿
+    deleteDraft (context, id) {
+      return asyncAndCommit(`/api/deleteDraft?id=${id}`, 'deleteDraft', context.commit, {
         method: 'post'
       })
     }
