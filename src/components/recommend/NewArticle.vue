@@ -119,23 +119,20 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import useScrollLoad from '@/hooks/useScrollLoad'
 
 export default defineComponent({
-  name: 'TagArticle',
+  name: 'NewArticle',
   setup () {
-    const route = useRoute()
     const store = useStore<GlobalDataProps>()
-    const tagID = route.params.id
     const currentUserID = computed(() => store.state.user.id)
     const uid = currentUserID.value
     const total = computed(() => store.state.total)
 
     onMounted(() => {
-      store.dispatch('fetchTagArticleByIDOnce', { page: 1, size: 10, id: tagID })
+      store.dispatch('fetchArticleListOnce', { page: 1, size: 10, order: 'time' })
       store.commit('setRequestMode', true)
       store.commit('setLoadMode', true)
     })
@@ -156,7 +153,7 @@ export default defineComponent({
       })
     }
 
-    useScrollLoad('fetchTagArticleByID', total, { page: 2, size: 10, id: tagID as string })
+    useScrollLoad('fetchArticleList', total, { page: 2, size: 10, order: 'time' })
 
     return { articleList, useClickCollect }
   }

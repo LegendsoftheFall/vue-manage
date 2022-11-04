@@ -59,35 +59,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted, reactive } from 'vue'
+import { defineComponent, ref, watch, reactive } from 'vue'
+import { computed } from '@vue/reactivity'
 import { useStore } from 'vuex'
 import { GlobalDataProps, ContentProps } from '@/model/model'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import AddCoverButton from '@/components/draft/AddCoverButton.vue'
-import { computed } from '@vue/reactivity'
 import VueMarkdownEditor, { xss } from '@kangc/v-md-editor'
 
 export default defineComponent({
-  name: 'DraftView',
+  name: 'NewDraftView',
   components: { AddCoverButton },
   setup () {
     const isSubTitle = ref(false)
+    const router = useRouter()
     const store = useStore<GlobalDataProps>()
-    const route = useRoute()
     const imgUrl = computed(() => store.state.imgUrl.url)
     // 发送请求需要的参数
     const title = computed(() => store.state.article.title)
     const subtitle = computed(() => store.state.article.subtitle)
     const content = computed(() => store.state.article.content)
-    const tags = computed(() => store.state.article.tags)
-    const image = computed(() => store.state.imgUrl)
 
     const html = computed(() => {
       if (content.value) {
         return xss.process(VueMarkdownEditor.vMdParser.themeConfig.markdownParser.render(content.value))
       }
     })
-    // 删除需要单独操作
+
+    // 设置为创建草稿模式
+    store.commit('setCreateMode', true)
+
+    // 删除操作
     const removeImg = () => {
       store.commit('setImgUrl', {})
     }
@@ -97,66 +99,29 @@ export default defineComponent({
       isSubTitle.value = !isSubTitle.value
     }
 
+    // 文章主体的响应式对象
     const article = reactive<ContentProps>({
       title: '',
       subtitle: '',
       content: ''
     })
-    // 编辑文章模式
-    store.commit('setEditMode', !!route.params.id)
-    const isEditMode = computed(() => store.state.editMode)
-    // 保存草稿模式
-    store.commit('setSaveMode', !!route.params.did)
-    const isSaveMode = computed(() => store.state.saveDraftMode)
 
     watch(article, () => {
+      console.log('变化了')
       store.commit('setArticle', article)
-      // 保存草稿 防抖
-      if (isSaveMode.value) {
-        const sendData = {
-          id: route.params.did,
-          title: title.value,
-          subtitle: subtitle.value,
-          html: html.value,
-          markdown: content.value,
-          tags: tags.value,
-          image: image.value.url
-        }
-        store.commit('setSaveStatus', 'saving')
-        store.dispatch('saveDraft', sendData).then(() => {
-          setTimeout(() => {
-            store.commit('setSaveStatus', 'success')
-          }, 500)
-        })
+      // 发送创建草稿请求
+      const sendData = {
+        title: title.value,
+        subtitle: subtitle.value,
+        html: html.value,
+        markdown: content.value
       }
-    })
-
-    onMounted(() => {
-      if (isEditMode.value) {
-        // 获取当前文章详情
-        store.dispatch('fetchArticleDetailByID', route.params.id).then(() => {
-          article.title = store.state.articleDetail.article?.title as string
-          article.subtitle = store.state.articleDetail.article?.subtitle as string
-          if (article.subtitle) {
-            isSubTitle.value = true
-          }
-          article.content = store.state.articleDetail.article?.markdown as string
-          store.commit('setImgUrl', { url: store.state.articleDetail.article?.image })
-        })
-      }
-
-      if (isSaveMode.value) {
-        // 获取当前草稿详情
-        store.dispatch('fetchDraftDetail', route.params.did).then(() => {
-          article.title = store.state.draftDetail.title
-          article.subtitle = store.state.draftDetail.subtitle as string
-          if (article.subtitle) {
-            isSubTitle.value = true
-          }
-          article.content = store.state.draftDetail.markdown
-          store.commit('setImgUrl', { url: store.state.draftDetail.image })
-        })
-      }
+      store.dispatch('createDraft', sendData).then(resp => {
+        // 取消创建草稿模式
+        store.commit('setCreateMode', false)
+        // 跳转到草稿页面
+        router.replace({ name: 'Draft', params: { did: resp.data.id } })
+      })
     })
 
     return { isSubTitle, imgUrl, removeImg, removeSubTitle, article }

@@ -42,7 +42,7 @@ export default defineComponent({
     const dockerList:dockerProps[] = [
       { icon: require('@/assets/icons/news.svg'), text: '推荐', to: '/recommend', index: 0 },
       { icon: require('@/assets/icons/maps.svg'), text: '探索', to: '/explore', index: 1 },
-      { icon: require('@/assets/icons/document.svg'), text: '草稿', to: '#', index: 2 },
+      { icon: require('@/assets/icons/document.svg'), text: '草稿', to: '/drafts', index: 2 },
       { icon: require('@/assets/icons/bookmarklist.svg'), text: '书签', to: '/bookmarks', index: 3 }
     ]
 

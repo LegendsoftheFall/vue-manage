@@ -46,15 +46,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch } from 'vue'
+import { defineComponent, ref, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 import { GlobalDataProps } from '@/model/model'
+import { computed } from '@vue/reactivity'
+import VueMarkdownEditor, { xss } from '@kangc/v-md-editor'
 
 export default defineComponent({
   name: 'SelectButton',
   setup () {
     const store = useStore<GlobalDataProps>()
+    const router = useRouter()
+    const route = useRoute()
+    // 取到创建草稿模式
+    const isCreateMode = computed(() => store.state.createDraftMode)
     const isClick = ref(false)
+    const title = computed(() => store.state.article.title)
+    const subtitle = computed(() => store.state.article.subtitle)
+    const content = computed(() => store.state.article.content)
+    const html = computed(() => {
+      if (content.value) {
+        return xss.process(VueMarkdownEditor.vMdParser.themeConfig.markdownParser.render(content.value))
+      }
+    })
+    const tags = computed(() => store.state.article.tags)
+    const image = computed(() => store.state.imgUrl)
     // 未用store
     // const intTagList: number[] = []
     // const tagNumList: string[] = reactive([])
@@ -124,7 +141,7 @@ export default defineComponent({
       store.dispatch('fetchSelectTags')
     })
     // 获取标签列表
-    const TagList = computed(() => store.state.trend)
+    const TagList = computed(() => store.state.tagInfo)
     // 获取点击事件的tagID
     const getCurrentID = (id: string) => {
       const TagName = computed(() => store.getters.getTagNameByID(id))
@@ -139,18 +156,58 @@ export default defineComponent({
     // 监听列表,发生改变去mutation更新文章标签列表
     watch(() => articleTags.value, () => {
       store.commit('setArticleTags', articleTags.value)
+      // 若是创建草稿模式,得到标签数组,发送创建草稿请求
+      if (isCreateMode.value) {
+        const sendData = {
+          tags: articleTags.value
+        }
+        store.dispatch('createDraft', sendData).then(resp => {
+          // 取消创建草稿模式
+          store.commit('setCreateMode', false)
+          // 跳转到草稿页面
+          router.replace({ name: 'Draft', params: { did: resp.data.id } })
+        })
+      }
+      // 保存草稿
+      if (isSaveMode.value) {
+        const sendData = {
+          id: route.params.did,
+          title: title.value,
+          subtitle: subtitle.value,
+          html: html.value,
+          markdown: content.value,
+          tags: tags.value,
+          image: image.value.url
+        }
+        store.dispatch('saveDraft', sendData).then(() => {
+          console.log('保存成功')
+        })
+      }
     })
 
     // 编辑模式
     const isEditMode = computed(() => store.state.editMode)
-    const tags = computed(() => store.state.articleDetail.tags)
+    const aTags = computed(() => store.state.articleDetail.tags)
+    console.log('取到的文章标签', aTags)
     if (isEditMode.value) {
       // 遍历数组并依次添加到标签数组
-      tags.value && tags.value.forEach(tag => {
+      aTags.value && aTags.value.forEach(tag => {
         store.commit('addTagNumberToList', tag.id)
         store.commit('addTagNameToList', tag.name)
       })
     }
+    // 草稿模式
+    const isSaveMode = computed(() => store.state.saveDraftMode)
+    const dTags = computed(() => store.state.draftDetail.tagSimple)
+    console.log('取到的草稿标签', dTags)
+    if (isSaveMode.value) {
+      // 遍历数组并依次添加到标签数组
+      dTags.value && dTags.value.forEach(tag => {
+        store.commit('addTagNumberToList', tag.id)
+        store.commit('addTagNameToList', tag.name)
+      })
+    }
+
     return { isClick, TagList, tagNumList, tagNameList, getCurrentID, addTagToList, removeTag }
   }
 })

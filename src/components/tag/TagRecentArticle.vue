@@ -125,7 +125,7 @@ import { GlobalDataProps } from '@/model/model'
 import useScrollLoad from '@/hooks/useScrollLoad'
 
 export default defineComponent({
-  name: 'TagArticle',
+  name: 'TagRecentArticle',
   setup () {
     const route = useRoute()
     const store = useStore<GlobalDataProps>()
@@ -135,7 +135,7 @@ export default defineComponent({
     const total = computed(() => store.state.total)
 
     onMounted(() => {
-      store.dispatch('fetchTagArticleByIDOnce', { page: 1, size: 10, id: tagID })
+      store.dispatch('fetchTagArticleByIDOnce', { page: 1, size: 10, id: tagID, order: 'time' })
       store.commit('setRequestMode', true)
       store.commit('setLoadMode', true)
     })
@@ -156,7 +156,7 @@ export default defineComponent({
       })
     }
 
-    useScrollLoad('fetchTagArticleByID', total, { page: 2, size: 10, id: tagID as string })
+    useScrollLoad('fetchTagArticleByID', total, { page: 2, size: 10, id: tagID as string, order: 'time' })
 
     return { articleList, useClickCollect }
   }

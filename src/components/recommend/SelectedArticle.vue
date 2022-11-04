@@ -126,7 +126,7 @@ const useDataList = () => {
 }
 
 export default defineComponent({
-  name: 'RecommendArticle',
+  name: 'SelectedArticle',
   setup () {
     const { articleList } = useDataList()
     return { articleList }

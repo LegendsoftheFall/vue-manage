@@ -34,8 +34,11 @@
 <script lang="ts">
 import { defineComponent, ref, PropType } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
-import { UploadStatus, CheckFunction } from '@/model/model'
+import { UploadStatus, CheckFunction, GlobalDataProps } from '@/model/model'
+import { computed } from '@vue/reactivity'
+import VueMarkdownEditor, { xss } from '@kangc/v-md-editor'
 
 export default defineComponent({
   name: 'UpLoader',
@@ -55,7 +58,26 @@ export default defineComponent({
     const fileStatus = ref<UploadStatus>('ready')
     // 上传成功返回的url
     const imgUrl = ref()
-    const store = useStore()
+    const store = useStore<GlobalDataProps>()
+    const router = useRouter()
+    const route = useRoute()
+    // 取到创建草稿模式
+    const isCreateMode = computed(() => store.state.createDraftMode)
+    // 得到上传的图片
+    const imageUrl = computed(() => store.state.imgUrl)
+
+    // 保存草稿
+    const isSaveMode = computed(() => store.state.saveDraftMode)
+    const title = computed(() => store.state.article.title)
+    const subtitle = computed(() => store.state.article.subtitle)
+    const content = computed(() => store.state.article.content)
+    const html = computed(() => {
+      if (content.value) {
+        return xss.process(VueMarkdownEditor.vMdParser.themeConfig.markdownParser.render(content.value))
+      }
+    })
+    const tags = computed(() => store.state.article.tags)
+    const image = computed(() => store.state.imgUrl)
 
     const triggerUpload = () => {
       if (fileInput.value) {
@@ -91,6 +113,34 @@ export default defineComponent({
           // 更新图片
           store.commit('setImgUrl', resp.data.data)
           context.emit('file-uploaded', resp.data) // 触发成功事件
+
+          // 若是创建草稿模式,得到imgurl,发送创建草稿请求
+          if (isCreateMode.value) {
+            const sendData = {
+              image: imageUrl.value.url
+            }
+            store.dispatch('createDraft', sendData).then(resp => {
+              // 取消创建草稿模式
+              store.commit('setCreateMode', false)
+              // 跳转到草稿页面
+              router.replace({ name: 'Draft', params: { did: resp.data.id } })
+            })
+          }
+          // 若是保存草稿模式,得到imgurl,发送保存草稿请求
+          if (isSaveMode.value) {
+            const sendData = {
+              id: route.params.did,
+              title: title.value,
+              subtitle: subtitle.value,
+              html: html.value,
+              markdown: content.value,
+              tags: tags.value,
+              image: image.value.url
+            }
+            store.dispatch('saveDraft', sendData).then(resp => {
+              console.log('保存成功', resp.data)
+            })
+          }
         }).catch((error) => {
           fileStatus.value = 'uploading'
           context.emit('file-uploaded-error', { error }) // 触发失败事件
