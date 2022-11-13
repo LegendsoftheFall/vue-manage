@@ -97,13 +97,50 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'DashBoard',
     meta: { requireLogin: true },
-    component: () => import(/* webpackChunkName: "DashBoard" */ '../views/dashboard/DashBoard.vue')
+    component: () => import(/* webpackChunkName: "DashBoard" */ '../views/dashboard/DashBoard.vue'),
+    children: [
+      {
+        path: '',
+        name: 'ProfileSetting',
+        meta: { requireLogin: true },
+        component: () => import(/* webpackChunkName: "ProfileSetting" */ '../components/dashbord/ProfileSetting.vue')
+      },
+      {
+        path: 'account',
+        name: 'AccountSetting',
+        meta: { requireLogin: true },
+        component: () => import(/* webpackChunkName: "AccountSetting" */ '../components/dashbord/AccountSetting.vue')
+      },
+      {
+        path: 'articles',
+        name: 'ArticleSetting',
+        meta: { requireLogin: true },
+        component: () => import(/* webpackChunkName: "ArticleSetting" */ '../components/dashbord/ArticleSetting.vue')
+      },
+      {
+        path: 'drafts',
+        name: 'DraftSetting',
+        meta: { requireLogin: true },
+        component: () => import(/* webpackChunkName: "DraftSetting" */ '../components/dashbord/DraftSetting.vue')
+      },
+      {
+        path: 'series',
+        name: 'SerieSetting',
+        meta: { requireLogin: true },
+        component: () => import(/* webpackChunkName: "ProfileSetting" */ '../components/dashbord/SerieSetting.vue')
+      }
+    ]
   },
   {
     path: '/bookmarks',
     name: 'BookMark',
     meta: { requireLogin: true },
     component: () => import(/* webpackChunkName: "DashBoard" */ '../views/bookmark/BookMarkView.vue')
+  },
+  {
+    path: '/@:id',
+    name: 'Profile',
+    component: () => import(/* webpackChunkName: "Profile" */ '../views/profile/ProfileView.vue')
   },
   {
     path: '/explore',

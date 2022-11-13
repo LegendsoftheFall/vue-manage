@@ -124,7 +124,7 @@ import { GlobalDataProps } from '@/model/model'
 import useScrollLoad from '@/hooks/useScrollLoad'
 
 export default defineComponent({
-  name: 'TagArticle',
+  name: 'RankArticle',
   setup () {
     const store = useStore<GlobalDataProps>()
     const currentUserID = computed(() => store.state.user.id)

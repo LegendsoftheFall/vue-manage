@@ -20,8 +20,10 @@ export default createStore<GlobalDataProps>({
     trend: [],
     tagInfo: [],
     user: { isLogin: false, id: '' },
-    userInfo: { isFollow: false, follower: 0 },
+    userInfo: { isFollow: false, follower: 0, following: 0 },
     userInfos: [],
+    userProfile: { username: '', avatar: '', location: '', company: '', position: '', introduction: '', homePage: '', github: '' },
+    profile: { userID: '', username: '', avatar: '', email: '', location: '', company: '', position: '', introduction: '', homePage: '', github: '', format: '', follower: 0, following: 0, isFollow: false },
     articleInfo: [],
     draftInfo: [],
     homeArticleInfo: [],
@@ -80,6 +82,10 @@ export default createStore<GlobalDataProps>({
       state.imgUrl = img
       console.log('监听到img变化', state.imgUrl)
     },
+    setProfileAvatar (state, url: string) {
+      state.userProfile.avatar = url
+      console.log('监听到img变化', state.userProfile.avatar)
+    },
     setLikeMode (state) {
       if (state.articleDetail.isLiked) {
         state.articleDetail.article.likes--
@@ -124,6 +130,9 @@ export default createStore<GlobalDataProps>({
         state.userInfo.follower++
       }
       state.userInfo.isFollow = !state.userInfo.isFollow
+    },
+    setProfileFollow (state) {
+      state.profile.isFollow = !state.profile.isFollow
     },
     changeUsersFollow (state, fid: string) {
       state.userInfos = state.userInfos.map(userInfo => {
@@ -342,6 +351,16 @@ export default createStore<GlobalDataProps>({
     },
     deleteDraft (state, rawData) {
       console.log(rawData.data)
+    },
+    fetchUserProfile (state, rawData) {
+      state.userProfile = rawData.data.profile
+      console.log(state.userProfile)
+    },
+    updateUserProfile (state, rawData) {
+      console.log(rawData.data)
+    },
+    fetchProfile (state, rawData) {
+      state.profile = rawData.data.profile
     }
   },
   actions: {
@@ -543,6 +562,21 @@ export default createStore<GlobalDataProps>({
       return asyncAndCommit(`/api/deleteDraft?id=${id}`, 'deleteDraft', context.commit, {
         method: 'post'
       })
+    },
+    // 获取后台用户资料
+    fetchUserProfile (context) {
+      return asyncAndCommit('/api/user/profile', 'fetchUserProfile', context.commit)
+    },
+    // 更新用户资料
+    updateUserProfile (context, payload) {
+      return asyncAndCommit('/api/user/profile/update', 'updateUserProfile', context.commit, {
+        method: 'patch',
+        data: payload
+      })
+    },
+    fetchProfile (context, id) {
+      const cid = context.state.user.id
+      return asyncAndCommit(`/user/profile?uid=${id}&cid=${cid}`, 'fetchProfile', context.commit)
     }
   },
   modules: {

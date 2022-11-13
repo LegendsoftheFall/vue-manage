@@ -44,7 +44,7 @@
                     <!-- icon -->
                     <div class="flex justify-center items-center whitespace-nowrap">
                         <!-- 个人信息 -->
-                        <a href="#"
+                        <a :href="`/@${userInfo.userID}`"
                         class="h-full block px-2
                         py-2 items-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-t-md">
                             <svg class="w-6 h-6 text-gray-600 dark:text-gray-500 hover:text-black dark:hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -52,7 +52,7 @@
                             </svg>
                         </a>
                         <!-- 个人主页 -->
-                        <a href="#"
+                        <a v-if="userInfo.homePage" :href="userInfo.homePage"
                         class="h-full block px-2
                         py-2 items-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-t-md">
                             <svg class="w-6 h-6 text-gray-600 dark:text-gray-500 hover:text-black dark:hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -61,7 +61,7 @@
                             </svg>
                         </a>
                         <!-- github -->
-                        <a href="#"
+                        <a v-if="userInfo.github" :href="userInfo.github"
                         class="h-full block px-2
                         py-2 items-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-t-md">
                             <svg class="bi bi-github text-gray-600 dark:text-gray-500 hover:text-black dark:hover:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"  viewBox="0 0 16 16">
@@ -76,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import ToggleMode from '@/components/button/ToggleMode.vue'
@@ -96,11 +96,6 @@ export default defineComponent({
       }
       return store.state.userInfo
     })
-
-    const isFollow = ref(true)
-    const changeFollow = () => {
-      isFollow.value = !isFollow.value
-    }
 
     const showFollow = computed(() => {
       const { isLogin, id } = store.state.user
@@ -129,7 +124,7 @@ export default defineComponent({
       }
     }
 
-    return { userInfo, changeFollow, isFollow, showFollow, useFollow }
+    return { userInfo, showFollow, useFollow }
   }
 })
 </script>

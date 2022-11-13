@@ -58,6 +58,50 @@ export interface UserProps {
   email?:string
 }
 
+// 用户主页的信息类型
+export interface UserInfoProps{
+  userID?: string
+  username?: string
+  avatar?: string
+  email?: string
+  introduction?: string
+  homePage?: string
+  github?: string
+  follower: number
+  following: number
+  isFollow: boolean
+}
+
+// 后台用户资料类型
+export interface UserProfileProps {
+  username: string
+  avatar: string
+  location: string
+  company: string
+  position: string
+  introduction: string
+  homePage:string
+  github:string
+}
+
+// 用户资料类型
+export interface ProfileProps {
+  userID: string
+  username: string
+  email: string
+  avatar: string
+  location: string
+  company: string
+  position: string
+  introduction: string
+  homePage:string
+  github:string
+  format: string
+  follower: number
+  following: number
+  isFollow: boolean
+}
+
 // 图片的类型
 export interface ImageProps {
   // id?: string
@@ -169,17 +213,6 @@ export interface DraftInfoProps{
   image?: string
 }
 
-// 用户主页的信息类型
-export interface UserInfoProps{
-  userID?: string
-  username?: string
-  avatar?: string
-  email?: string
-  introduction?: string
-  follower: number
-  isFollow: boolean
-}
-
 // 创建文章类型
 export interface ArticleProps{
   title: string
@@ -228,6 +261,8 @@ export interface GlobalDataProps{
   user: UserProps
   userInfo: UserInfoProps
   userInfos: UserInfoProps[]
+  userProfile: UserProfileProps
+  profile: ProfileProps
   articleInfo: ArticleInfoProps[]
   draftInfo: DraftInfoProps[]
   homeArticleInfo: articleInfoProps[]

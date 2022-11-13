@@ -16,8 +16,8 @@
                 <ValidateForm @form-submit="onFormSubmit" :label="label">
                     <!-- 昵称 -->
                     <div class="pt-6 pb-3">
-                        <label for="name" class="font-light">昵称</label>
-                        <ValidateInput type="text" :rules="nameRules" placeholder="请输入昵称"
+                        <label for="name" class="font-light">用户名</label>
+                        <ValidateInput type="text" :rules="nameRules" placeholder="请输入用户名"
                         :icons="require('@/assets/icons/user.svg')"
                         v-model="formData.name"/>
                     </div>

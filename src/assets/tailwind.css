@@ -2,20 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
-    h1 {
-        @apply text-4xl font-bold block
+@layer components {
+    .textInput {
+        @apply px-4 py-4.5 w-full focus:outline-none font-light border bg-slate-50
+             border-gray-400 dark:border-gray-600 dark:bg-gray-700 rounded-lg focus:ring-0
+             focus-within:bg-white focus-within:border-blue-400
+            dark:focus-within:bg-gray-900 dark:focus-within:border-blue-500;
     }
-    h2 {
-        @apply text-3xl font-bold block
-    }
-    h3 {
-        @apply text-2xl font-bold block
-    }
-    h4 {
-        @apply text-xl font-bold block
-    }
-    h5 {
-        @apply text-lg font-bold block
-    }
-} */
+}

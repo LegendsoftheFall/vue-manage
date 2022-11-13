@@ -122,7 +122,7 @@ export default defineComponent({
           if (!(store.state.error.code === 1003 || store.state.error.code === 1004)) {
             createToast('success', '登录成功')
             setTimeout(() => {
-              router.push({ name: 'Recommend' }) // 若登录请求没有错误则1s后跳转页面
+              router.push({ name: 'Rank' }) // 若登录请求没有错误则1s后跳转页面
             }, 1000)
           }
         })

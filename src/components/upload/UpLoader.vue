@@ -78,12 +78,13 @@ export default defineComponent({
     })
     const tags = computed(() => store.state.article.tags)
     const image = computed(() => store.state.imgUrl)
-
+    // 上传图片
     const triggerUpload = () => {
       if (fileInput.value) {
         fileInput.value.click()
       }
     }
+
     // 监听input事件
     const handleFileChange = (e: Event) => {
       const target = e.target as HTMLInputElement
