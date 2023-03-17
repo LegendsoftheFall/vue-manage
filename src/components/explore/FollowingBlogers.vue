@@ -12,11 +12,7 @@
                     </p>
                 </div>
                 <div class="w-2/12 flex justify-center items-center">
-<<<<<<< HEAD
                   <button @click="useFollow(userInfo.userID, userInfo.isFollow)"
-=======
-                  <button @click="useFollow(userInfo.userID!, userInfo.isFollow)"
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
                       :class="{'text-blue-450 bg-white hover:bg-gray-200 border border-blue-450 px-4 py-2 ':!userInfo.isFollow, 'bg-gray-100 hover:bg-gray-200 py-2 px-5':userInfo.isFollow }"
                       class=" rounded-md flex justify-center items-center flex-shrink-0">
                       <div v-if="!userInfo.isFollow" class="flex justify-center items-center">
@@ -72,19 +68,11 @@ export default defineComponent({
       }
       console.log(isFollow)
       if (isFollow) {
-<<<<<<< HEAD
         store.dispatch('followUserCancel', fid).then(() => {
           store.commit('changeUsersFollow', fid)
         })
       } else {
         store.dispatch('followUser', fid).then(() => {
-=======
-        store.dispatch('followUserCancel', { uid: uid.value, fid: fid }).then(() => {
-          store.commit('changeUsersFollow', fid)
-        })
-      } else {
-        store.dispatch('followUser', { uid: uid.value, fid: fid }).then(() => {
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('changeUsersFollow', fid)
         })
       }

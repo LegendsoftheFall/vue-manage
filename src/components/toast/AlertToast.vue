@@ -3,11 +3,11 @@
     <div ref="toastRef" class="fixed flex flex-col z-50 items-center justify-center top-0 left-0 right-0 max-h-screen bg-transparent my-3">
       <div
       class="flex items-center my-1 rounded-lg overflow-hidden w-1/4"
-      :class="wrapperClass.get(type!)">
+      :class="wrapperClass.get(type)">
         <!-- wrapper -->
         <div class="relative flex items-center w-full h-20">
             <!-- icon -->
-            <div :class="iconClass.get(type!)" class="h-20 w-20 items-center justify-center">
+            <div :class="iconClass.get(type)" class="h-20 w-20 items-center justify-center">
                 <svg v-if="type === 'info'" class="absolute w-10 h-10 top-5 left-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0Z"/>
                 </svg>
@@ -32,7 +32,7 @@
             </button> -->
             <!-- progressBar -->
             <div class="absolute bottom-0 right-0 left-0 h-1 bg-neutral-200">
-              <span :class="progressClass.get(type!)" class="absolute left-0 top-0 bottom-0 h-full" :style="{ 'width': `${progress}%`}"></span>
+              <span :class="progressClass.get(type)" class="absolute left-0 top-0 bottom-0 h-full" :style="{ 'width': `${progress}%`}"></span>
             </div>
         </div>
       </div>

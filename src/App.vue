@@ -32,7 +32,6 @@ export default defineComponent({
       }
     })
 
-<<<<<<< HEAD
     watch(() => store.state.user.isLogin, () => {
       console.log(store.state.user.isLogin)
     })
@@ -40,11 +39,6 @@ export default defineComponent({
     watch(() => store.state.user.id, () => {
       console.log('获取用户id', store.state.user.id)
     })
-=======
-    // watch(() => store.state.user.isLogin, () => {
-    //   console.log(store.state.user.isLogin)
-    // })
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     return { error }
   }
 })

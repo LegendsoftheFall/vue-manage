@@ -83,7 +83,6 @@
         </div>
       </div>
       <!-- 功能 -->
-<<<<<<< HEAD
       <!-- 评论 -->
    </div>
    <div class="container mt-5 mb-5 grid grid-cols-8 gap-5 mx-auto h-full">
@@ -92,8 +91,6 @@
         <GlobalComment/>
       </div>
       <div class="col-span-2"></div>
-=======
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
    </div>
 </template>
 
@@ -103,26 +100,18 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import EditButton from '@/components/button/EditButton.vue'
-<<<<<<< HEAD
 import GlobalComment from '@/components/comment/GlobalComment.vue'
-=======
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
 import { computed } from '@vue/reactivity'
 import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({
   name: 'ArticleContent',
-<<<<<<< HEAD
   components: { EditButton, GlobalComment },
-=======
-  components: { EditButton },
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
   setup () {
     const isLike = ref(false)
     const isMark = ref(false)
     const store = useStore<GlobalDataProps>()
     const route = useRoute()
-<<<<<<< HEAD
     const userID = computed(() => store.state.user.id)
     // console.log('ac', userID.value)
     const id = route.params.id
@@ -130,27 +119,12 @@ export default defineComponent({
       console.log('id', id)
       store.dispatch('fetchArticleDetailByID', id)
     })
-
-=======
-    const id = route.params.id
-    onMounted(() => {
-      store.dispatch('fetchArticleDetailByID', id)
-    })
-
-    const userID = computed(() => store.state.user.id)
-    const uid = userID.value
-
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     const articleDetail = computed(() => {
       if (store.state.articleDetail.userInfo?.avatar === '') {
         store.state.articleDetail.userInfo.avatar = require('@/assets/image/avator.svg')
       }
       return store.state.articleDetail
     })
-<<<<<<< HEAD
-    // console.log('articleDetail', articleDetail.value)
-=======
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
 
     const showEdit = computed(() => {
       const { isLogin, id } = store.state.user
@@ -163,34 +137,20 @@ export default defineComponent({
     })
 
     const useClickLike = () => {
-<<<<<<< HEAD
       if (userID.value === '') {
         createToast('error', '登录后才能点赞哦！')
       } else {
         store.dispatch('likeArticle', id).then(() => {
-=======
-      if (uid === '') {
-        createToast('error', '登录后才能点赞哦！')
-      } else {
-        store.dispatch('likeArticle', { aid: id, uid: uid }).then(() => {
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('setLikeMode')
         })
       }
     }
 
     const useClickCollect = () => {
-<<<<<<< HEAD
       if (userID.value === '') {
         createToast('error', '登录后才能收藏哦！')
       } else {
         store.dispatch('collectArticle', id).then(() => {
-=======
-      if (uid === '') {
-        createToast('error', '登录后才能收藏哦！')
-      } else {
-        store.dispatch('collectArticle', { aid: id, uid: uid }).then(() => {
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('setCollectMode')
         })
       }

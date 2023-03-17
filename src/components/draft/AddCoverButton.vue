@@ -64,10 +64,6 @@ export default defineComponent({
   setup () {
     // 处理点击事件
     const isOpen = ref(false)
-<<<<<<< HEAD
-=======
-
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     // 定义上传成功返回数据的事件函数
     // const OnFileUploaded = (rawData: ResponseType<ImageProps>) => {
     //   createToast('success', `图片的url为${rawData.data.url}`)

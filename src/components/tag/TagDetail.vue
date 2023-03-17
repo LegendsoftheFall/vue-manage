@@ -21,11 +21,7 @@
       <div class="h-1/4 justify-center items-center">
         <div class="flex justify-center items-center">
           <!-- follow -->
-<<<<<<< HEAD
           <button @click="useFollow(tagDetail.id, tagDetail.isFollow)"
-=======
-          <button @click="useFollow(tagDetail.id!, tagDetail.isFollow)"
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
               :class="{'bg-blue-450 hover:bg-blue-400 px-4 py-2 ':!tagDetail.isFollow, 'bg-gray-100 hover:bg-gray-200 py-2 px-5':tagDetail.isFollow }"
               class="rounded-md flex justify-center items-center mr-3">
               <div v-if="!tagDetail.isFollow" class="flex justify-center items-center">
@@ -106,19 +102,11 @@ export default defineComponent({
       }
       console.log(isFollow)
       if (isFollow) {
-<<<<<<< HEAD
         store.dispatch('followTagCancel', tid).then(() => {
           store.commit('setTagFollowMode')
         })
       } else {
         store.dispatch('followTag', tid).then(() => {
-=======
-        store.dispatch('followTagCancel', { uid: uid.value, tid: tid }).then(() => {
-          store.commit('setTagFollowMode')
-        })
-      } else {
-        store.dispatch('followTag', { uid: uid.value, tid: tid }).then(() => {
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('setTagFollowMode')
         })
       }

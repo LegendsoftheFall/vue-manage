@@ -59,19 +59,11 @@ export default defineComponent({
       }
       console.log(isFollow)
       if (isFollow) {
-<<<<<<< HEAD
         store.dispatch('followTagCancel', tid).then(() => {
           store.commit('changeTagFollow', tid)
         })
       } else {
         store.dispatch('followTag', tid).then(() => {
-=======
-        store.dispatch('followTagCancel', { uid: uid.value, tid: tid }).then(() => {
-          store.commit('changeTagFollow', tid)
-        })
-      } else {
-        store.dispatch('followTag', { uid: uid.value, tid: tid }).then(() => {
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('changeTagFollow', tid)
         })
       }
