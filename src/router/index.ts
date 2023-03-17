@@ -18,19 +18,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Rank',
         component: () => import(/* webpackChunkName: "Selected" */ '../components/recommend/RankArticle.vue')
       },
-<<<<<<< HEAD
       // {
       //   path: 'selected',
       //   name: 'Selected',
       //   component: () => import(/* webpackChunkName: "Selected" */ '../components/recommend/SelectedArticle.vue')
       // },
-=======
-      {
-        path: 'selected',
-        name: 'Selected',
-        component: () => import(/* webpackChunkName: "Selected" */ '../components/recommend/SelectedArticle.vue')
-      },
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       {
         path: 'new',
         name: 'New',
@@ -39,7 +31,6 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-<<<<<<< HEAD
     path: '/search',
     name: 'Search',
     component: () => import(/* webpackChunkName: "Recommend" */ '../views/search/SearchView.vue'),
@@ -67,8 +58,6 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-=======
->>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     path: '/login',
     name: 'Login',
     meta: { redirectIsLogin: true },
