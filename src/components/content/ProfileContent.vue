@@ -176,11 +176,19 @@ export default defineComponent({
       }
       console.log(isFollow)
       if (isFollow) {
+<<<<<<< HEAD
         store.dispatch('followUserCancel', fid).then(() => {
           store.commit('setProfileFollow')
         })
       } else {
         store.dispatch('followUser', fid).then(() => {
+=======
+        store.dispatch('followUserCancel', { uid: uid.value, fid: fid }).then(() => {
+          store.commit('setProfileFollow')
+        })
+      } else {
+        store.dispatch('followUser', { uid: uid.value, fid: fid }).then(() => {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('setProfileFollow')
         })
       }

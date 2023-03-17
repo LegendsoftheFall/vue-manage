@@ -244,6 +244,7 @@ export interface scrollPageProps{
   isRequest: boolean
 }
 
+<<<<<<< HEAD
 // 评论列表类型
 export interface commentReply{
   is_like: boolean
@@ -313,6 +314,8 @@ export interface commentList{
 
 }
 
+=======
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
 export interface GlobalDataProps{
   error: GlobalErrorProps
   aToken: string
@@ -342,5 +345,8 @@ export interface GlobalDataProps{
   article: ArticleProps
   tagNumberList: string[]
   tagNameList: string[]
+<<<<<<< HEAD
   commentList: commentList[]
+=======
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
 }

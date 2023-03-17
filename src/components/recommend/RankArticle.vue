@@ -148,8 +148,12 @@ export default defineComponent({
     })
 
     const useClickCollect = (aid: string) => {
+<<<<<<< HEAD
       console.log(uid)
       store.dispatch('collectArticle', aid).then(() => {
+=======
+      store.dispatch('collectArticle', { aid, uid }).then(() => {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
         store.commit('changeCollectMode', aid)
       })
     }

@@ -16,7 +16,11 @@
                         <!-- mode -->
                         <ToggleMode/>
                         <!-- follow -->
+<<<<<<< HEAD
                         <button @click="useFollow(userInfo.userID, userInfo.isFollow)" v-if="showFollow"
+=======
+                        <button @click="useFollow(userInfo.userID!, userInfo.isFollow)" v-if="showFollow"
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
                             :class="{'bg-blue-450 hover:bg-blue-400 px-4 py-2 ':!userInfo.isFollow, 'bg-gray-100 hover:bg-gray-200 py-2 px-5':userInfo.isFollow }"
                             class="rounded-md flex justify-center items-center mr-3">
                             <div v-if="!userInfo.isFollow" class="flex justify-center items-center">
@@ -114,11 +118,19 @@ export default defineComponent({
       }
       console.log(isFollow)
       if (isFollow) {
+<<<<<<< HEAD
         store.dispatch('followUserCancel', fid).then(() => {
           store.commit('setUserFollowMode', fid)
         })
       } else {
         store.dispatch('followUser', fid).then(() => {
+=======
+        store.dispatch('followUserCancel', { uid: uid.value, fid: fid }).then(() => {
+          store.commit('setUserFollowMode', fid)
+        })
+      } else {
+        store.dispatch('followUser', { uid: uid.value, fid: fid }).then(() => {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
           store.commit('setUserFollowMode', fid)
         })
       }

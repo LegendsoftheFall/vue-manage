@@ -33,8 +33,12 @@ export default createStore<GlobalDataProps>({
     imgUrl: {},
     article: { title: '', content: '', tags: [] },
     tagNumberList: [],
+<<<<<<< HEAD
     tagNameList: [],
     commentList: []
+=======
+    tagNameList: []
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
   },
   getters: {
     getTagNameByID: (state) => (id: string) => {
@@ -193,6 +197,7 @@ export default createStore<GlobalDataProps>({
       state.article.tags = tags
       console.log('监听到tags变化', state.article.tags)
     },
+<<<<<<< HEAD
     setDropDownComment (state, id: string) {
       state.commentList = state.commentList.map(comment => {
         if (comment.comment_info.comment_id === id) {
@@ -214,11 +219,19 @@ export default createStore<GlobalDataProps>({
     login (state, rawData) {
       if (rawData.data) {
         const { aToken, rToken, userID } = rawData.data
+=======
+    login (state, rawData) {
+      if (rawData.data) {
+        const { aToken, rToken } = rawData.data
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
         state.aToken = aToken // 取到aToken
         state.rToken = rToken
         localStorage.setItem('aToken', aToken)
         localStorage.setItem('rToken', rToken)
+<<<<<<< HEAD
         localStorage.setItem('userID', userID)
+=======
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
         axios.defaults.headers.common.Authorization = `Bearer ${aToken}`
       }
     },
@@ -237,7 +250,10 @@ export default createStore<GlobalDataProps>({
     },
     fetchUserInfo (state, rawData) {
       state.user = { isLogin: true, ...rawData.data }
+<<<<<<< HEAD
       localStorage.setItem('userID', rawData.data.id)
+=======
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     },
     fetchTagDetailByID (state, rawData) {
       state.tags = rawData.data.tag
@@ -382,6 +398,7 @@ export default createStore<GlobalDataProps>({
     },
     fetchProfile (state, rawData) {
       state.profile = rawData.data.profile
+<<<<<<< HEAD
     },
     publishComment (state, rawData) {
       console.log(rawData.data.id)
@@ -392,6 +409,8 @@ export default createStore<GlobalDataProps>({
         state.total = rawData.data.total
         console.log(state.commentList)
       }
+=======
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     }
   },
   actions: {
@@ -425,32 +444,52 @@ export default createStore<GlobalDataProps>({
     },
     // 根据id获取标签详情
     fetchTagDetailByID (context, id) {
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/tag?tid=${id}&uid=${uid}`, 'fetchTagDetailByID', context.commit)
     },
     // 根据id获取标签文章按排名或发布时间
     fetchTagArticleByID (context, param = {}) {
       const { page = 2, size = 10, id = 0, order = 'score' } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid)
       return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchTagArticleByID', context.commit)
     },
     fetchTagArticleByIDOnce (context, param = {}) {
       const { page = 1, size = 10, id = 0, order = 'score' } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid)
       return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchTagArticleByIDOnce', context.commit)
     },
     // 获取文章按排名或发布时间
     fetchArticleList (context, param = {}) {
       const { page = 2, size = 10, order = 'score' } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid)
       return asyncAndCommit(`/recommend/list?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchArticleList', context.commit)
     },
     fetchArticleListOnce (context, param = {}) {
       const { page = 1, size = 10, order = 'score' } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid)
       return asyncAndCommit(`/recommend/list?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchArticleListOnce', context.commit)
     },
@@ -463,13 +502,21 @@ export default createStore<GlobalDataProps>({
     },
     // 获取文章详情
     fetchArticleDetailByID (context, id) {
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid)
       return asyncAndCommit(`/article/${id}?uid=${uid}`, 'fetchArticleDetailByID', context.commit)
     },
     // 根据ID获取用户主页
     fetchUserHomeByID (context, param = {}) {
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       const { page = 1, size = 10, id = '' } = param
       return asyncAndCommit(`/user/${id}?page=${page}&size=${size}&uid=${uid}`, 'fetchUserHomeByID', context.commit)
     },
@@ -487,15 +534,23 @@ export default createStore<GlobalDataProps>({
       })
     },
     // 点赞文章
+<<<<<<< HEAD
     likeArticle (context, aid) {
       const uid = localStorage.getItem('userID')
+=======
+    likeArticle (context, { aid, uid }) {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/api/like?aid=${aid}&uid=${uid}`, 'likeArticle', context.commit, {
         method: 'post'
       })
     },
     // 收藏文章
+<<<<<<< HEAD
     collectArticle (context, aid) {
       const uid = localStorage.getItem('userID')
+=======
+    collectArticle (context, { aid, uid }) {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/api/collect?aid=${aid}&uid=${uid}`, 'collectArticle', context.commit, {
         method: 'post'
       })
@@ -508,66 +563,109 @@ export default createStore<GlobalDataProps>({
     // 获取所有标签, 分为第一次获取和滑动分页获取
     fetchAllTags (context, param = {}) {
       const { page = 1, size = 10 } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/tags?page=${page}&size=${size}&uid=${uid}`, 'fetchAllTags', context.commit)
     },
     fetchTagsOnce (context, param = {}) {
       const { page = 1, size = 10 } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/tags?page=${page}&size=${size}&uid=${uid}`, 'fetchTagsOnce', context.commit)
     },
     // 获取已关注标签, 分为第一次获取和滑动分页获取
     fetchFollowTags (context, param = {}) {
       const { page = 2, size = 10 } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followTags?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowTags', context.commit)
     },
     fetchFollowTagsOnce (context, param = {}) {
       const { page = 1, size = 10 } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followingTags?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowTagsOnce', context.commit)
     },
     // 关注标签
+<<<<<<< HEAD
     followTag (context, tid) {
       const uid = localStorage.getItem('userID')
+=======
+    followTag (context, { uid, tid }) {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/api/tag/follow/do?tid=${tid}&uid=${uid}`, 'followTag', context.commit, {
         method: 'post'
       })
     },
     // 取消关注标签
+<<<<<<< HEAD
     followTagCancel (context, tid) {
       const uid = localStorage.getItem('userID')
+=======
+    followTagCancel (context, { uid, tid }) {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/api/tag/follow/undo?tid=${tid}&uid=${uid}`, 'followTagCancel', context.commit, {
         method: 'post'
       })
     },
+<<<<<<< HEAD
     // 获取已关注用户, 分为第一次获取和滑动分页获取
     fetchFollowUsers (context, param = {}) {
       const { page = 2, size = 10 } = param
       const uid = localStorage.getItem('userID')
+=======
+    // 获取已关注标签, 分为第一次获取和滑动分页获取
+    fetchFollowUsers (context, param = {}) {
+      const { page = 2, size = 10 } = param
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followUsers?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowUsers', context.commit)
     },
     fetchFollowUsersOnce (context, param = {}) {
       const { page = 1, size = 10 } = param
+<<<<<<< HEAD
       const uid = localStorage.getItem('userID')
+=======
+      const uid = context.state.user.id
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followingUsers?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowUsersOnce', context.commit)
     },
     // 关注用户
+<<<<<<< HEAD
     followUser (context, fid) {
       const uid = localStorage.getItem('userID')
+=======
+    followUser (context, { uid, fid }) {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/api/user/follow/do?fid=${fid}&uid=${uid}`, 'followUser', context.commit, {
         method: 'post'
       })
     },
     // 取消关注用户
+<<<<<<< HEAD
     followUserCancel (context, fid) {
       const uid = localStorage.getItem('userID')
+=======
+    followUserCancel (context, { uid, fid }) {
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
       return asyncAndCommit(`/api/user/follow/undo?fid=${fid}&uid=${uid}`, 'followUserCancel', context.commit, {
         method: 'post'
       })
@@ -612,6 +710,7 @@ export default createStore<GlobalDataProps>({
       })
     },
     fetchProfile (context, id) {
+<<<<<<< HEAD
       const cid = localStorage.getItem('userID')
       return asyncAndCommit(`/user/profile?uid=${id}&cid=${cid}`, 'fetchProfile', context.commit)
     },
@@ -626,6 +725,10 @@ export default createStore<GlobalDataProps>({
       const uid = localStorage.getItem('userID')
       console.log(uid, page, size, item, order, end)
       return asyncAndCommit(`/comment/list?uid=${uid}&page=${page}&size=${size}&item=${item}&order=${order}&end=${end}`, 'fetchCommentList', context.commit)
+=======
+      const cid = context.state.user.id
+      return asyncAndCommit(`/user/profile?uid=${id}&cid=${cid}`, 'fetchProfile', context.commit)
+>>>>>>> 8d7ae212e14904c7e89a97459b97f55e3b39a352
     }
   },
   modules: {
