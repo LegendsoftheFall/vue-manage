@@ -1,5 +1,5 @@
 <template>
-    <div class="container grid grid-cols-10 mx-auto h-full mt-5">
+    <div class="container grid grid-cols-10 mx-auto h-full mt-5 font-Poppins">
       <div class="col-span-2"></div>
       <!-- 写作区域 -->
       <div class="col-span-6">

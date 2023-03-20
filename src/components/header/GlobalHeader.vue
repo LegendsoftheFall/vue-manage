@@ -5,21 +5,21 @@
             <!-- flex-container -->
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="http://localhost:8080/recommend" class="pt-2 flex justify-center items-center">
+                <a href="http://localhost:8082/recommend" class="pt-2 flex justify-center items-center">
                     <img src="@/assets/icons/logo.svg" alt="">
                     <span class="font-black text-2xl tracking-tight font-mono">manage</span>
                 </a>
                 <!-- Search -->
-                <div class="w-3/6 flex items-center rounded-full">
+                <div class="w-3/6 hidden lg:flex items-center rounded-full">
                     <SearchBar/>
                 </div>
                 <div class="flex justify-between items-center">
                     <!-- Write -->
-                    <WriteButton/>
+                    <WriteButton class="hidden md:block lg:block"/>
                     <!-- mode -->
                     <ToggleMode class=" pl-4"/>
                     <!-- Notice -->
-                    <NoticeButton/>
+                    <NoticeButton class="hidden lg:block"/>
                     <!-- avator -->
                     <UserAvatar/>
                 </div>

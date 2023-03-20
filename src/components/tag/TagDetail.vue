@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex items-center h-64 p-6 border rounded-lg bg-white">
+  <div class="w-full flex items-center h-64 p-6 border rounded-lg bg-white font-Poppins">
     <div class="flex flex-col w-full h-full">
       <!-- Name -->
       <div class="h-1/2 justify-center items-start">
@@ -12,7 +12,7 @@
             <div v-if="isLoading" class="animate-pulse p-8 rounded-md border bg-gray-100 shadow-lg"></div>
           </a>
           <div>
-            <span class="text-3xl font-sans font-semibold tracking-wider">{{tagDetail.name}}</span>
+            <span class="text-3xl font-semibold font-Poppins">{{tagDetail.name}}</span>
             <p># {{tagDetail.id}}</p>
           </div>
         </div>
@@ -40,7 +40,7 @@
             <svg class="w-4 h-4 text-blue-450" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
               <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
             </svg>
-            <p class="pl-1 text-blue-450">写作</p>
+            <a href="/create/draft" class="pl-1 text-blue-450">写作</a>
           </a>
         </div>
       </div>

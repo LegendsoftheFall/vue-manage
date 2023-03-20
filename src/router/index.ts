@@ -36,7 +36,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "Recommend" */ '../views/search/SearchView.vue'),
     children: [
       {
-        path: '',
+        path: 'hot',
         name: 'HotSearch',
         component: () => import(/* webpackChunkName: "Selected" */ '../components/search/SearchHotArticle.vue')
       },
@@ -174,6 +174,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Explore',
     component: () => import(/* webpackChunkName: "Explore" */ '../views/explore/ExploreView.vue'),
     children: [
+      {
+        path: 'hot',
+        name: 'ExploreHot',
+        component: () => import(/* webpackChunkName: "Tags" */ '../components/explore/ExploreHot.vue')
+      },
       {
         path: 'tags',
         name: 'Tags',

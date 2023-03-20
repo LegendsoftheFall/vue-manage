@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
+    <div class="absolute right-0 z-30 py-2 top-full min-h-full w-56 mt-2 bg-white
         dark:bg-gray-800 dark:border-t-gray-700 dark:border-b-gray-700 border-t border-b rounded-lg shadow-xl overflow-hidden">
         <!-- 头像 -->
         <div class="flex justify-center items-center">

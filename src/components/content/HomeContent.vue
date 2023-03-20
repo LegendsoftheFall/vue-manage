@@ -1,6 +1,6 @@
 <template>
     <!-- 个人信息 -->
-    <div class="container mx-auto px-32 py-10">
+    <div class="container mx-auto px-32 py-10 font-Poppins">
         <div class="flex flex-col justify-center items-center h-64">
             <!-- 头像 -->
             <a :href="`/user/${userInfo.userID}`" class="h-32 w-32 rounded-full overflow-hidden">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <!-- 文章列表 -->
-    <div class="container mx-auto mt-4 px-32">
+    <div class="container mx-auto mt-4 px-32 font-Poppins">
         <div  class="flex flex-col justify-center items-center">
             <div v-for="article in articleList" :key="article&&article.id" class="w-full h-max mb-16 px-16 flex justify-between">
                 <!-- left -->
@@ -63,7 +63,7 @@
         <LoadingButton class="my-5" @click="loadMorePage" v-if="!isLastPage"/>
     </div>
     <!-- end -->
-    <div class="container mx-auto mt-10 pb-20 justify-center items-center text-center" v-if="isLastPage">
+    <div class="container mx-auto mt-10 pb-20 justify-center items-center text-center font-Poppins" v-if="isLastPage">
         <span class="text-2xl font-semibold tracking-wide">到底啦！👋</span>
     </div>
 </template>

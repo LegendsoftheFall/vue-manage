@@ -1,12 +1,13 @@
 <template>
     <div id="scroll"
     class="w-full h-max py-6 px-4 border border-t-0 flex flex-wrap bg-white dark:bg-gray-800 dark:border-gray-700 rounded-b-lg">
+        <div v-if="!tagList" class="flex w-full justify-center items-center">你还未关注博主</div>
         <div class="w-full p-2"  v-for="userInfo in userInfoList" :key="userInfo.userID">
             <div class=" h-16 p-3 flex items-center rounded-lg">
                 <a :href="`/user/${userInfo.userID}`" target="_blank" class="w-10 h-10 block rounded-full overflow-hidden">
                     <img :src="userInfo.avatar" alt="">
                 </a>
-                <div class="pl-3 w-10/12 text-sm">
+                <div class="pl-3 w-10/12">
                     <p class="font-semibold">
                         <a :href="`/user/${userInfo.userID}`" target="_blank">{{userInfo.username}}</a>
                     </p>
@@ -53,7 +54,7 @@ export default defineComponent({
     })
 
     const userInfoList = computed(() => {
-      return store.state.userInfos.map(userInfo => {
+      return (store.state.userInfos || []).map(userInfo => {
         if (!userInfo.avatar) {
           userInfo.avatar = require('@/assets/image/avator.svg')
         }
@@ -78,7 +79,7 @@ export default defineComponent({
       }
     }
 
-    useScrollLoad('fetchFollowTags', total, { page: 2, size: 10 })
+    useScrollLoad('fetchFollowUsers', total, { page: 2, size: 10 })
 
     return { isClick, userInfoList, useFollow }
   }

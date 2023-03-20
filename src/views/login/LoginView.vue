@@ -1,6 +1,6 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <template>
-    <div class="flex justify-beetween min-h-screen font-sans">
+    <div class="flex justify-beetween min-h-screen font-Poppins">
         <!-- 插图 -->
         <div class="w-1/2">
             <img class="w-full" src="@/assets/image/Login.svg" alt="">

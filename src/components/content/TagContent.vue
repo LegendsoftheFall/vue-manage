@@ -1,12 +1,12 @@
 <template>
     <!-- grid-container -->
-    <div class="container grid grid-cols-12 gap-3 mx-auto h-full mt-5">
+    <div class="container grid grid-cols-12 gap-3 mx-auto h-full mt-5 font-Poppins">
       <!-- SideBar -->
-      <div class="col-span-2">
+      <div class="col-span-2 hidden md:block lg:block">
         <SideBar/>
       </div>
       <!-- Content -->
-      <div id="scroll" class="col-span-7">
+      <div id="scroll" class="col-span-12 md:col-span-10 lg:col-span-7">
         <!-- Tag -->
         <TagDetail/>
         <!-- Hot -->
@@ -19,9 +19,10 @@
         </div>
       </div>
       <!-- Detail -->
-      <div class="col-span-3">
+      <div class="hidden lg:block lg:col-span-3">
         <!-- Info -->
         <TagInfo v-if="introduction"/>
+        <img :src="require('@/assets/image/young.png')" alt="">
       </div>
     </div>
 </template>

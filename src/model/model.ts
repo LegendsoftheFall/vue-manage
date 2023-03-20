@@ -65,6 +65,7 @@ export interface UserInfoProps{
   avatar?: string
   email?: string
   introduction?: string
+  position?: string
   homePage?: string
   github?: string
   follower: number
@@ -113,6 +114,7 @@ export interface ImageProps {
 export interface TagInfoProps{
     id: string
     num: string
+    f_num: string
     name: string
     image: string
     isFollow: boolean
@@ -235,7 +237,9 @@ export interface LoadParams {
   page: number
   size: number
   id?:string
+  key?: string
   order?:string
+  category?: string
 }
 
 // 滚动分页类型
@@ -317,7 +321,9 @@ export interface GlobalDataProps{
   error: GlobalErrorProps
   aToken: string
   rToken: string
+  key: string
   loading: boolean
+  notFound: boolean
   saving: SaveStatus
   editMode: boolean
   createDraftMode: boolean
@@ -326,14 +332,18 @@ export interface GlobalDataProps{
   posts: PostProps[]
   tags: TagProps
   tagInfo: TagInfoProps[]
+  FollowTagInfo: TagInfoProps[]
   trend: TagInfoProps[]
   user: UserProps
   userInfo: UserInfoProps
   userInfos: UserInfoProps[]
+  rankUserInfos: UserInfoProps[]
   userProfile: UserProfileProps
   profile: ProfileProps
   articleInfo: ArticleInfoProps[]
+  collectedBar: ArticleInfoProps[]
   draftInfo: DraftInfoProps[]
+  draftBar: DraftInfoProps[]
   homeArticleInfo: articleInfoProps[]
   scrollPage: scrollPageProps
   articleDetail: ArticleDetailProps

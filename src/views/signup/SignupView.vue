@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-beetween min-h-screen font-sans">
+    <div class="flex justify-beetween min-h-screen font-Poppins">
         <!-- 登录 -->
         <div class="w-1/2">
             <div class="flex flex-col px-24 py-18">

@@ -11,7 +11,10 @@ const useScrollLoad = (actionName: string, total: ComputedRef<number>,
   const requestParam = computed(() => ({
     page: currentPage.value,
     size: param.size,
-    id: param.id
+    id: param.id,
+    order: param.order,
+    category: param.category,
+    key: param.key
   }))
 
   const loadMore = () => {

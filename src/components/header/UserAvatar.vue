@@ -2,11 +2,11 @@
     <div class="pr-1 relative">
         <!-- 头像 -->
         <button @click="isOpen = !isOpen" ref="dropdownRef" class="block w-10 h-10 rounded-full overflow-hidden">
-            <img v-if="UserInfo.isLogin" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+            <img v-if="UserInfo.isLogin" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="">
             <img v-if="!UserInfo.isLogin" src="@/assets/image/avator.svg" alt="Vistor avator">
         </button>
         <!-- 登录下拉菜单 -->
-        <div v-if="isOpen && UserInfo.isLogin" class="absolute right-0 z-10 py-2 top-full min-h-full w-56 mt-2 bg-white
+        <div v-if="isOpen && UserInfo.isLogin" class="absolute right-0 z-30 py-2 top-full min-h-full w-56 mt-2 bg-white
         dark:bg-black border dark:border-gray-700
          rounded-lg shadow-xl overflow-hidden">
             <!-- 关于我 -->
@@ -14,7 +14,7 @@
                 <div class="flex items-center">
                     <!-- Avator -->
                     <div class="w-12 h-12 rounded-full overflow-hidden">
-                        <img class="" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="your avator">
+                        <img class="" :src="UserInfo.avatar === '' ? require('@/assets/image/avator.svg') : UserInfo.avatar" alt="">
                     </div>
                     <div class="pl-2 flex flex-col">
                         <span class="text-sm font-semibold dark:text-white">{{UserInfo.name}}</span>
@@ -61,14 +61,14 @@
                 </div>
             </a>
             <!-- 管理博客 -->
-            <a href="#" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+            <!-- <a href="#" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
                 <div class="flex">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                     </svg>
                     <span class="ml-2">管理博客</span>
                 </div>
-            </a>
+            </a> -->
             <hr class="w-5/6 ml-4 border-gray-200 dark:border-gray-700">
             <!-- 登出 -->
             <router-link :to="{ name: 'Index' }" @click="useLogOut" class="block px-4 py-2 font-semibold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">

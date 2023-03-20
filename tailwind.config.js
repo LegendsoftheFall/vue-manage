@@ -17,10 +17,11 @@ module.exports = {
       black: 900
     },
     screens: {
-      sm: '480px',
+      sm: '640px',
       md: '768px',
-      lg: '976px',
-      xl: '1440px'
+      lg: "1124px",
+      xl: "1124px",
+      "2xl": "1124px",
     },
     extend: {
       animation: {
@@ -46,10 +47,24 @@ module.exports = {
         }
       },
       fontFamily: {
-        // sans: ['Roboto'],
+        Poppins: ["Poppins, sans-serif"],
         sans: ['Barlow', 'sans-serif']
       },
+      container: {
+        center: true,
+        padding: "1rem",
+        screens: {
+          lg: "1124px",
+          xl: "1124px",
+          "2xl": "1124px",
+        },
+      },
       colors: {
+        "bookmark-purple": "#5267DF",
+        "bookmark-red": "#FA5959",
+        "bookmark-blue": "#242A45",
+        "bookmark-grey": "#9194A2",
+        "bookmark-white": "#f7f7f7",
         gray: {
           1: 'rgba(248, 251, 255, 0.8)',
           2: 'rgba(214, 216, 217, 0.89)',

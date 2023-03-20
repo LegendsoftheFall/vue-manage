@@ -1,17 +1,17 @@
 <template>
     <div class="flex">
         <!-- 写文章 -->
-        <a href="/create/draft" class="relative flex items-center justify-center bg-blue-450 hover:bg-blue-500 focus:outline-none
-        text-white rounded-l">
+        <a href="/create/draft" class="relative flex flex-shrink-0 items-center justify-center bg-blue-450 hover:bg-blue-500 focus:outline-none
+        text-white rounded-md">
             <img class="pl-2" src="@/assets/icons/edit.svg" alt="edit">
             <p class="pr-4 pl-1 py-2">写文章</p>
         </a>
-        <button @click="isOpen = !isOpen" class="relative flex items-center justify-center bg-blue-450
+        <!-- <button @click="isOpen = !isOpen" class="relative flex items-center justify-center bg-blue-450
          hover:bg-blue-500 focus:outline-none text-white rounded-r" ref="dropdownRef">
             <span class="p-2">
                 <img src="@/assets/icons/icons8-walter-white.svg" alt="white"/>
             </span>
-            <!-- 下拉菜单 -->
+            下拉菜单
             <div v-if="isOpen" class="absolute z-10 right-0 top-full min-h-full w-max shadow-md rounded-lg overflow-hidden mt-2 ">
                 <div class="text-left rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-800">
                     <div class="px-4 py-1 border-b hover:bg-gray-100 dark:border-b-gray-700">
@@ -38,8 +38,8 @@
                     </div>
                 </div>
             </div>
+            </button> -->
             <!-- <div class=" absolute w-5 h-5 bg-white border top-12 rotate-45 pointer-events-none"></div> -->
-            </button>
             <!-- <button v-if="isOpen" @click="isOpen = false" class="fixed -z-10 inset-0 h-full w-full"></button> -->
     </div>
 </template>

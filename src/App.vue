@@ -46,9 +46,10 @@ export default defineComponent({
 
 <style>
   html.dark{
-    color-scheme: dark
+    color-scheme: dark;
+    background: black;
   }
-  /* body{
+  body{
     background:rgba(248, 251, 255, 0.8) ;
-  } */
+  }
 </style>

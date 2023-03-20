@@ -11,16 +11,33 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { GlobalDataProps, dockerProps } from '@/model/model'
 
 export default defineComponent({
   name: 'ExploreNav',
   setup () {
     const store = useStore<GlobalDataProps>()
-    const isShow = computed(() => store.state.user.isLogin)
+    const isShow = ref(false)
     const activeMenu = ref(0)
+    if (localStorage.getItem('userID')) {
+      isShow.value = true
+    }
+    const route = useRoute()
+    if (route.path.includes('hot')) {
+      activeMenu.value = 0
+    }
+    if (route.path.includes('tags')) {
+      activeMenu.value = 1
+    }
+    if (route.path.includes('tags-following')) {
+      activeMenu.value = 2
+    }
+    if (route.path.includes('blogers-following')) {
+      activeMenu.value = 3
+    }
     const dockerList:dockerProps[] = [
-      { index: 0, to: 'Explore', text: '热门', isShow: true },
+      { index: 0, to: 'ExploreHot', text: '热门', isShow: true },
       { index: 1, to: 'Tags', text: '全部标签', isShow: true },
       { index: 2, to: 'FollowingTags', text: '关注的标签', isShow: isShow.value },
       { index: 3, to: 'FollowingBlogers', text: '关注的博主', isShow: isShow.value }

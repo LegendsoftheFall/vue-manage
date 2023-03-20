@@ -14,18 +14,24 @@ export default createStore<GlobalDataProps>({
     editMode: false,
     createDraftMode: false,
     saveDraftMode: false,
+    notFound: false,
+    key: '',
     total: 0,
     posts: testPostData,
     tags: { isFollow: false, articleNum: 0, followerNum: 0 },
     trend: [],
     tagInfo: [],
+    FollowTagInfo: [],
     user: { isLogin: false, id: '' },
     userInfo: { isFollow: false, follower: 0, following: 0 },
     userInfos: [],
+    rankUserInfos: [],
     userProfile: { username: '', avatar: '', location: '', company: '', position: '', introduction: '', homePage: '', github: '' },
     profile: { userID: '', username: '', avatar: '', email: '', location: '', company: '', position: '', introduction: '', homePage: '', github: '', format: '', follower: 0, following: 0, isFollow: false },
     articleInfo: [],
+    collectedBar: [],
     draftInfo: [],
+    draftBar: [],
     homeArticleInfo: [],
     scrollPage: { isReadyLoad: true, isRequest: true },
     articleDetail: { article: { likes: 0, comments: 0, viewCount: 0, id: '', authorID: '', title: '', content: '', markdown: '', createTime: '', format: '' }, isLiked: false, isCollected: false },
@@ -70,6 +76,9 @@ export default createStore<GlobalDataProps>({
     setRequestMode (state, status: boolean) {
       state.scrollPage.isRequest = status
     },
+    setNotFound (state, status: boolean) {
+      state.notFound = status
+    },
     setAToken (state, newAToken: string) {
       state.aToken = newAToken
     },
@@ -86,6 +95,10 @@ export default createStore<GlobalDataProps>({
     setProfileAvatar (state, url: string) {
       state.userProfile.avatar = url
       console.log('监听到img变化', state.userProfile.avatar)
+    },
+    setKey (state, keyword: string) {
+      state.key = keyword
+      console.log('监听到key变化', state.key)
     },
     setLikeMode (state) {
       if (state.articleDetail.isLiked) {
@@ -118,6 +131,15 @@ export default createStore<GlobalDataProps>({
     changeTagFollow (state, tid: string) {
       // 根据tid遍历数组,将关注取反
       state.tagInfo = state.tagInfo.map(tag => {
+        if (tag.id === tid) {
+          tag.isFollow = !tag.isFollow
+        }
+        return tag
+      })
+    },
+    changeFollowingTag (state, tid: string) {
+      // 根据tid遍历数组,将关注取反
+      state.FollowTagInfo = state.FollowTagInfo.map(tag => {
         if (tag.id === tid) {
           tag.isFollow = !tag.isFollow
         }
@@ -314,6 +336,15 @@ export default createStore<GlobalDataProps>({
         state.total = rawData.data.total
       }
     },
+    fetchCollectedBar (state, rawData) {
+      if (rawData.data) {
+        state.collectedBar = rawData.data.list
+      }
+    },
+    fetchHotTags (state, rawData) {
+      state.tagInfo = rawData.data.list
+      state.total = rawData.data.total
+    },
     fetchAllTags (state, rawData) {
       state.tagInfo = state.tagInfo.concat(rawData.data.list)
       state.total = rawData.data.total
@@ -323,12 +354,12 @@ export default createStore<GlobalDataProps>({
       state.total = rawData.data.total
     },
     fetchFollowTags (state, rawData) {
-      state.tagInfo = state.tagInfo.concat(rawData.data.list)
+      state.FollowTagInfo = state.tagInfo.concat(rawData.data.list)
       state.total = rawData.data.total
     },
     fetchFollowTagsOnce (state, rawData) {
       if (rawData.data) {
-        state.tagInfo = rawData.data.list
+        state.FollowTagInfo = rawData.data.list
         state.total = rawData.data.total
       }
     },
@@ -370,6 +401,9 @@ export default createStore<GlobalDataProps>({
       state.draftInfo = rawData.data.list
       console.log(state.draftInfo)
     },
+    fetchDraftBar (state, rawData) {
+      state.draftBar = rawData.data.list
+    },
     deleteDraft (state, rawData) {
       console.log(rawData.data)
     },
@@ -391,6 +425,54 @@ export default createStore<GlobalDataProps>({
         state.commentList = rawData.data.list
         state.total = rawData.data.total
         console.log(state.commentList)
+      }
+    },
+    searchArticleList (state, rawData) {
+      if (rawData.data) {
+        state.articleInfo = state.articleInfo.concat(rawData.data.list)
+        console.log(state.articleInfo)
+        state.total = rawData.data.total
+        console.log(
+          '加载状态', state.scrollPage.isReadyLoad,
+          '发送状态', state.scrollPage.isRequest)
+      }
+    },
+    searchArticleListOnce (state, rawData) {
+      if (rawData.data) {
+        state.articleInfo = rawData.data.list
+        console.log(state.articleInfo)
+        state.total = rawData.data.total
+        console.log(
+          '加载状态', state.scrollPage.isReadyLoad,
+          '发送状态', state.scrollPage.isRequest)
+        console.log('文章列表', state.articleInfo)
+      }
+    },
+    searchTagList (state, rawData) {
+      state.tagInfo = state.tagInfo.concat(rawData.data.list)
+      state.total = rawData.data.total
+    },
+    searchTagListOnce (state, rawData) {
+      if (rawData.data) {
+        state.tagInfo = rawData.data.list
+        console.log(state.tagInfo)
+        state.total = rawData.data.total
+      }
+    },
+    searchUser (state, rawData) {
+      if (rawData.data) {
+        state.userInfos = state.userInfos.concat(rawData.data.list)
+        state.total = rawData.data.total
+      }
+    },
+    searchUserOnce (state, rawData) {
+      if (rawData.data) {
+        state.userInfos = rawData.data.list
+        state.total = rawData.data.total
+        if (!state.userInfos) {
+          state.userInfos = []
+        }
+        console.log('searchUser', state.userInfos)
       }
     }
   },
@@ -425,32 +507,32 @@ export default createStore<GlobalDataProps>({
     },
     // 根据id获取标签详情
     fetchTagDetailByID (context, id) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/tag?tid=${id}&uid=${uid}`, 'fetchTagDetailByID', context.commit)
     },
     // 根据id获取标签文章按排名或发布时间
     fetchTagArticleByID (context, param = {}) {
       const { page = 2, size = 10, id = 0, order = 'score' } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid)
       return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchTagArticleByID', context.commit)
     },
     fetchTagArticleByIDOnce (context, param = {}) {
       const { page = 1, size = 10, id = 0, order = 'score' } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid)
       return asyncAndCommit(`/n/${id}?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchTagArticleByIDOnce', context.commit)
     },
     // 获取文章按排名或发布时间
     fetchArticleList (context, param = {}) {
       const { page = 2, size = 10, order = 'score' } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid)
       return asyncAndCommit(`/recommend/list?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchArticleList', context.commit)
     },
     fetchArticleListOnce (context, param = {}) {
       const { page = 1, size = 10, order = 'score' } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid)
       return asyncAndCommit(`/recommend/list?page=${page}&size=${size}&uid=${uid}&order=${order}`, 'fetchArticleListOnce', context.commit)
     },
@@ -463,13 +545,13 @@ export default createStore<GlobalDataProps>({
     },
     // 获取文章详情
     fetchArticleDetailByID (context, id) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid)
       return asyncAndCommit(`/article/${id}?uid=${uid}`, 'fetchArticleDetailByID', context.commit)
     },
     // 根据ID获取用户主页
     fetchUserHomeByID (context, param = {}) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       const { page = 1, size = 10, id = '' } = param
       return asyncAndCommit(`/user/${id}?page=${page}&size=${size}&uid=${uid}`, 'fetchUserHomeByID', context.commit)
     },
@@ -488,14 +570,14 @@ export default createStore<GlobalDataProps>({
     },
     // 点赞文章
     likeArticle (context, aid) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/api/like?aid=${aid}&uid=${uid}`, 'likeArticle', context.commit, {
         method: 'post'
       })
     },
     // 收藏文章
     collectArticle (context, aid) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/api/collect?aid=${aid}&uid=${uid}`, 'collectArticle', context.commit, {
         method: 'post'
       })
@@ -505,42 +587,50 @@ export default createStore<GlobalDataProps>({
       const { page = 1, size = 10 } = param
       return asyncAndCommit(`/api/bookmark?page=${page}&size=${size}`, 'fetchCollectedArticle', context.commit)
     },
+    fetchCollectedBar (context) {
+      return asyncAndCommit('/api/bookmark?page=1&size=1', 'fetchCollectedBar', context.commit)
+    },
+    // 获取所有标签, 分为第一次获取和滑动分页获取
+    fetchHotTags (context) {
+      const uid = localStorage.getItem('userID') || 0
+      return asyncAndCommit(`/explore/hotTags?uid=${uid}`, 'fetchHotTags', context.commit)
+    },
     // 获取所有标签, 分为第一次获取和滑动分页获取
     fetchAllTags (context, param = {}) {
       const { page = 1, size = 10 } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/tags?page=${page}&size=${size}&uid=${uid}`, 'fetchAllTags', context.commit)
     },
     fetchTagsOnce (context, param = {}) {
       const { page = 1, size = 10 } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/tags?page=${page}&size=${size}&uid=${uid}`, 'fetchTagsOnce', context.commit)
     },
     // 获取已关注标签, 分为第一次获取和滑动分页获取
     fetchFollowTags (context, param = {}) {
       const { page = 2, size = 10 } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followTags?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowTags', context.commit)
     },
     fetchFollowTagsOnce (context, param = {}) {
       const { page = 1, size = 10 } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followingTags?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowTagsOnce', context.commit)
     },
     // 关注标签
     followTag (context, tid) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/api/tag/follow/do?tid=${tid}&uid=${uid}`, 'followTag', context.commit, {
         method: 'post'
       })
     },
     // 取消关注标签
     followTagCancel (context, tid) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/api/tag/follow/undo?tid=${tid}&uid=${uid}`, 'followTagCancel', context.commit, {
         method: 'post'
       })
@@ -548,26 +638,26 @@ export default createStore<GlobalDataProps>({
     // 获取已关注用户, 分为第一次获取和滑动分页获取
     fetchFollowUsers (context, param = {}) {
       const { page = 2, size = 10 } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followUsers?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowUsers', context.commit)
     },
     fetchFollowUsersOnce (context, param = {}) {
       const { page = 1, size = 10 } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size)
       return asyncAndCommit(`/explore/followingUsers?page=${page}&size=${size}&uid=${uid}`, 'fetchFollowUsersOnce', context.commit)
     },
     // 关注用户
     followUser (context, fid) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/api/user/follow/do?fid=${fid}&uid=${uid}`, 'followUser', context.commit, {
         method: 'post'
       })
     },
     // 取消关注用户
     followUserCancel (context, fid) {
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/api/user/follow/undo?fid=${fid}&uid=${uid}`, 'followUserCancel', context.commit, {
         method: 'post'
       })
@@ -594,6 +684,9 @@ export default createStore<GlobalDataProps>({
     fetchDraftInfo (context) {
       return asyncAndCommit('/api/drafts', 'fetchDraftInfo', context.commit)
     },
+    fetchDraftBar (context) {
+      return asyncAndCommit('/api/drafts', 'fetchDraftBar', context.commit)
+    },
     // 删除草稿
     deleteDraft (context, id) {
       return asyncAndCommit(`/api/deleteDraft?id=${id}`, 'deleteDraft', context.commit, {
@@ -612,7 +705,7 @@ export default createStore<GlobalDataProps>({
       })
     },
     fetchProfile (context, id) {
-      const cid = localStorage.getItem('userID')
+      const cid = localStorage.getItem('userID') || 0
       return asyncAndCommit(`/user/profile?uid=${id}&cid=${cid}`, 'fetchProfile', context.commit)
     },
     publishComment (context, payload) {
@@ -623,9 +716,48 @@ export default createStore<GlobalDataProps>({
     },
     fetchCommentList (context, param = {}) {
       const { page = 1, size = 10, item, order, end = '' } = param
-      const uid = localStorage.getItem('userID')
+      const uid = localStorage.getItem('userID') || 0
       console.log(uid, page, size, item, order, end)
       return asyncAndCommit(`/comment/list?uid=${uid}&page=${page}&size=${size}&item=${item}&order=${order}&end=${end}`, 'fetchCommentList', context.commit)
+    },
+    // 获取搜索文章按热度或发布时间
+    searchArticleList (context, param = {}) {
+      const { page = 2, size = 10, category = 'top', key } = param
+      const uid = localStorage.getItem('userID') || 0
+      console.log(uid)
+      return asyncAndCommit(`/search/article?page=${page}&size=${size}&uid=${uid}&category=${category}&key=${key}`, 'searchArticleList', context.commit)
+    },
+    searchArticleListOnce (context, param = {}) {
+      const { page = 1, size = 10, category = 'top', key } = param
+      const uid = localStorage.getItem('userID') || 0
+      console.log(uid)
+      return asyncAndCommit(`/search/article?page=${page}&size=${size}&uid=${uid}&category=${category}&key=${key}`, 'searchArticleListOnce', context.commit)
+    },
+    // 获取搜索标签
+    searchTagList (context, param = {}) {
+      const { page = 2, size = 10, category = 'tag', key } = param
+      const uid = localStorage.getItem('userID') || 0
+      console.log(uid)
+      return asyncAndCommit(`/search/tag?page=${page}&size=${size}&uid=${uid}&category=${category}&key=${key}`, 'searchTagList', context.commit)
+    },
+    searchTagListOnce (context, param = {}) {
+      const { page = 1, size = 10, category = 'tag', key } = param
+      const uid = localStorage.getItem('userID') || 0
+      console.log(uid)
+      return asyncAndCommit(`/search/tag?page=${page}&size=${size}&uid=${uid}&category=${category}&key=${key}`, 'searchTagListOnce', context.commit)
+    },
+    // 搜索用户
+    searchUser (context, param = {}) {
+      const { page = 2, size = 10, category = 'user', key } = param
+      const uid = localStorage.getItem('userID') || 0
+      console.log(uid, page, size)
+      return asyncAndCommit(`/search/user?page=${page}&size=${size}&uid=${uid}&category=${category}&key=${key}`, 'searchUser', context.commit)
+    },
+    searchUserOnce (context, param = {}) {
+      const { page = 1, size = 10, category = 'user', key } = param
+      const uid = localStorage.getItem('userID') || 0
+      console.log(uid, page, size)
+      return asyncAndCommit(`/search/user?page=${page}&size=${size}&uid=${uid}&category=${category}&key=${key}`, 'searchUserOnce', context.commit)
     }
   },
   modules: {

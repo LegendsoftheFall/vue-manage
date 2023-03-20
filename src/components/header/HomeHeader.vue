@@ -1,6 +1,6 @@
 <template>
     <!-- Navbar -->
-    <header>
+    <header class="bg-white dark:bg-black">
         <nav class="container mx-auto pt-2">
             <!-- flex-container -->
             <div class="flex flex-col ">

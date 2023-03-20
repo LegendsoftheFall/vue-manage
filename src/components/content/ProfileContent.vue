@@ -1,6 +1,6 @@
 <template>
     <!-- grid-container -->
-    <div class="container grid grid-cols-12 gap-3 mx-auto h-full mt-5">
+    <div class="container grid grid-cols-12 gap-3 mx-auto h-full mt-5 font-Poppins">
       <!-- SideBar -->
       <div class="col-span-2">
         <SideBar/>

@@ -117,8 +117,7 @@ export default defineComponent({
   setup () {
     const store = useStore<GlobalDataProps>()
     const currentUserID = computed(() => store.state.user.id)
-    const uid = currentUserID.value
-
+    const total = computed(() => store.state.total)
     onMounted(() => {
       store.dispatch('fetchCollectedArticle', { page: 1, size: 10 })
     })

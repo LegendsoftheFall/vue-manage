@@ -1,16 +1,19 @@
 <template>
     <!-- grid-container -->
-    <div class="container grid grid-cols-12 gap-3 mx-auto h-full mt-5">
+    <div class="container grid grid-cols-12 gap-3 mx-auto h-full mt-5 font-Poppins">
       <!-- SideBar -->
-      <div class="col-span-2">
+      <div class="col-span-2 hidden md:block lg:block">
         <SideBar :activeMenu="3" />
       </div>
       <!-- Content -->
-      <div id="scroll" class="col-span-7">
+      <div id="scroll" class="col-span-12 md:col-span-10 lg:col-span-7">
         <BookMarkList/>
       </div>
       <!-- Detail -->
-      <div class="col-span-3">
+      <div class="col-span-3 hidden lg:block">
+        <DraftBar/>
+        <CollectedBar/>
+        <img :src="require('@/assets/image/notebook.png')" alt="">
       </div>
     </div>
 </template>
@@ -22,10 +25,12 @@ import { GlobalDataProps } from '@/model/model'
 import SideBar from '@/components/sidebar/SideBar.vue'
 import BookMarkList from '../bookmark/BookMarkList.vue'
 import useScrollLoad from '@/hooks/useScrollLoad'
+import DraftBar from '../sidebar/DraftBar.vue'
+import CollectedBar from '../sidebar/CollectedBar.vue'
 
 export default defineComponent({
   name: 'TagContent',
-  components: { SideBar, BookMarkList },
+  components: { SideBar, BookMarkList, DraftBar, CollectedBar },
   setup () {
     const store = useStore<GlobalDataProps>()
     const total = computed(() => store.state.total)
