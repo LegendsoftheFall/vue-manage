@@ -345,6 +345,7 @@ export interface GlobalDataProps{
   draftInfo: DraftInfoProps[]
   draftBar: DraftInfoProps[]
   homeArticleInfo: articleInfoProps[]
+  userArticleInfo: articleInfoProps[]
   scrollPage: scrollPageProps
   articleDetail: ArticleDetailProps
   draftDetail: DraftDetailProps

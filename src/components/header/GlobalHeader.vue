@@ -5,7 +5,7 @@
             <!-- flex-container -->
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="http://localhost:8082/recommend" class="pt-2 flex justify-center items-center">
+                <a href="http://8.134.222.37/recommend" class="pt-2 flex justify-center items-center">
                     <img src="@/assets/icons/logo.svg" alt="">
                     <span class="font-black text-2xl tracking-tight font-mono">manage</span>
                 </a>
@@ -17,9 +17,9 @@
                     <!-- Write -->
                     <WriteButton class="hidden md:block lg:block"/>
                     <!-- mode -->
-                    <ToggleMode class=" pl-4"/>
+                    <ToggleMode class="pl-4"/>
                     <!-- Notice -->
-                    <NoticeButton class="hidden lg:block"/>
+                    <NoticeButton class="hidden"/>
                     <!-- avator -->
                     <UserAvatar/>
                 </div>

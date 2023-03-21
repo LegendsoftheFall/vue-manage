@@ -1,5 +1,7 @@
 <template>
-    <div class="col-span-8 bg-white dark:bg-gray-800 rounded-lg h-40 border dark:border-gray-700"></div>
+    <div class="col-span-8 bg-white dark:bg-gray-800 rounded-lg h-40 border dark:border-gray-700">
+      <!-- 修改密码 -->
+    </div>
 </template>
 
 <script lang="ts">

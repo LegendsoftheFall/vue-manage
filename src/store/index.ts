@@ -33,6 +33,7 @@ export default createStore<GlobalDataProps>({
     draftInfo: [],
     draftBar: [],
     homeArticleInfo: [],
+    userArticleInfo: [],
     scrollPage: { isReadyLoad: true, isRequest: true },
     articleDetail: { article: { likes: 0, comments: 0, viewCount: 0, id: '', authorID: '', title: '', content: '', markdown: '', createTime: '', format: '' }, isLiked: false, isCollected: false },
     draftDetail: { id: '', authorID: '', title: '', content: '', markdown: '', createTime: '', format: '' },
@@ -318,6 +319,12 @@ export default createStore<GlobalDataProps>({
       state.total = rawData.data.total
       console.log('article', state.homeArticleInfo, 'user', state.userInfo, 'total', state.total)
     },
+    fetchAllUserArticle (state, rawData) {
+      if (rawData.data) {
+        state.userArticleInfo = rawData.data.articleInfo
+        state.total = rawData.data.total
+      }
+    },
     editArticle (state, rawData) {
       console.log(rawData.data)
     },
@@ -402,7 +409,9 @@ export default createStore<GlobalDataProps>({
       console.log(state.draftInfo)
     },
     fetchDraftBar (state, rawData) {
-      state.draftBar = rawData.data.list
+      if (rawData.data) {
+        state.draftBar = rawData.data.list
+      }
     },
     deleteDraft (state, rawData) {
       console.log(rawData.data)
@@ -551,9 +560,13 @@ export default createStore<GlobalDataProps>({
     },
     // 根据ID获取用户主页
     fetchUserHomeByID (context, param = {}) {
-      const uid = localStorage.getItem('userID') || 0
+      // const uid = localStorage.getItem('userID') || 0
       const { page = 1, size = 10, id = '' } = param
-      return asyncAndCommit(`/user/${id}?page=${page}&size=${size}&uid=${uid}`, 'fetchUserHomeByID', context.commit)
+      return asyncAndCommit(`/user/${id}?page=${page}&size=${size}&uid=${id}`, 'fetchUserHomeByID', context.commit)
+    },
+    fetchAllUserArticle (context, param = {}) {
+      const uid = localStorage.getItem('userID') || 0
+      return asyncAndCommit(`/user/articles?uid=${uid}`, 'fetchAllUserArticle', context.commit)
     },
     // 编辑文章
     editArticle (context, payload) {
