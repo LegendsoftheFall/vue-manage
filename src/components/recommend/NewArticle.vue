@@ -122,13 +122,13 @@ import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/model/model'
 import useScrollLoad from '@/hooks/useScrollLoad'
+import createToast from '@/hooks/useCreateToast'
 
 export default defineComponent({
   name: 'NewArticle',
   setup () {
     const store = useStore<GlobalDataProps>()
-    const currentUserID = computed(() => store.state.user.id)
-    const uid = currentUserID.value
+    const uid = localStorage.getItem('userID') || ''
     const total = computed(() => store.state.total)
 
     onMounted(() => {
@@ -146,11 +146,14 @@ export default defineComponent({
         return article
       })
     })
-
     const useClickCollect = (aid: string) => {
-      store.dispatch('collectArticle', aid).then(() => {
-        store.commit('changeCollectMode', aid)
-      })
+      if (uid === '') {
+        createToast('error', '登录后才能收藏哦！')
+      } else {
+        store.dispatch('collectArticle', aid).then(() => {
+          store.commit('changeCollectMode', aid)
+        })
+      }
     }
 
     useScrollLoad('fetchArticleList', total, { page: 2, size: 10, order: 'time' })

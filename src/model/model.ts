@@ -329,6 +329,7 @@ export interface GlobalDataProps{
   createDraftMode: boolean
   saveDraftMode: boolean
   total: number
+  bookmarkTotal: number
   posts: PostProps[]
   tags: TagProps
   tagInfo: TagInfoProps[]

@@ -1,7 +1,7 @@
 <template>
     <div class="w-full flex flex-col mb-5 h-32 p-3 border dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
         <div class="text-lg font-bold flex justify-between">
-            <div>最近的收藏&#40;{{articleList?.length || 0}}&#41;</div>
+            <div>最近的收藏&#40;{{total || 0}}&#41;</div>
             <a href="/bookmarks" class="py-1 px-3 border rounded-md hover:bg-gray-3 hover:text-black">全部</a>
         </div>
         <div class="mt-2 flex flex-col" v-for="article in articleList.slice(0,1)" :key="article.articleInfo.id">
@@ -20,6 +20,7 @@ export default defineComponent({
   name: 'BookMarkList',
   setup () {
     const store = useStore<GlobalDataProps>()
+    const total = computed(() => store.state.bookmarkTotal)
     onMounted(() => {
       store.dispatch('fetchCollectedBar')
     })
@@ -34,7 +35,7 @@ export default defineComponent({
       })
     })
 
-    return { articleList }
+    return { articleList, total }
   }
 })
 </script>

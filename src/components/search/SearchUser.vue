@@ -34,7 +34,7 @@
     <!-- end -->
     <div v-if="userInfoList.length === 0" class="mt-10 pb-20 justify-center items-center text-center">
         <span class="text-2xl font-bold tracking-wide">糟糕！未找到结果, 请尝试新的关键字.</span>
-        <img class="mt-10" :src="require('@/assets/image/404.svg')" alt="">
+        <img class="mt-10" :src="require('@/assets/image/bored.png')" alt="">
     </div>
     <div class="w-full h-12"></div>
 </template>

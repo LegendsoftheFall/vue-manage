@@ -106,7 +106,7 @@
                      <!-- 头像 -->
                       <div>
                         <button class="block w-7 h-7 rounded-full overflow-hidden mr-3">
-                              <img :src="reply.user_info.avatar === '' ? require('@/assets/image/avator.svg') : comment.user_info.avatar" alt="">
+                              <img :src="reply.user_info.avatar === '' ? require('@/assets/image/avator.svg') : reply.user_info.avatar" alt="">
                         </button>
                       </div>
                       <!-- 回复内容 -->
@@ -132,7 +132,7 @@
                           <!-- 回复内容 -->
                           <div class="mt-3 text-sm text-slate-700"><span>{{reply.reply_info.reply_content}}</span></div>
                           <!-- 回复的目标内容 -->
-                          <div v-if="reply.reply_info.level === 2" class="mt-1 px-4 flex border rounded-md bg-gray-3 text-center">
+                          <div v-if="reply.reply_info.level === 2" class="mt-1 px-4 py-1 flex border rounded-md bg-gray-3 text-center">
                             <div class="text-slate-500">"</div>
                             <div class="text-slate-500 text-sm truncate">{{reply.parent_reply.reply_content.substring(0,20)}}</div>
                             <div class="text-slate-500"><span v-if="reply.parent_reply.reply_content.length > 20">...</span> "</div>

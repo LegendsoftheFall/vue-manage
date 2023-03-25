@@ -17,6 +17,7 @@ export default createStore<GlobalDataProps>({
     notFound: false,
     key: '',
     total: 0,
+    bookmarkTotal: 0,
     posts: testPostData,
     tags: { isFollow: false, articleNum: 0, followerNum: 0 },
     trend: [],
@@ -346,6 +347,7 @@ export default createStore<GlobalDataProps>({
     fetchCollectedBar (state, rawData) {
       if (rawData.data) {
         state.collectedBar = rawData.data.list
+        state.bookmarkTotal = rawData.data.total
       }
     },
     fetchHotTags (state, rawData) {

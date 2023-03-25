@@ -175,7 +175,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "Explore" */ '../views/explore/ExploreView.vue'),
     children: [
       {
-        path: 'hot',
+        path: '',
         name: 'ExploreHot',
         component: () => import(/* webpackChunkName: "Tags" */ '../components/explore/ExploreHot.vue')
       },

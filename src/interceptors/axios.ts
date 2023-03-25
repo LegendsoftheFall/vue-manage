@@ -2,7 +2,8 @@ import axios from 'axios'
 import router from '@/router'
 import store from '@/store/index'
 
-axios.defaults.baseURL = 'http://8.134.222.37:8081/'
+// axios.defaults.baseURL = 'http://8.134.222.37:8081/'
+axios.defaults.baseURL = 'http://localhost:8081/'
 // 使用拦截器添加loading效果
 axios.interceptors.request.use(config => {
   // store.commit('setLoading', true)

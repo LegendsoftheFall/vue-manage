@@ -24,7 +24,7 @@ export default defineComponent({
       isShow.value = true
     }
     const route = useRoute()
-    if (route.path.includes('hot')) {
+    if (route.path === '/explore' || route.path === '/explore/') {
       activeMenu.value = 0
     }
     if (route.path.includes('tags')) {
