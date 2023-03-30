@@ -46,13 +46,13 @@ import createToast from '@/hooks/useCreateToast'
 import { beforeUploadCheck } from '@/hooks/helper'
 
 const uploadCheck = (file: File) => {
-  const result = beforeUploadCheck(file, { format: ['image/jpeg', 'image/png'], size: 1 })
+  const result = beforeUploadCheck(file, { format: ['image/jpeg', 'image/png'], size: 5 })
   const { passed, error } = result
   if (error === 'format') {
     createToast('warning', '上传图片只能是JPG或PNG格式')
   }
   if (error === 'size') {
-    createToast('warning', '上传图片不能超过1M')
+    createToast('warning', '上传图片不能超过5M')
   }
 
   return passed

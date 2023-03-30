@@ -1,7 +1,7 @@
 <template>
     <div id="scroll"
     class="w-full h-max py-6 px-4 border border-t-0 flex flex-wrap bg-white dark:bg-gray-800 dark:border-gray-700 rounded-b-lg">
-        <div v-if="!tagList" class="flex w-full justify-center items-center">你还未关注博主</div>
+        <div v-if="!userInfoList" class="flex w-full justify-center items-center">你还未关注博主</div>
         <div class="w-full p-2"  v-for="userInfo in userInfoList" :key="userInfo.userID">
             <div class=" h-16 p-3 flex items-center rounded-lg">
                 <a :href="`/user/${userInfo.userID}`" target="_blank" class="w-10 h-10 block rounded-full overflow-hidden">

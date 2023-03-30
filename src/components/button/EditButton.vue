@@ -41,12 +41,12 @@ export default defineComponent({
     const route = useRoute()
     const id = route.params.id
     const UserInfo = computed(() => store.state.user)
+    const uid = localStorage.getItem('userID')
     const Article = computed(() => store.state.articleDetail.article)
     const isModal = ref(false)
     const hideAndDelete = () => {
       isModal.value = false
-      store.dispatch('deleteArticle', id).then(resp => {
-        const uid = resp.data.id
+      store.dispatch('deleteArticle', id).then(() => {
         createToast('success', '删除成功')
         setTimeout(() => {
           router.push({ name: 'Home', params: { id: uid } })

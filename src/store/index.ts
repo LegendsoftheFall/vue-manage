@@ -562,9 +562,9 @@ export default createStore<GlobalDataProps>({
     },
     // 根据ID获取用户主页
     fetchUserHomeByID (context, param = {}) {
-      // const uid = localStorage.getItem('userID') || 0
+      const uid = localStorage.getItem('userID') || 0
       const { page = 1, size = 10, id = '' } = param
-      return asyncAndCommit(`/user/${id}?page=${page}&size=${size}&uid=${id}`, 'fetchUserHomeByID', context.commit)
+      return asyncAndCommit(`/user/${id}?page=${page}&size=${size}&uid=${uid}`, 'fetchUserHomeByID', context.commit)
     },
     fetchAllUserArticle (context, param = {}) {
       const uid = localStorage.getItem('userID') || 0

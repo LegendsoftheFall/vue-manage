@@ -13,7 +13,7 @@
             <!-- Content -->
             <div class="flex flex-1 flex-col items-center lg:items-start">
               <h2 class="text-bookmark-blue text-3xl md:text-4 lg:text-5xl text-center lg:text-left mb-6">
-                一个简单的博客社区
+                基于Vue+Gin开发的博客社区
               </h2>
               <p class="text-bookmark-grey text-lg text-center lg:text-left mb-6">
                 你可以随心所欲地撰写你的技术博客。社区收集每个人的想法并帮助解决你的技术难题。

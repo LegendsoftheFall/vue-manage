@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex items-center h-64 p-6 border rounded-lg bg-white font-Poppins">
+  <div class="w-full flex items-center h-64 p-6 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700 font-Poppins">
     <div class="flex flex-col w-full h-full">
       <!-- Name -->
       <div class="h-1/2 justify-center items-start">

@@ -5,7 +5,7 @@
             <!-- flex-container -->
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="http://localhost:8080/recommend" class="pt-2 flex justify-center items-center">
+                <a href="http://8.134.222.37/recommend" class="pt-2 flex justify-center items-center">
                     <img src="@/assets/icons/logo.svg" alt="">
                     <span class="font-black text-2xl tracking-tight font-mono">manage</span>
                 </a>

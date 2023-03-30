@@ -49,7 +49,7 @@
               </button>
             </div>
             <!-- 内容 -->
-            <div class="comment-content w-full">
+            <div class="comment-content w-140">
               <!-- 用户信息 -->
               <div class="flex justify-between items-center">
                 <div class="flex items-center">
@@ -59,7 +59,7 @@
                 <div class=" text-slate-500"><span>{{comment.comment_info.format}}</span></div>
               </div>
               <!-- 评论内容 -->
-              <div class="mt-3 text-sm text-slate-700"><span>{{comment.comment_info.content}}</span></div>
+              <div class="mt-3 text-sm text-slate-700 overflow-ellipsis">{{comment.comment_info.content}}</div>
               <!-- 点赞回复 -->
               <div class="mt-3 flex">
                 <!-- <div class="like mr-4">
@@ -110,7 +110,7 @@
                         </button>
                       </div>
                       <!-- 回复内容 -->
-                      <div class="reply-content w-full">
+                      <div class="reply-content w-140">
                         <!-- 用户信息 -->
                           <!-- 根评论的回复 -->
                           <div v-if="reply.reply_info.level === 1" class="flex justify-between items-center">
@@ -130,12 +130,12 @@
                             <div class=" text-slate-500"><span>{{reply.reply_info.format}}</span></div>
                           </div>
                           <!-- 回复内容 -->
-                          <div class="mt-3 text-sm text-slate-700"><span>{{reply.reply_info.reply_content}}</span></div>
+                          <div class="mt-3 text-sm text-slate-700 break-words w-140">{{reply.reply_info.reply_content}}</div>
                           <!-- 回复的目标内容 -->
                           <div v-if="reply.reply_info.level === 2" class="mt-1 px-4 py-1 flex border rounded-md bg-gray-3 text-center">
                             <div class="text-slate-500">"</div>
-                            <div class="text-slate-500 text-sm truncate">{{reply.parent_reply.reply_content.substring(0,20)}}</div>
-                            <div class="text-slate-500"><span v-if="reply.parent_reply.reply_content.length > 20">...</span> "</div>
+                            <div class="text-slate-500 text-sm truncate">{{reply.parent_reply.reply_content.substring(0,80)}}</div>
+                            <div class="text-slate-500">"</div>
                           </div>
                           <!-- 点赞回复 -->
                           <div class="mt-3 flex">
@@ -253,13 +253,13 @@ export default defineComponent({
       } else if (repContent.value === '') {
         createToast('error', '不能发表空评论！')
       } else {
-        console.log('点击获取到的回复评论ID', toCommentID)
+        console.log('点击获取到的回复评论ID', toCommentID, '用户ID', UserInfo.value.id)
         const sendData = {
           itemType: 1,
           userID: UserInfo.value.id,
           itemID: aid,
-          content: repContent.value,
-          toCommentID: toCommentID
+          toCommentID: toCommentID,
+          content: repContent.value
         }
         submitStatus.value = 'uploading'
         store.dispatch('publishComment', sendData).then(() => {

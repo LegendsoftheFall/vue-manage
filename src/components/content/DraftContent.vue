@@ -1,8 +1,8 @@
 <template>
-    <div class="container grid grid-cols-10 mx-auto h-full mt-5 font-Poppins">
-      <div class="col-span-2"></div>
+    <div class="container grid grid-cols-12 mx-auto h-full mt-5 font-Poppins">
+      <div class="lg:col-span-1"></div>
       <!-- 写作区域 -->
-      <div class="col-span-6">
+      <div class="col-span-12 lg:col-span-10">
         <div class="flex items-center">
           <!-- 添加图片按钮 -->
           <AddCoverButton/>
@@ -28,14 +28,14 @@
         <div class="mt-12 w-full">
             <textarea type="text" v-model="article.title"
             style="box-shadow:none"
-            class="w-full text-3xl tracking-wider font-bold border-none resize-none outline-none placeholder-black"
+            class="w-full text-3xl tracking-wider bg-gray-1 font-bold border-none resize-none outline-none placeholder-black"
             placeholder="文章标题..."></textarea>
         </div>
         <!-- 副标题 -->
         <div v-if="isSubTitle" class="w-full relative">
             <textarea type="text" v-model="article.subtitle"
             style="box-shadow:none"
-            class="w-full text-2xl px-7 tracking-wide font-medium border-none resize-none outline-none placeholder-gray-700"
+            class="w-full text-2xl px-7 tracking-wide bg-gray-1 font-medium border-none resize-none outline-none placeholder-gray-700"
             placeholder="文章副标题..."></textarea>
             <!-- 关闭按钮 -->
             <button @click="removeSubTitle" class="absolute top-1 right-0 px-1 py-1 hover:bg-gray-200 rounded-md">
@@ -54,7 +54,7 @@
         </div>
         <div class="w-full h-64"></div>
       </div>
-      <div class="col-span-2"></div>
+      <div class="lg:col-span-1"></div>
     </div>
 </template>
 

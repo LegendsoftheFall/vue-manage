@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex flex-col items-start h-max p-6 border rounded-lg bg-white">
+    <div class="w-full flex flex-col items-start h-max p-6 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700 font-Poppins">
         <span class="font-semibold">关于此标签</span>
         <span class="mt-4 mb-4">{{introduction}}</span>
     </div>

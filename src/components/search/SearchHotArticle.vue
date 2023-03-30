@@ -15,7 +15,7 @@
                         <div class="mt-3 text-xl">
                             {{article.authorName}}
                         </div>
-                        <div class="text-gray-500 flex mt-5 text-lg">
+                        <div class="text-gray-500 flex mt-5">
                             {{article.articleInfo.format}}
                         <p class="mx-2 h-full">&#183;</p>
                             {{article.articleInfo.viewCount}} 浏览量

@@ -1,8 +1,8 @@
 <template>
   <!-- 文章信息 -->
-   <div class="container grid grid-cols-8 mx-auto h-full font-Poppins">
-        <div class="col-span-1"></div>
-        <div class="col-span-6">
+   <div class="container grid grid-cols-12 mx-auto h-full font-Poppins">
+        <div class="lg:col-span-2"></div>
+        <div class="col-span-12 lg:col-span-8">
           <div class="flex flex-col w-full items-center">
               <!-- 标题 -->
               <div class="mt-8 mb-8 w-full text-center px-6 font-bold text-5xl tracking-wide">
@@ -42,16 +42,16 @@
               </div>
           </div>
         </div>
-        <div class="col-span-1"></div>
+        <div class="lg:col-span-2"></div>
    </div>
    <!-- 文章内容 -->
-   <div  class="container grid grid-cols-8 gap-5 mx-auto h-full">
+   <div  class="container grid grid-cols-12 gap-5 mx-auto h-full">
       <!-- 内容 -->
-      <div class="col-span-1"></div>
-      <div class="col-span-5">
+      <div class="lg:col-span-2"></div>
+      <div class="col-span-10 lg:col-span-8">
         <v-md-editor :model-value="articleDetail.article?.markdown" mode="preview"></v-md-editor>
       </div>
-      <div class="col-span-2">
+      <div class="lg:col-span-2">
         <div class="sticky top-70 mr-28 flex flex-col justify-center items-center">
           <!-- 点赞 -->
           <button @click="useClickLike" :class="{'text-blue-400': articleDetail.isLiked}" class="mt-14 p-2 flex justify-center items-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -85,12 +85,12 @@
       <!-- 功能 -->
       <!-- 评论 -->
    </div>
-   <div class="container mt-5 mb-5 grid grid-cols-8 gap-5 mx-auto h-full">
-      <div class="col-span-1"></div>
-      <div class="col-span-5" id="comment">
+   <div class="container mt-5 mb-5 grid grid-cols-12 gap-5 mx-auto h-full">
+      <div class="lg:col-span-2"></div>
+      <div class="col-span-12 lg:col-span-8" id="comment">
         <GlobalComment/>
       </div>
-      <div class="col-span-2"></div>
+      <div class="lg:col-span-2"></div>
    </div>
 </template>
 

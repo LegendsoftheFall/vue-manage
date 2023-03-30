@@ -4,11 +4,11 @@
       <div class="hidden lg:block lg:col-span-2">
       </div>
       <!-- Content -->
-      <div class="col-span-12 lg:col-span-7">
+      <div class="col-span-12 lg:col-span-8">
         <SearchList/>
       </div>
       <!-- Detail -->
-      <div class="hidden lg:block lg:col-span-3"></div>
+      <div class="hidden lg:block lg:col-span-2"></div>
     </div>
 </template>
 
